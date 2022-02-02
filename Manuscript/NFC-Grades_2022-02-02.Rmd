@@ -33,9 +33,10 @@ authornote: |
 
 abstract: | 
   ...  
+  
 keywords          : "Need for Cognition, Grades, Academic Self-Concept, Latent Change Score Modeling, Longitudinal"
 wordcount         : ""
-bibliography      : ["B6.2_References.bib"]
+bibliography      : ["NFC-Grades_References.bib"]
 
 linenumbers       : yes
 floatsintext      : no
@@ -183,7 +184,7 @@ We report how we determined our sample size, all data exclusions, all manipulati
 
 ```{r data, cache = F, include = FALSE, message = F, warning = F}
 
-load("~/Documents/R/nfc_rf/NFC_ASC_Grades.RData")
+load(here::here("Data", "NFC-Grades.RData"))
 
 ```
 
@@ -238,7 +239,7 @@ apa_table(list(corr.overall$ct,corr.overall$dt),
           font_size = "footnotesize")
 ```
 
-Table 1 gives the descriptive statistics and intercorrelations of the variables of interest in this analysis step, i.e., the T1 and T2 measurements of GPA, domain-general ability self-concept, and general interest in school as well as the variables Hope for Success, Fear of Failure, and NFC. As can be seen in the diagonal and the upper right of the correlation table, all variables exhibited good internal consistency, Cronbach's $\alpha\ge$ `r corr.overall$min.ic`, and retest reliability, $r_{tt}\ge$ `r corr.overall$min.rtt`. Among the predictors at T1, GPA at T1 showed the strongest relation to GPA at T2, `r rr(corr.test(gro.2,gro.1)$r)`, followed by the domain-general ability self-concept, `r rr(corr.test(gro.2,aso.1)$r)`, and NFC at T1, `r rr(corr.test(gro.2,nfc.1)$r)`, all $p<$ .001. The other variables at T1 showed significant correlations with GPA at T2 as well, `r rr(abs(corr.test(df.overall)$r[7, 1:6]), bound = "min", absval = T)`, `r rp(corr.test(df.overall)$p[7, 1:6])`.
+Table 1 gives the descriptive statistics and intercorrelations of the variables of interest in this analysis step, i.e., the T1 and T2 measurements of GPA, domain-general ability self-concept, and general interest in school as well as the variables Hope for Success, Fear of Failure, and NFC. As can be seen in the diagonal and the upper right of the correlation table, all variables exhibited good internal consistency, Cronbach's $\alpha\ge$ `r corr.overall$min.ic`, and retest reliability, $r_{tt}\ge$ `r corr.overall$min.rtt`. Among the predictors at T1, GPA at T1 showed the strongest relation to GPA at T2, `r rr(corr.test(GRO2,GRO1)$r)`, followed by the domain-general ability self-concept, `r rr(corr.test(GRO2,ASO1)$r)`, and NFC at T1, `r rr(corr.test(GRO2,NFC1)$r)`, all $p<$ .001. The other variables at T1 showed significant correlations with GPA at T2 as well, `r rr(abs(corr.test(df.overall)$r[7, 1:6]), bound = "min", absval = T)`, `r rp(corr.test(df.overall)$p[7, 1:6])`.
 
 A multiple regression analysis involving all measures at T1 (see Table 2) showed that apart from GPA at T1, `r rb(mr.overall$p$p.full.mod, "grd.1")`, the only significant predictors were the domain-general ability self-concept, `r rb(mr.overall$p$p.full.mod, "asc.1")`, and NFC, `r rb(mr.overall$p$p.full.mod, "nfc.1")`. Model fit was better for a model that included GPA, the ability self-concept, and NFC at T1 (while all other predictors were set to zero), `r fit.mr.overall.with.nfc`, than a model that included GPA and the ability self-concept only, `r fit.mr.overall.wout.nfc`, and a $\chi^2$-difference test supported the superiority of the former compared to the latter model, `r fro.chi.sq.diff`. 
 
@@ -258,7 +259,7 @@ apa_table(list(German = mr.report.german, Math = mr.report.math, Physics = mr.re
           font_size = "scriptsize")
 ```
 
-We therefore further examined a trivariate latent change score model involving school grades, the ability self-concept, and NFC. Figure 1B gives the results of the latent change score modeling with regard to the prediction of change and correlated change in overall school grades, i.e., GPA. While the best predictor of change on GPA was GPA at T1 (i.e., self-feedback), `r rl(fit.overall$p, "beta1")`, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, `r rl(fit.overall$p, "gamma12")`, and `r rl(fit.overall$p, "gamma13")`, respectively. Correlated change was observed for GPA and the ability self-concept, `r rl(fit.overall$p, "rho12")`, and the ability self-concept and NFC, `r rl(fit.overall$p, "rho23")`, while the correlated changes in GPA and NFC did not reach significance, `r rl(fit.overall$p, "rho13")`.
+We therefore further examined a trivariate latent change score model involving school grades, the ability self-concept, and NFC. Figure 1B gives the results of the latent change score modeling with regard to the prediction of change and correlated change in overall school grades, i.e., GPA. While the best predictor of change on GPA was GPA at T1 (i.e., self-feedback), `r rl(fit.overall, "beta1")`, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, `r rl(fit.overall, "gamma12")`, and `r rl(fit.overall, "gamma13")`, respectively. Correlated change was observed for GPA and the ability self-concept, `r rl(fit.overall, "rho12")`, and the ability self-concept and NFC, `r rl(fit.overall, "rho23")`, while the correlated changes in GPA and NFC did not reach significance, `r rl(fit.overall, "rho13")`.
 
 ![Latent change score models. (A) Example of a bivariate latent change score model (for details see text); legend to lines: dotted = loadings fixed to zero, red = self-feedback $\beta$, blue = cross-domain coupling $\gamma$, grey = correlation $\phi$ of predictors at T1, green = correlated change $\rho$; (B) Grade Point Average (GPA) and (C) to (F) subject-specific changes in grades at T2 (indicated by prefix $\Delta$) as predicted by their respective T1 levels as well as by Need for Cognition (NFC) and (overall as well as subject specific) Ability Self-Concept (ASC) at T1; coefficients are standardized coefficients. ]("/Users/alex/Documents/R/nfc_rf/Fig1.jpg")
 
@@ -266,7 +267,7 @@ We therefore further examined a trivariate latent change score model involving s
 
 For the four subjects examined, i.e., German, math, physics, and chemistry, similar results were obtained with regard to correlation analyses (see Supplementary Tables Sx to Sy<!-- add correct table numbers -->). As regards multiple regression analyses (see Supplementary Table Sz), for all subjects, grades at T2 were significant predictors of grades at T2, $p<.001$. The subject-specific ability self concept at T1 was a significant predictor of grades at T2 in German only, `r rb(mr.german$p$p.full.mod, "asc.1")`. NFC at T1 was a significant predictor of T2 grades in German, `r rb(mr.german$p$p.full.mod, "nfc.1")` and physics, `r rb(mr.physics$p$p.full.mod, "nfc.1")`. 
 
-As regards the latent change score models, there was evidence for significant self-feedback for all subjects, all $p<.001$. With regard to the subject-specific ability self-concept, cross-domain coupling with changes in grades was observed for German, `r rl(fit.german$p, "gamma12")`,  and chemistry, `r rl(fit.chemistry$p, "gamma12")`. NFC at T1 showed cross-domain coupling with grades at T2 for German, `r rl(fit.german$p, "gamma13")`, physics, `r rl(fit.physics$p, "gamma13")`, and chemistry, `r rl(fit.chemistry$p, "gamma13")`. Correlated change between grades and the subject-specific ability self-concept was observed for all subjects, while correlated change between grades and NFC was observed for German, math, and physics only (see Fig. 1C-F). 
+As regards the latent change score models, there was evidence for significant self-feedback for all subjects, all $p<.001$. With regard to the subject-specific ability self-concept, cross-domain coupling with changes in grades was observed for German, `r rl(fit.german, "gamma12")`,  and chemistry, `r rl(fit.chemistry, "gamma12")`. NFC at T1 showed cross-domain coupling with grades at T2 for German, `r rl(fit.german, "gamma13")`, physics, `r rl(fit.physics, "gamma13")`, and chemistry, `r rl(fit.chemistry, "gamma13")`. Correlated change between grades and the subject-specific ability self-concept was observed for all subjects, while correlated change between grades and NFC was observed for German, math, and physics only (see Fig. 1C-F). 
 
 # Discussion
 

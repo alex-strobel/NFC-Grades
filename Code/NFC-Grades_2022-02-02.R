@@ -1,16 +1,116 @@
 # NFC AND ABILITY SELF-CONCEPTS AS PREDICTORS OF CHANGES IN SCHOOL GRADES =====
 
-# required packages -----------------------------------------------------------
+# activate and restore project------------------------------------------------
+source('renv/activate.R')
+renv::activate(getwd())
+renv::restore()
 
+# required packages -----------------------------------------------------------
 library(haven)      # for reading SPSS data file
 library(lavaan)     # for latent change score modeling
 library(papaja)     # for easier reporting
 library(psych)      # for correlation analysis, Mardia test etc.
-library(robustbase) # for robust regression
 library(shape)      # for plotting
 
+# global functions ------------------------------------------------------------
+
+# function for reporting p-values in main text (wrapper for papaja::printp)
+rp <- function(p, bound = "max") {
+  if (length(p) == 1) {
+    # single p-value is passed
+    if (p >= .001) {
+      # returns "p = ..."
+      p_out = paste0("$p=", papaja::printp(p), "$")
+    } else {
+      # returns "p < .001"
+      p_out = paste0("$p", papaja::printp(p), "$")
+    } 
+  } else if (length(p) > 1) {
+    # vector of p-values is passed
+    if (bound == "max") {
+      # returns "p <= ..."
+      p_out = paste0("$p", "\\le", papaja::printp(max(p)), "$")
+    } else if (bound == "min") {
+      # returns "p >= ..."
+      p_out = paste0("$p", "\\ge", papaja::printp(min(p)), "$")
+    }
+    
+  }
+  return(p_out)
+}
+
+# function for reporting correlations in main text (wrapper for papaja::printnum)
+rr <-  function(r, symbol = "$r_{s}", bound = "max", absval = F) {
+  # per default assumes Spearman correlation, set symbol to "$r" for Pearson 
+  
+  # shall absolute value of correlations be returned?
+  if (absval == T) {
+    symbol = paste0("$|", sub("[$]", "", symbol), "|")
+  }
+  
+  if (length(r) == 1) {
+    # single correlation is passed
+    if (r < .01) {
+      # returns "r < .01"
+      r_out = paste0(symbol, "<", papaja::printnum(r, gt1 = F), "$")
+    } else {
+      # returns "r = ..."
+      r_out = paste0(symbol, "=", papaja::printnum(r, gt1 = F), "$")
+    }  
+  } else {
+    # vector of correlations is passed
+    if (bound == "max") {
+      # returns "r <= ..."
+      r_out = paste0(symbol, "\\le", papaja::printnum(max(r), gt1 = F), "$")
+    } else if (bound == "min") {
+      # returns "r >= ..."
+      r_out = paste0(symbol, "\\ge", papaja::printnum(min(r), gt1 = F), "$")
+    }
+  }
+  return(r_out)
+}
+
+# function for reporting regression coefficients based on multiple regression using lavaan
+rb <- function(parameter_estimates, pred = "") {
+  # shorten varname for easier coding
+  pe = parameter_estimates
+  
+  # which row contains predictor?
+  pe_row = which(pe$rhs == pred)
+  
+  # create report string
+  report = paste0("$B=$ ", printnum(pe$est[pe_row]), 
+                  ", 95% CI [", paste0(printnum(pe[pe_row, c('ci.lower', 'ci.upper')]), collapse = ', '), "], "
+                  , rp(pe[pe_row, 'pvalue']))
+  
+  return(report)
+}
+
+# function for reporting LCSM results 
+rl <- function(fit, label = "") {
+  
+  # get all parameter estimates
+  parameter_estimates = parameterEstimates(fit, standardized = T)
+  
+  # get relevant parameter estimates
+  pe = parameter_estimates[parameter_estimates$label != "", ]
+  
+  # prepare output
+  out = paste0("$B=$ ", printnum(pe[pe$label == label, 'est']), 
+               ", 95% CI [", paste0(printnum(pe[pe$label == label, c('ci.lower', 'ci.upper')]), collapse = ", "), "], ",
+               rp(pe[pe$label == label, 'pvalue']), ", ",
+               "$\\beta=$ ", printnum(pe[pe$label == label, 'std.all'], gt1 = F))
+  
+  return(out)
+  
+}
+
+
+# set root directory ----------------------------------------------------------
+here::i_am("flag_root_for_NFC-Grades.txt")
+
 # data ------------------------------------------------------------------------
-d = read_sav("KoopRicarda/2006_2007_nfc.sav")
+d = read_sav(here::here("Data", "NFC-Grades.sav"))
 d.var.labels = data.frame(attr(d, "variable.labels"))
 
 # sample description ----------------------------------------------------------
@@ -81,114 +181,394 @@ NFC2 = d$ska_nfc_2
 data = data.frame(GRO1, GRO2, GRG1, GRG2, GRM1, GRM2, GRP1, GRP2, GRC1, GRC2, ASO1, ASO2, ASG1, ASG2, ASM1, ASM2, ASP1, ASP2, ASC1, ASC2, INO1, INO2, ING1, ING2, INM1, INM2, INP1, INP2, INC1, INC2, HFS1, HFS2, FOF1, FOF2, NFC1, NFC2)
 final = data.frame(DAT1 = d$datum_I, DAT2 = d$datum_II, AGE1 = d$alter_I, AGE2 = d$alter_II, SEX1 = d$sex, SEX2 = d$sex_II)
 
-# boxplots 4 attachment ----
 
-data4boxplots = data.frame(GRO1, GRO2, GRG1, GRG2, GRM1, GRM2, GRP1, GRP2, GRC1, GRC2, HFS1, HFS2, ASO1, ASO2, ASG1, ASG2, ASM1, ASM2, ASP1, ASP2, ASC1, ASC2, FOF1, FOF2, INO1, INO2, ING1, ING2, INM1, INM2, INP1, INP2, INC1, INC2, NFC1, NFC2)
-par(mfrow = c(3, 6), mar = c(2,2,2,2))
-for (i in seq(1, ncol(data4boxplots), 2)) {
-  data2plot = data4boxplots[,c(i, i + 1)]
-  mean.sd = cbind(describe(data2plot)$mean, describe(data2plot)$sd)
-  varlabel  = substr(colnames(data2plot)[1], 1, 3)
-  plot(c(0, 3), c(0, 7), type = "n", xaxt = "n", ylim = c(0, 7), las = 1, main = varlabel)
-  axis(1, 1:2, c("T1", "T2"))
-  boxplot(data2plot, add = T, at = 1:2, axes = F, lty = 1, lwd = 1.5, notch = T, boxwex = .2,  staplewex = NA)
-  lines(1:2, colMeans(data2plot, na.rm = T), type = "o", lwd = 1.5, pch = 19, cex = 0.75, col = 2)
-  lines(rep(1, 2), c(mean.sd[1, 1] - mean.sd[1, 2], mean.sd[1, 1] + mean.sd[1, 2]), col = 2, lwd = 1.5)
-  lines(rep(2, 2), c(mean.sd[2, 1] - mean.sd[2, 2], mean.sd[2, 1] + mean.sd[2, 2]), col = 2, lwd = 1.5)
+# internal consistencies ------------------------------------------------------
+
+# function to extract internal consistencies
+raw.alpha <- function(df) {
+  alpha.1 = printnum(alpha(df[, 1:(ncol(df)/2)], max = 30, warnings = F)$total$raw_alpha, gt1 = F) 
+  alpha.2 = printnum(alpha(df[, (ncol(df)/2 + 1):ncol(df)], max = 30, warnings = F)$total$raw_alpha, gt1 = F)
+  return(c(alpha.1, alpha.2))
 }
-par(mfrow = c(1, 1), mar = c(5, 4, 4, 2))
 
-# Multiple regression to select variables for latent change score modeling ----
+# Grades (singular values, no reliability computation possible)
+alpha.gro = rep(NA, 2)
+alpha.grg = rep(NA, 2)
+alpha.grm = rep(NA, 2)
+alpha.grp = rep(NA, 2)
+alpha.grc = rep(NA, 2)
+
+# Ability self-concept
+asc.items = d[, grep("kom", colnames(d))]
+aso.items = asc.items[, grep("_a", colnames(asc.items))]
+asg.items = asc.items[, grep("_d", colnames(asc.items))]
+asm.items = asc.items[, grep("_m", colnames(asc.items))]
+asp.items = asc.items[, grep("_p", colnames(asc.items))]
+asc.items = asc.items[, grep("_c", colnames(asc.items))]
+alpha.aso = raw.alpha(aso.items)
+alpha.asg = raw.alpha(asg.items)
+alpha.asm = raw.alpha(asm.items)
+alpha.asp = raw.alpha(asp.items)
+alpha.asc = raw.alpha(asc.items)
+
+# Interest
+int.items = d[, grep("in_", colnames(d))]
+ino.items = int.items[, grep("_a", colnames(int.items))][,c(1:3,5:7)]
+ing.items = int.items[, grep("_d", colnames(int.items))][,c(1:3,5:7)]
+inm.items = int.items[, grep("_m", colnames(int.items))][,c(1:3,5:7)]
+inp.items = int.items[, grep("_p", colnames(int.items))][,c(1:3,5:7)]
+inc.items = int.items[, grep("_c", colnames(int.items))][,c(1:3,5:7)]
+alpha.ino = raw.alpha(ino.items)
+alpha.ing = raw.alpha(ing.items)
+alpha.inm = raw.alpha(inm.items)
+alpha.inp = raw.alpha(inp.items)
+alpha.inc = raw.alpha(inc.items)
+
+# Hope for Success
+hfs.items = d[, grep("lm_", colnames(d))]
+alpha.hfs = raw.alpha(hfs.items)
+
+# Fear of Failure
+fof.items = d[, grep("an_", colnames(d))]
+alpha.fof = raw.alpha(fof.items)
+
+# Need for Cognition
+nfc.items = d[, grep("nfc", colnames(d)[-grep("ska",colnames(d))])]
+alpha.nfc = raw.alpha(nfc.items)
+
+# alphas for correlation tables
+alpha.overall   = c(alpha.gro[1], alpha.aso[1], alpha.ino[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.gro[2], alpha.aso[2], alpha.ino[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.german    = c(alpha.grg[1], alpha.asg[1], alpha.ing[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grg[2], alpha.asg[2], alpha.ing[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.math      = c(alpha.grm[1], alpha.asm[1], alpha.inm[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grm[2], alpha.asm[2], alpha.inm[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.physics   = c(alpha.grp[1], alpha.asp[1], alpha.inp[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grp[2], alpha.asp[2], alpha.inp[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.chemistry = c(alpha.grc[1], alpha.asc[1], alpha.inc[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grc[2], alpha.asc[2], alpha.inc[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+
+# correlation analysis --------------------------------------------------------
+
+# function for setting colnames uppercase
+col.toupper <- function(df) {
+  return(toupper(sub("[.]", "", colnames(df))))
+}
+
+# function for creating a custom correlation table
+corr.report <- function(df, method = "Spearman", diagonal = NULL, Tdiff = c(53, 59), what.measures = "variables in the study", measure.names = "", what.diagonal = "Cronbach", rtt.bold = T, descriptives = T, p.note = "gt") {
+  
+  # number of variables
+  nvars = ncol(df) / 2
+  
+  # rename variables
+  colnames(df) = col.toupper(df)
+  
+  # internal consistency and retest reliability
+  t1 = data.frame(df[, grep("1", colnames(df))])
+  t2 = data.frame(df[, grep("2", colnames(df))])
+  ci.rows = seq(1, ncol(df) * 2, by = nvars + 1)
+  retest = corr.test(t1, t2)
+  rtt.ci = retest$ci[ci.rows, ]
+  min.rtt = printnum(min(rtt.ci[, 2]), gt1 = F)
+  
+  # correlation table incl. reliabilities (if provided) prepared for printing in table 
+  corr.tab = corr.test(df, method = tolower(method))
+  if (length(corr.tab$n) == 1) {
+    n = corr.tab$n
+    n.note = ""
+  } else {
+    n = paste0(range(corr.tab$n), collapse = "-")
+    n.note = " due to missings"
+  }
+  ct = printnum(corr.tab$r, gt1 = F)
+  ct[lower.tri(ct)] = ""
+  
+  if (!is.null(diagonal)) {
+    min.ic = printnum(min(diagonal, na.rm = T), gt1 = F)
+    diag(ct) = paste("\\textit{", sub("NA", "—", printnum(diagonal, gt1 = F)), "}", sep = "") # removes leading zero
+  } else {
+    min.ic = NA
+    diag(ct) = rep("—", ncol(df))
+  }
+  
+  # set retest reliabilities to bold italic 
+  if (rtt.bold == T) {
+    for (i in 1:nvars) {
+      ct[i, i + nvars] = paste("\\textbf{\\textit{", ct[i, i + nvars], "}}", sep = "")
+    }
+    retest.note = paste(
+      "bold-faced coefficients give the",
+      paste(Tdiff, collapse = "-"),
+      "week retest reliability; "
+    )
+  } else {
+    retest.note = ""
+  }
+  
+  if (descriptives == T) {
+    # get descriptives 
+    scale.descriptives = data.frame(describe(df))[, c("mean", "sd", "min", "max", "skew", "kurtosis")]
+    
+    # format descriptives
+    dt = round(t(scale.descriptives), 2)
+    dt = rbind(format(dt[1:2, ], nsmall = 2),
+               format(dt[3:4, ], nsmall = 0),
+               format(dt[5:6, ], nsmall = 2))
+    rownames(dt) = c("Mean", "SD", "Min", "Max", "Skew", "Kurtosis")
+    caption = paste(method, "correlations and descriptive statistics of the", what.measures)
+  } else {
+    dt = NA
+    caption = paste(method, "correlations of the", what.measures)
+  }
+  
+  # create caption and note to correlation table 
+  measure.description = paste(unique(sub("1|2", "", colnames(df))), measure.names, sep = " = ", collapse = ", ")
+  if (what.diagonal == "Cronbach") {
+    diagonal.description = "coefficients in the diagonal are Cronbach’s $\\alpha$, "
+  } else if (what.diagonal == "MacDonald") {
+    diagonal.description = "coefficients in the diagonal are MacDonald’s $\\omega$, with the entries for CEI1 and CEI2 containing the total $\\omega$ of the factor model, "
+  } else {
+    diagonal.description = ""
+  }
+  
+  if (p.note == "le") {
+    p.note = paste("all coefficients significant at \\textit{p} $\\leq$ ", sub("< ", "", printp(max(corr.tab$ci$p))), "; ", sep = "")
+  } else if (p.note == "gt") {
+    if (method == "Pearson") {
+      p.note = paste0("$p < .05$ for $|r|$ > ", printnum(abs(corr.tab$r[which.min(abs(.05 - corr.tab$p))]), gt1 = F), "; ")
+    } else {
+      p.note = paste0("$p < .05$ for $|r_{s}|$ > ", printnum(abs(corr.tab$r[which.min(abs(.05 - corr.tab$p))]), gt1 = F), "; ")
+    }
+    
+  }
+  
+  note = paste("\\textit{N} = ", n, n.note, "; ",
+               p.note, diagonal.description, retest.note, 
+               measure.description," at measurement occasion 1, and 2, respectively",
+               sep = "")
+  
+  # return results
+  return(list(ct      = ct,         # correlation table
+              dt      = dt,         # descriptives
+              caption = caption,
+              note    = note,
+              method  = method,
+              min.ic  = min.ic,
+              min.rtt = min.rtt))
+}
+
+# correlations overall
+corr.overall = corr.report(df.overall,
+                           diagonal = alpha.overall,
+                           what.measures = "variables in the analyses on overall school grades",
+                           measure.names = c("Grade Point Average", "Overall Ability Self-Concept", "Overall Interest in School", "Hope for Success", "Fear of Failure", "Need for Cognition"))
+# correlations German
+corr.german  = corr.report(df.german,
+                           diagonal = alpha.german,
+                           what.measures = "variables in the analyses on German grades",
+                           measure.names = c("Grade German", "Ability Self-Concept German", "Interest in German", "Hope for Success", "Fear of Failure", "Need for Cognition"))
+# correlations math
+corr.math    = corr.report(df.math,
+                           diagonal = alpha.math,
+                           what.measures = "variables in the analyses on math grades",
+                           measure.names = c("Grade Math", "Ability Self-Concept Math", "Interest in Math", "Hope for Success", "Fear of Failure", "Need for Cognition"))
+# correlations physics
+corr.physics = corr.report(df.physics,
+                           diagonal = alpha.physics,
+                           what.measures = "variables in the analyses on physics grades",
+                           measure.names = c("Grade Physics", "Ability Self-Concept Physics", "Interest in Physics", "Hope for Success", "Fear of Failure", "Need for Cognition"))
+# correlations chemistry
+corr.chemistry = corr.report(df.chemistry,
+                             diagonal = alpha.chemistry,
+                             what.measures = "variables in the analyses on physics grades",
+                             measure.names = c("Grade Chemistry", "Ability Self-Concept Chemistry", "Interest in Chemistry", "Hope for Success", "Fear of Failure", "Need for Cognition"))
+
+# PLEASE NOTE: These correlation tables will be provided in supplement.
+
+
+# multiple regression to select variables for latent change score modeling ----
 
 # data.frames
-df.overall    = data.frame(grd.1 = gro.1, asc.1 = aso.1, int.1 = ino.1, hfs.1, fof.1, nfc.1, grd.2 = gro.2, asc.2 = aso.2, int.2 = ino.2, hfs.2, fof.2, nfc.2)
-df.german     = data.frame(grd.1 = grg.1, asc.1 = asg.1, int.1 = ing.1, hfs.1, fof.1, nfc.1, grd.2 = grg.2, asc.2 = asg.2, int.2 = ing.2, hfs.2, fof.2, nfc.2)
-df.math       = data.frame(grd.1 = grm.1, asc.1 = asm.1, int.1 = inm.1, hfs.1, fof.1, nfc.1, grd.2 = grm.2, asc.2 = asm.2, int.2 = inm.2, hfs.2, fof.2, nfc.2)
-df.physics    = data.frame(grd.1 = grp.1, asc.1 = asp.1, int.1 = inp.1, hfs.1, fof.1, nfc.1, grd.2 = grp.2, asc.2 = asp.2, int.2 = inp.2, hfs.2, fof.2, nfc.2)
-df.chemistry  = data.frame(grd.1 = grc.1, asc.1 = asc.1, int.1 = inc.1, hfs.1, fof.1, nfc.1, grd.2 = grc.2, asc.2 = asc.2, int.2 = inc.2, hfs.2, fof.2, nfc.2)
+df.overall    = data.frame(grd.1 = GRO1, asc.1 = ASO1, int.1 = INO1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRO2, asc.2 = ASO2, int.2 = INO2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.german     = data.frame(grd.1 = GRG1, asc.1 = ASG1, int.1 = ING1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRG2, asc.2 = ASG2, int.2 = ING2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.math       = data.frame(grd.1 = GRM1, asc.1 = ASM1, int.1 = INM1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRM2, asc.2 = ASM2, int.2 = INM2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.physics    = data.frame(grd.1 = GRP1, asc.1 = ASP1, int.1 = INP1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRP2, asc.2 = ASP2, int.2 = INP2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.chemistry  = data.frame(grd.1 = GRC1, asc.1 = ASC1, int.1 = INC1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRC2, asc.2 = ASC2, int.2 = INC2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
 
-# multivariate nor,ality
+# alphas for correlation tables
+alpha.overall   = c(alpha.gro[1], alpha.aso[1], alpha.ino[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.gro[2], alpha.aso[2], alpha.ino[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.german    = c(alpha.grg[1], alpha.asg[1], alpha.ing[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grg[2], alpha.asg[2], alpha.ing[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.math      = c(alpha.grm[1], alpha.asm[1], alpha.inm[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grm[2], alpha.asm[2], alpha.inm[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.physics   = c(alpha.grp[1], alpha.asp[1], alpha.inp[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grp[2], alpha.asp[2], alpha.inp[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+alpha.chemistry = c(alpha.grc[1], alpha.asc[1], alpha.inc[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
+                    alpha.grc[2], alpha.asc[2], alpha.inc[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
+
+# deviation from normality ----------------------------------------------------
+
+# univariate normality
+
+# wrapper function for shapiro.test
+sw <- function(x) {
+  x = data.frame(x)
+  d = dim(x)
+  n = names(x)
+  r = NULL
+  for (i in 1:dim(x)[2]) {
+    y = shapiro.test(x[,i])
+    v = cbind(y$statistic,y$p.value)
+    colnames(v) = c("W","p")
+    rownames(v) = n[i]
+    r = rbind(r,v)
+  }
+  return(round(r,3))
+}
+
+shapiro.tests = data.frame(overall   = sw(df.overall)[ ,2],
+                           german    = sw(df.german)[ ,2],
+                           math      = sw(df.math)[ ,2], 
+                           physics   = sw(df.physics)[ ,2],
+                           chemistry = sw(df.chemistry)[, 2])
+
+# multivariate normality
 mardia.overall    = mardia(df.overall, plot = F)
 mardia.german     = mardia(df.german, plot = F)
 mardia.math       = mardia(df.math, plot = F)
 mardia.physics    = mardia(df.physics, plot = F)
 mardia.chemistry  = mardia(df.chemistry, plot = F)
 
+mardia.tests = data.frame(overall    = c(mardia.overall$p.skew, mardia.overall$p.kurt),
+                          german     = c(mardia.german$p.skew, mardia.german$p.kurt),
+                          math       = c(mardia.math$p.skew, mardia.math$p.kurt),
+                          physics    = c(mardia.physics$p.skew, mardia.physics$p.kurt),
+                          chemistry  = c(mardia.chemistry$p.skew, mardia.chemistry$p.kurt))
+rownames(mardia.tests) = c("p.skew", "p.kurt")
+
 # regressions
 mr <- function(data) {
   
   # models
-  m.null.mod = 'grd.2 ~ 0 * grd.1 + 0 * asc.1 + 0 * int.1 + 0 * hfs.1 + 0 * fof.1 + 0 * nfc.1 \n grd.2 ~ 1'
   m.full.mod = 'grd.2 ~ a * grd.1 + b * asc.1 + c * int.1 + d * hfs.1 + e * fof.1 + f * nfc.1 \n grd.2 ~ 1'
-  m.only.grd = 'grd.2 ~ a * grd.1 + 0 * asc.1 + 0 * int.1 + 0 * hfs.1 + 0 * fof.1 + 0 * nfc.1 \n grd.2 ~ 1'
   m.with.nfc = 'grd.2 ~ a * grd.1 + b * asc.1 + 0 * int.1 + 0 * hfs.1 + 0 * fof.1 + f * nfc.1 \n grd.2 ~ 1'
   m.wout.nfc = 'grd.2 ~ a * grd.1 + b * asc.1 + 0 * int.1 + 0 * hfs.1 + 0 * fof.1 + 0 * nfc.1 \n grd.2 ~ 1'
-
+  
   # fitted models 
-  f.null.mod = sem(m.null.mod, data = data, fixed.x = F, missing = "fiml", estimator = "ml")
-  f.full.mod = sem(m.full.mod, data = data, fixed.x = F, missing = "fiml", estimator = "ml")
-  f.only.grd = sem(m.only.grd, data = data, fixed.x = F, missing = "fiml", estimator = "ml")
-  f.with.nfc = sem(m.with.nfc, data = data, fixed.x = F, missing = "fiml", estimator = "ml")
-  f.wout.nfc = sem(m.wout.nfc, data = data, fixed.x = F, missing = "fiml", estimator = "ml")
+  f.full.mod = sem(m.full.mod, data = data, fixed.x = F, missing = "fiml", estimator = "mlr")
+  f.with.nfc = sem(m.with.nfc, data = data, fixed.x = F, missing = "fiml", estimator = "mlr")
+  f.wout.nfc = sem(m.wout.nfc, data = data, fixed.x = F, missing = "fiml", estimator = "mlr")
   
   # summaries
-  s.null.mod = summary(f.null.mod, fit.measures = T, standardized = T, rsquare = T)
   s.full.mod = summary(f.full.mod, fit.measures = T, standardized = T, rsquare = T)
-  s.only.grd = summary(f.only.grd, fit.measures = T, standardized = T, rsquare = T)
   s.with.nfc = summary(f.with.nfc, fit.measures = T, standardized = T, rsquare = T)
   s.wout.nfc = summary(f.wout.nfc, fit.measures = T, standardized = T, rsquare = T)
   
   # parameter estimates
-  p.null.mod = parameterEstimates(f.null.mod, standardized = T, rsquare = T)[c(7, 1:6, 36), -c(4, 11, 13)]
   p.full.mod = parameterEstimates(f.full.mod, standardized = T, rsquare = T)[c(7, 1:6, 36), -c(4, 11, 13)]
-  p.only.grd = parameterEstimates(f.only.grd, standardized = T, rsquare = T)[c(7, 1:6, 36), -c(4, 11, 13)]
   p.with.nfc = parameterEstimates(f.with.nfc, standardized = T, rsquare = T)[c(7, 1:6, 36), -c(4, 11, 13)]
   p.wout.nfc = parameterEstimates(f.wout.nfc, standardized = T, rsquare = T)[c(7, 1:6, 36), -c(4, 11, 13)]
   
   # model comparison
-  compare.models = anova(f.null.mod, f.full.mod, f.only.grd, f.with.nfc, f.wout.nfc)
+  compare.models = anova(f.with.nfc, f.wout.nfc)
   
   # output
-  return = list(f = list(f.null.mod = f.null.mod,
-                         f.full.mod = f.full.mod,
-                         f.only.grd = f.only.grd,
+  return = list(f = list(f.full.mod = f.full.mod,
                          f.with.nfc = f.with.nfc,
                          f.wout.nfc = f.wout.nfc),
-                s = list(s.null.mod = s.null.mod,
-                         s.full.mod = s.full.mod,
-                         s.only.grd = s.only.grd,
+                s = list(s.full.mod = s.full.mod,
                          s.with.nfc = s.with.nfc,
                          s.wout.nfc = s.wout.nfc),
-                p = list(p.null.mod = p.null.mod,
-                         p.full.mod = p.full.mod,
-                         p.only.grd = p.only.grd,
+                p = list(p.full.mod = p.full.mod,
                          p.with.nfc = p.with.nfc,
                          p.wout.nfc = p.wout.nfc),
                 a = compare.models)
 }
 
-sink("mr.overall.txt")
-mr.overall = mr(df.overall)
-sink()
-
-sink("mr.german.txt")
-mr.german = mr(df.german)
-sink()
-
-sink("mr.math.txt")
-mr.math = mr(df.math)
-sink()
-
-sink("mr.physics.txt")
-mr.physics = mr(df.physics)
-sink()
-
-sink("mr.chemistry.txt")
+mr.overall   = mr(df.overall)
+mr.german    = mr(df.german)
+mr.math      = mr(df.math)
+mr.physics   = mr(df.physics)
 mr.chemistry = mr(df.chemistry)
-sink()
 
 
-# Latent change score modeling ------------------------------------------------
+# retrieve fit measures from lavaan fit
+fit.results <- function(fit, suffix = ".scaled") {
+  # get fit measures
+  fm = fitMeasures(fit)
+  
+  # extract relevant fit measures
+  N.orig = inspect(fit, 'norig')
+  n.obs  = inspect(fit, 'nobs')
+  Chi.Sq = fm[which(names(fm) == paste0("chisq", suffix))]
+  df     = fm[which(names(fm) == paste0("df", suffix))]
+  P      = fm[which(names(fm) == paste0("pvalue", suffix))]
+  CFI    = fm[which(names(fm) == paste0("cfi", suffix))]
+  RMSEA  = fm[which(names(fm) == paste0("rmsea", suffix))]
+  CI.lo  = fm[which(names(fm) == paste0("rmsea.ci.lower", suffix))]
+  CI.hi  = fm[which(names(fm) == paste0("rmsea.ci.upper", suffix))]
+  SRMR   = fm[which(names(fm) == "srmr")]
+  
+  # create table of fit measures
+  fm     = data.frame(N.orig, n.obs, Chi.Sq, df, P, CFI, RMSEA, CI.lo, CI.hi, SRMR)
+  
+  # create string for reporting
+  rf     = paste0("$\\chi^2(",fm$df,")$ = ", printnum(fm$Chi.Sq), 
+                  ", $p$ ", printp(fm$P),
+                  ", CFI = ", printnum(fm$CFI),
+                  ", RMSEA = ", printnum(fm$RMSEA, gt1 = F),
+                  " with 90% CI [", paste0(printnum(c(fm$CI.lo, fm$CI.hi)), collapse = ", "), "]",
+                  ", SRMR = ", printnum(fm$SRMR, gt1 = F))
+  
+  # get parameter estimates
+  pe     = parameterEstimates(fit, standardized = T)
+  pe     = pe[, c(1:6, 13, 8)]
+  names(pe) = c("Crit", "op", "Pred", "Label", "Est", "SE", "Std", "P")
+  
+  return(list(parameter.estimates = pe, fit.measures = fm, fit.report = rf))
+}
+
+fit.mr.overall.with.nfc = fit.results(mr.overall$f$f.with.nfc)$fit.report
+fit.mr.overall.wout.nfc = fit.results(mr.overall$f$f.wout.nfc)$fit.report
+
+fro.c2.diff     = anova(mr.overall$f$f.with.nfc,mr.overall$f$f.wout.nfc)
+fro.chi.sq.diff = paste0("$\\chi^2$(", fro.c2.diff$`Df diff`[2],") = ", printnum(fro.c2.diff$`Chisq diff`[2]), 
+                         ", $p$ = ", printp(fro.c2.diff$`Pr(>Chisq)`[2]))
+
+# report overall regression results (main text)
+
+mr.col.names = c("$B$", "$SE$", "CI.LB", "CI.UB", "$b$", "$p$")
+
+mr.report.overall = cbind(printnum(mr.overall$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.overall$p$p.full.mod[1:7, 7]))
+colnames(mr.report.overall) = mr.col.names
+rownames(mr.report.overall) = c("Intercept", "GPA", "Ability Self-Concept", "Interest", "Hope for Success", "Fear of Failure", "Need for Cognition")
+
+# report subject-specific regression results (supplement)
+mr.report.german = cbind(printnum(mr.german$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.german$p$p.full.mod[1:7, 7]))
+colnames(mr.report.german) = mr.col.names
+rownames(mr.report.german) = c("Intercept", "Grade German", "Ability Self-Concept German", "Interest in German", "Hope for Success", "Fear of Failure", "Need for Cognition")
+
+mr.report.math = cbind(printnum(mr.math$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.math$p$p.full.mod[1:7, 7]))
+colnames(mr.report.math) = mr.col.names
+rownames(mr.report.math) = c("Intercept", "Grade Math", "Ability Self-Concept Math", "Interest in Math", "Hope for Success", "Fear of Failure", "Need for Cognition")
+
+mr.report.physics = cbind(printnum(mr.physics$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.physics$p$p.full.mod[1:7, 7]))
+colnames(mr.report.physics) = mr.col.names
+rownames(mr.report.physics) = c("Intercept", "Grade Physics", "Ability Self-Concept Physics", "Interest in Physics", "Hope for Success", "Fear of Failure", "Need for Cognition")
+
+mr.report.chemistry = cbind(printnum(mr.chemistry$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.chemistry$p$p.full.mod[1:7, 7]))
+colnames(mr.report.chemistry) = mr.col.names
+rownames(mr.report.chemistry) = c("Intercept", "Grade Chemistry", "Ability Self-Concept Chemistry", "Interest in Chemistry", "Hope for Success", "Fear of Failure", "Need for Cognition")
+
+mr.nobs = paste0(range(c(fit.results(mr.overall$f$f.full.mod)$fit.measures$n.obs,
+                         fit.results(mr.german$f$f.full.mod)$fit.measures$n.obs,
+                         fit.results(mr.math$f$f.full.mod)$fit.measures$n.obs,
+                         fit.results(mr.physics$f$f.full.mod)$fit.measures$n.obs,
+                         fit.results(mr.chemistry$f$f.full.mod)$fit.measures$n.obs)), collapse = "-")
+
+# latent change score modeling ------------------------------------------------
 
 lcsm <- '
 # --------------------- VARIABLE LABELS
@@ -255,32 +635,32 @@ grd.d ~~  rho13 * nfc.d
 asc.d ~~  rho23 * nfc.d
 '
 
-# Overall Grades and Academic Self Concept together with NFC ----
+# overall grades and ability self-concept together with NFC
 fit.overall <- lavaan(lcsm, data = df.overall, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 # summary(fit.overall, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 
-# German Grades and Academic Self Concept together with NFC ----
+# German grades and ability self-concept together with NFC
 fit.german <- lavaan(lcsm, data = df.german, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 # summary(fit.german, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE) 
 
-# Math Grades and Academic Self Concept together with NFC ----
+# math grades and ability self-concept together with NFC
 fit.math <- lavaan(lcsm, data = df.math, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 # summary(fit.math, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE) 
 
-# Physics Grades and Academic Self Concept together with NFC ----
+# physics grades and ability self-concept together with NFC
 fit.physics <- lavaan(lcsm, data = df.physics, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 # summary(fit.physics, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE) 
 
-# Chemistry Grades and Academic Self Concept together with NFC ----
+# chemistry grades and ability self-concept together with NFC
 fit.chemistry <- lavaan(lcsm, data = df.chemistry, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 # summary(fit.chemistry, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE) 
 
 # get parameter estimates from LCSMs
-sf_cdc = list(sf_cdc_overall    = parameterEstimates(fit.overall,   standardized = T)[25:33, -c(10:11)],
-              sf_cdc_german     = parameterEstimates(fit.german,    standardized = T)[25:33, -c(10:11)],
-              sf_cdc_math       = parameterEstimates(fit.math,      standardized = T)[25:33, -c(10:11)],
-              sf_cdc_physics    = parameterEstimates(fit.physics,   standardized = T)[25:33, -c(10:11)],
-              sf_cdc_chemnistry = parameterEstimates(fit.chemistry, standardized = T)[25:33, -c(10:11)])
+sf_cdc = list(sf_cdc_overall    = parameterEstimates(fit.overall,   standardized = T)[25:39, -c(10:11)],
+              sf_cdc_german     = parameterEstimates(fit.german,    standardized = T)[25:39, -c(10:11)],
+              sf_cdc_math       = parameterEstimates(fit.math,      standardized = T)[25:39, -c(10:11)],
+              sf_cdc_physics    = parameterEstimates(fit.physics,   standardized = T)[25:39, -c(10:11)],
+              sf_cdc_chemnistry = parameterEstimates(fit.chemistry, standardized = T)[25:39, -c(10:11)])
 
 
 # plot LCSM -------------------------------------------------------------------
@@ -486,4 +866,13 @@ par(mfrow = c(1, 1), mar = c(5,4,4,2))
 # dev.copy2eps(file="Fig1_auto.eps",width=mm2in(190), height = mm2in(250))
 
 # save all variables for use im R Markdown document
-save.image("~/Documents/R/nfc_rf/NFC_ASC_Grades.RData")
+save.image(here::here("Data","NFC-Grades.RData"))
+
+# knit document ---------------------------------------------------------------
+# now open "NFC-Grades.Rmd" in the "Manuscript" folder and hit the Knit button
+# on top of your RStudio window
+
+# delete unnecessary output pf papaja either by hand or via
+dir_manuscript  = dir(here::here("Manuscript"))
+files_to_delete = dir_manuscript[grep("fff|log|tex|ttt", dir_manuscript)]
+eval(parse(text = paste0("unlink('Manuscript/", files_to_delete, "')")))
