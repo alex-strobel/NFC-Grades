@@ -44,8 +44,7 @@ figurelist        : no
 tablelist         : no
 footnotelist      : no
 mask              : no
-draft             : no
-appendix          : "NFC-Grades-Supplement_2022-02-03.Rmd"
+draft             : no    
 
 documentclass     : "apa6"
 classoption       : "man"
@@ -173,7 +172,9 @@ rl <- function(parameter_estimates, label = "") {
 
 ```
 
-...
+Over the past decades, a large body of research has examined variables predicting performance in school. Comprehensive meta-analytic findings demonstrated intelligence to be the strongest predictor for academic achievement [e.g., @Deary2007; @Kriegbaum2018], but motivational variables have consistently been found to have predictive value for school performance, too [e.g., @Kriegbaum2018; @Steinmayr2019]. In this context, motivational concepts like ability self-concept, hope for success and fear of failure, interest and values are well known and equally established indicators [e.g., @Wigfield2000; @Wigfield2010] that are subsumed under the umbrella term of achievement motivation [@Steinmayr2019].
+
+Over the last years, an additional predictor of academic performance came into the focus of researchers in this field of research: Need for Cognition (NFC), the stable intrinsic motivation of an individual to engage in and enjoy challenging intellectual activity [@Cacioppo1996]. According to the Investment Theory [@Ackerman1997], traits such as NFC determine how individuals invest their cognitive resources and how they deal with cognitively challenging material. Studies could show that NFC is related to academic performance in different stages of academic life [e.g., @Ginet2000; @Preckel2014; @Luong2017; @Grass2017; for a meta-analytical review see von @vonStumm2013] as well as to behaviour associated with success in learning. As examples, NFC was found to be related to ability self-concept [e.g., @Dickhaeuser2010; @Luong2017], to interest in school [e.g., @Preckel2014] or to deeper processing while learning [@Evans2003; @Luong2017]. 
 
 # Methods
 <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
@@ -294,9 +295,4 @@ r_refs(file = "r-references.bib")
 
 
 \newpage
-
-# (APPENDIX) Appendix {-}
-
-```{r child = "NFC-Grades-Supplement_2022-02-03.Rmd"}
-```
 
