@@ -248,6 +248,56 @@ alpha.physics   = c(alpha.grp[1], alpha.asp[1], alpha.inp[1], alpha.hfs[1], alph
 alpha.chemistry = c(alpha.grc[1], alpha.asc[1], alpha.inc[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
                     alpha.grc[2], alpha.asc[2], alpha.inc[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
 
+
+# data.frames for correlation and regression analysis ----
+
+df.overall    = data.frame(grd.1 = GRO1, asc.1 = ASO1, int.1 = INO1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRO2, asc.2 = ASO2, int.2 = INO2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.german     = data.frame(grd.1 = GRG1, asc.1 = ASG1, int.1 = ING1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRG2, asc.2 = ASG2, int.2 = ING2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.math       = data.frame(grd.1 = GRM1, asc.1 = ASM1, int.1 = INM1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRM2, asc.2 = ASM2, int.2 = INM2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.physics    = data.frame(grd.1 = GRP1, asc.1 = ASP1, int.1 = INP1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRP2, asc.2 = ASP2, int.2 = INP2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+df.chemistry  = data.frame(grd.1 = GRC1, asc.1 = ASC1, int.1 = INC1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRC2, asc.2 = ASC2, int.2 = INC2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
+
+
+# deviation from normality ----------------------------------------------------
+
+# univariate normality
+
+# wrapper function for shapiro.test
+sw <- function(x) {
+  x = data.frame(x)
+  d = dim(x)
+  n = names(x)
+  r = NULL
+  for (i in 1:dim(x)[2]) {
+    y = shapiro.test(x[,i])
+    v = cbind(y$statistic,y$p.value)
+    colnames(v) = c("W","p")
+    rownames(v) = n[i]
+    r = rbind(r,v)
+  }
+  return(round(r,3))
+}
+
+shapiro.tests = data.frame(overall   = sw(df.overall)[ ,2],
+                           german    = sw(df.german)[ ,2],
+                           math      = sw(df.math)[ ,2], 
+                           physics   = sw(df.physics)[ ,2],
+                           chemistry = sw(df.chemistry)[, 2])
+
+# multivariate normality
+mardia.overall    = mardia(df.overall, plot = F)
+mardia.german     = mardia(df.german, plot = F)
+mardia.math       = mardia(df.math, plot = F)
+mardia.physics    = mardia(df.physics, plot = F)
+mardia.chemistry  = mardia(df.chemistry, plot = F)
+
+mardia.tests = data.frame(overall    = c(mardia.overall$p.skew, mardia.overall$p.kurt),
+                          german     = c(mardia.german$p.skew, mardia.german$p.kurt),
+                          math       = c(mardia.math$p.skew, mardia.math$p.kurt),
+                          physics    = c(mardia.physics$p.skew, mardia.physics$p.kurt),
+                          chemistry  = c(mardia.chemistry$p.skew, mardia.chemistry$p.kurt))
+rownames(mardia.tests) = c("p.skew", "p.kurt")
+
 # correlation analysis --------------------------------------------------------
 
 # function for setting colnames uppercase
@@ -358,6 +408,9 @@ corr.report <- function(df, method = "Spearman", diagonal = NULL, Tdiff = c(53, 
               min.rtt = min.rtt))
 }
 
+# descriptives and scale intercorrelations separately for overall grades 
+# (reported in main ms.) and subject grades (reported in the supplement)  
+
 # correlations overall
 corr.overall = corr.report(df.overall,
                            diagonal = alpha.overall,
@@ -384,71 +437,9 @@ corr.chemistry = corr.report(df.chemistry,
                              what.measures = "variables in the analyses on physics grades",
                              measure.names = c("Grade Chemistry", "Ability Self-Concept Chemistry", "Interest in Chemistry", "Hope for Success", "Fear of Failure", "Need for Cognition"))
 
-# PLEASE NOTE: These correlation tables will be provided in supplement.
 
+# multiple regression to determine variables for latent change score models ----
 
-# multiple regression to select variables for latent change score modeling ----
-
-# data.frames
-df.overall    = data.frame(grd.1 = GRO1, asc.1 = ASO1, int.1 = INO1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRO2, asc.2 = ASO2, int.2 = INO2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
-df.german     = data.frame(grd.1 = GRG1, asc.1 = ASG1, int.1 = ING1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRG2, asc.2 = ASG2, int.2 = ING2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
-df.math       = data.frame(grd.1 = GRM1, asc.1 = ASM1, int.1 = INM1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRM2, asc.2 = ASM2, int.2 = INM2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
-df.physics    = data.frame(grd.1 = GRP1, asc.1 = ASP1, int.1 = INP1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRP2, asc.2 = ASP2, int.2 = INP2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
-df.chemistry  = data.frame(grd.1 = GRC1, asc.1 = ASC1, int.1 = INC1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRC2, asc.2 = ASC2, int.2 = INC2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
-
-# alphas for correlation tables
-alpha.overall   = c(alpha.gro[1], alpha.aso[1], alpha.ino[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
-                    alpha.gro[2], alpha.aso[2], alpha.ino[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
-alpha.german    = c(alpha.grg[1], alpha.asg[1], alpha.ing[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
-                    alpha.grg[2], alpha.asg[2], alpha.ing[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
-alpha.math      = c(alpha.grm[1], alpha.asm[1], alpha.inm[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
-                    alpha.grm[2], alpha.asm[2], alpha.inm[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
-alpha.physics   = c(alpha.grp[1], alpha.asp[1], alpha.inp[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
-                    alpha.grp[2], alpha.asp[2], alpha.inp[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
-alpha.chemistry = c(alpha.grc[1], alpha.asc[1], alpha.inc[1], alpha.hfs[1], alpha.fof[1], alpha.nfc[1],
-                    alpha.grc[2], alpha.asc[2], alpha.inc[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
-
-# deviation from normality ----------------------------------------------------
-
-# univariate normality
-
-# wrapper function for shapiro.test
-sw <- function(x) {
-  x = data.frame(x)
-  d = dim(x)
-  n = names(x)
-  r = NULL
-  for (i in 1:dim(x)[2]) {
-    y = shapiro.test(x[,i])
-    v = cbind(y$statistic,y$p.value)
-    colnames(v) = c("W","p")
-    rownames(v) = n[i]
-    r = rbind(r,v)
-  }
-  return(round(r,3))
-}
-
-shapiro.tests = data.frame(overall   = sw(df.overall)[ ,2],
-                           german    = sw(df.german)[ ,2],
-                           math      = sw(df.math)[ ,2], 
-                           physics   = sw(df.physics)[ ,2],
-                           chemistry = sw(df.chemistry)[, 2])
-
-# multivariate normality
-mardia.overall    = mardia(df.overall, plot = F)
-mardia.german     = mardia(df.german, plot = F)
-mardia.math       = mardia(df.math, plot = F)
-mardia.physics    = mardia(df.physics, plot = F)
-mardia.chemistry  = mardia(df.chemistry, plot = F)
-
-mardia.tests = data.frame(overall    = c(mardia.overall$p.skew, mardia.overall$p.kurt),
-                          german     = c(mardia.german$p.skew, mardia.german$p.kurt),
-                          math       = c(mardia.math$p.skew, mardia.math$p.kurt),
-                          physics    = c(mardia.physics$p.skew, mardia.physics$p.kurt),
-                          chemistry  = c(mardia.chemistry$p.skew, mardia.chemistry$p.kurt))
-rownames(mardia.tests) = c("p.skew", "p.kurt")
-
-# regressions
 mr <- function(data) {
   
   # models

@@ -45,6 +45,7 @@ tablelist         : no
 footnotelist      : no
 mask              : no
 draft             : no
+appendix          : "NFC-Grades-Supplement_2022-02-03.Rmd"
 
 documentclass     : "apa6"
 classoption       : "man"
@@ -172,8 +173,6 @@ rl <- function(parameter_estimates, label = "") {
 
 ```
 
-The role of mental effort investment in goal-directed behavior has been at debate for long [@Kahneman1973; @Mulder1986], but in the last decade, there has been a renewed interest in that issue. Several contemporary theories [e.g., @Kurzban2013; @Shenhav2017] highlight its importance in value-based decision-making, and crucially, individual differences in dispositional mental effort investment have been identified that systematically relate to actual effort investment in behavioral paradigms designed to challenge an individual's willingness to engage in mental effort investment. 
-
 ...
 
 # Methods
@@ -239,29 +238,24 @@ apa_table(list(corr.overall$ct,corr.overall$dt),
           font_size = "footnotesize")
 ```
 
-Table 1 gives the descriptive statistics and intercorrelations of the variables of interest in this analysis step, i.e., the T1 and T2 measurements of GPA, domain-general ability self-concept, and general interest in school as well as the variables Hope for Success, Fear of Failure, and NFC. As can be seen in the diagonal and the upper right of the correlation table, all variables exhibited good internal consistency, Cronbach's $\alpha\ge$ `r corr.overall$min.ic`, and retest reliability, $r_{tt}\ge$ `r corr.overall$min.rtt`. Among the predictors at T1, GPA at T1 showed the strongest relation to GPA at T2, `r rr(corr.test(GRO2,GRO1)$r)`, followed by the domain-general ability self-concept, `r rr(corr.test(GRO2,ASO1)$r)`, and NFC at T1, `r rr(corr.test(GRO2,NFC1)$r)`, all $p<$ .001. The other variables at T1 showed significant correlations with GPA at T2 as well, `r rr(abs(corr.test(df.overall)$r[7, 1:6]), bound = "min", absval = T)`, `r rp(corr.test(df.overall)$p[7, 1:6])`.
+Table \@ref(tab:corr) gives the descriptive statistics and intercorrelations of the variables of interest in this analysis step, i.e., the T1 and T2 measurements of GPA, domain-general ability self-concept, and general interest in school as well as the variables Hope for Success, Fear of Failure, and NFC. As can be seen in the diagonal and the upper right of the correlation table, all variables exhibited good internal consistency, Cronbach's $\alpha\ge$ `r corr.overall$min.ic`, and retest reliability, $r_{tt}\ge$ `r corr.overall$min.rtt`. Among the predictors at T1, GPA at T1 showed the strongest relation to GPA at T2, `r rr(corr.test(GRO2,GRO1)$r)`, followed by the domain-general ability self-concept, `r rr(corr.test(GRO2,ASO1)$r)`, and NFC at T1, `r rr(corr.test(GRO2,NFC1)$r)`, all $p<$ .001. The other variables at T1 showed significant correlations with GPA at T2 as well, `r rr(abs(corr.test(df.overall)$r[7, 1:6]), bound = "min", absval = T)`, `r rp(corr.test(df.overall)$p[7, 1:6])`.
 
-A multiple regression analysis involving all measures at T1 (see Table 2) showed that apart from GPA at T1, `r rb(mr.overall$p$p.full.mod, "grd.1")`, the only significant predictors were the domain-general ability self-concept, `r rb(mr.overall$p$p.full.mod, "asc.1")`, and NFC, `r rb(mr.overall$p$p.full.mod, "nfc.1")`. Model fit was better for a model that included GPA, the ability self-concept, and NFC at T1 (while all other predictors were set to zero), `r fit.mr.overall.with.nfc`, than a model that included GPA and the ability self-concept only, `r fit.mr.overall.wout.nfc`, and a $\chi^2$-difference test supported the superiority of the former compared to the latter model, `r fro.chi.sq.diff`. 
-
-```{r report_mr1, include = T}
+```{r mr, include = T}
 
 apa_table(mr.report.overall, 
           caption = "Results of the multiple regression of school grades measured at T2 on predictors measured at T1",
-          note = "$N$ = 276",
+          col.names = c("", "$B$", "$SE$", "$CI.LB$", "$CI.UB$", "$\\beta$", "$p$"),
+          note = "$N$ = 276; coefficients are unstandardized slopes $B$ with their standard errors $SE$ and 95\\% confidence intervals ($CI.LB$ = lower bound, $CI.UB$ = upper bound), $\\beta$ is the standardized slope and $p$ the respective $p$-vcalues",
           align = c("l", rep("r", ncol(mr.report.overall))),
           escape = F)
 
-apa_table(list(German = mr.report.german, Math = mr.report.math, Physics = mr.report.physics, Chemistry = mr.report.chemistry),
-          caption = "Results of the multiple regression of subject grades at T2 on predictors measured at T1",
-          note = "$N$ = 271-275",
-          align = c("l", rep("c",ncol(mr.report.german))),
-          escape = F,
-          font_size = "scriptsize")
 ```
+
+A multiple regression analysis involving all measures at T1 (see Table \@ref(tab:mr)) showed that apart from GPA at T1, `r rb(mr.overall$p$p.full.mod, "grd.1")`, the only significant predictors were the domain-general ability self-concept, `r rb(mr.overall$p$p.full.mod, "asc.1")`, and NFC, `r rb(mr.overall$p$p.full.mod, "nfc.1")`. Model fit was better for a model that included GPA, the ability self-concept, and NFC at T1 (while all other predictors were set to zero), `r fit.mr.overall.with.nfc`, than a model that included GPA and the ability self-concept only, `r fit.mr.overall.wout.nfc`, and a $\chi^2$-difference test supported the superiority of the former compared to the latter model, `r fro.chi.sq.diff`. 
 
 We therefore further examined a trivariate latent change score model involving school grades, the ability self-concept, and NFC. Figure 1B gives the results of the latent change score modeling with regard to the prediction of change and correlated change in overall school grades, i.e., GPA. While the best predictor of change on GPA was GPA at T1 (i.e., self-feedback), `r rl(fit.overall, "beta1")`, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, `r rl(fit.overall, "gamma12")`, and `r rl(fit.overall, "gamma13")`, respectively. Correlated change was observed for GPA and the ability self-concept, `r rl(fit.overall, "rho12")`, and the ability self-concept and NFC, `r rl(fit.overall, "rho23")`, while the correlated changes in GPA and NFC did not reach significance, `r rl(fit.overall, "rho13")`.
 
-![Latent change score models. (A) Example of a bivariate latent change score model (for details see text); legend to lines: dotted = loadings fixed to zero, red = self-feedback $\beta$, blue = cross-domain coupling $\gamma$, grey = correlation $\phi$ of predictors at T1, green = correlated change $\rho$; (B) Grade Point Average (GPA) and (C) to (F) subject-specific changes in grades at T2 (indicated by prefix $\Delta$) as predicted by their respective T1 levels as well as by Need for Cognition (NFC) and (overall as well as subject specific) Ability Self-Concept (ASC) at T1; coefficients are standardized coefficients. ]("/Users/alex/Documents/R/nfc_rf/Fig1.jpg")
+![Latent change score models. (A) Example of a bivariate latent change score model (for details see text); legend to lines: dotted = loadings fixed to zero, red = self-feedback $\beta$, blue = cross-domain coupling $\gamma$, grey = correlation $\phi$ of predictors at T1, green = correlated change $\rho$; (B) Grade Point Average (GPA) and (C) to (F) subject-specific changes in grades at T2 (indicated by prefix $\Delta$) as predicted by their respective T1 levels as well as by Need for Cognition (NFC) and (overall as well as subject specific) Ability Self-Concept (ASC) at T1; coefficients are standardized coefficients.]("Fig1.jpg")
 
 ## Domain-specific grades
 
@@ -289,7 +283,7 @@ Taken together, the present study provides evidence that ...
 
 # References
 ```{r create_r-references, echo = F, warning = F}
-r_refs(file = "B6.2_References.bib")
+r_refs(file = "r-references.bib")
 ```
 
 \begingroup
@@ -297,3 +291,12 @@ r_refs(file = "B6.2_References.bib")
 \setlength{\leftskip}{0.5in}
 <div id = "refs"></div>
 \endgroup
+
+
+\newpage
+
+# (APPENDIX) Appendix {-}
+
+```{r child = "NFC-Grades-Supplement_2022-02-03.Rmd"}
+```
+

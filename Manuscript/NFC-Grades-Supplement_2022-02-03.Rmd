@@ -1,0 +1,133 @@
+---
+title             : "Need for Cognition and Ability Self-Concepts as Predictors of Changes in School Grades\\newline Supplementary Tables"
+shorttitle        : "Supplementary Tables"
+
+author: 
+  - name          : "Anja Strobel"
+    address       : "Department of Psychology, Chemnitz University of Technology, 09120 Chemnitz, Germany"
+    email         : "anja.strobel@psychologie.tu-chemnitz.de"
+    affiliation   : "1*"
+    corresponding : yes
+  - name          : "Alexander Strobel"
+    affiliation   : "2*"
+  - name          : "Franzis Preckel"
+    affiliation   : "3"
+  - name          : "Ricarda Steinmayer"
+    affiliation   : "4"
+
+affiliation:
+  - id            : "1"
+    institution   : "Department of Psychology, Chemnitz University of Technology, Chemnitz, Germany"
+  - id            : "2"
+    institution   : "Faculty of Psychology, Technische Universität Dresden, Dresden, Germany"
+  - id            : "3"
+    institution   : "Department of Psychology, University of Trier, Trier, Germany"
+  - id            : "4"
+    institution   : "Department of Psychology, TU Dortmund University, Dortmund, Germany"
+
+
+authornote: |
+  [adjust according to APA style]
+  * These authors contributed equally to this work.
+  [add acknowledgements and funding if applicable]
+
+wordcount         : ""
+bibliography      : ["NFC-Grades_References.bib"]
+
+linenumbers       : no
+floatsintext      : no
+figurelist        : no
+tablelist         : yes
+footnotelist      : no
+mask              : no
+draft             : no
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_pdf
+
+---
+
+```{r global, include = T, echo = F, message = F, warning = F}
+
+# required packages -----------------------------------------------------------
+
+library(knitr)      # for various functions (e.g. kable)
+library(papaja)     # for easier reporting
+
+# knitr options ---------------------------------------------------------------
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+
+```
+
+
+```{r variables, cache = F, include = FALSE, message = F, warning = F}
+
+load(here::here("Data", "NFC-Grades.RData"))
+
+```
+
+Tables 1-4 provide the descriptives and intercorrelations of the variables involved in the correlation analyses for the subjects German, math, physics, and chemistry. Table 5 gives the results of the multiple regression of grades at the second measurement occasion (T2) on predictors measures at the first measurement occasion (T1). For details, see main text.
+
+```{r german, echo = F, message = F, warning = F, results = "asis"}
+
+# table with descriptives and correlations for german
+apa_table(list(corr.german$ct, corr.german$dt),
+          caption = corr.german$caption,
+          midrules = 12,
+          align = c("l", rep("c",ncol(df.german))),
+          note = corr.german$note,
+          escape = F,
+          font_size = "footnotesize")
+```
+
+```{r math, echo = F, message = F, warning = F, results = "asis"}
+
+# table with descriptives and correlations for math
+apa_table(list(corr.math$ct, corr.math$dt),
+          caption = corr.math$caption,
+          midrules = 12,
+          align = c("l", rep("c",ncol(df.math))),
+          note = corr.math$note,
+          escape = F,
+          font_size = "footnotesize")
+```
+
+
+```{r physics, echo = F, message = F, warning = F, results = "asis"}
+
+# table with descriptives and correlations for physics
+apa_table(list(corr.physics$ct, corr.physics$dt),
+          caption = corr.physics$caption,
+          midrules = 12,
+          align = c("l", rep("c",ncol(df.physics))),
+          note = corr.physics$note,
+          escape = F,
+          font_size = "footnotesize")
+```
+
+
+```{r chemistry, echo = F, message = F, warning = F, results = "asis"}
+
+# table with descriptives and correlations for chemistry
+apa_table(list(corr.chemistry$ct, corr.chemistry$dt),
+          caption = corr.chemistry$caption,
+          midrules = 12,
+          align = c("l", rep("c",ncol(df.chemistry))),
+          note = corr.chemistry$note,
+          escape = F,
+          font_size = "footnotesize")
+```
+
+
+```{r regression, include = T, results = "asis"}
+
+apa_table(list(German = mr.report.german, Math = mr.report.math, Physics = mr.report.physics, Chemistry = mr.report.chemistry),
+          caption = "Multiple regressions of subject grades at T2 on predictors at T1",
+          col.names = c("", "$B$", "$SE$", "$CI.LB$", "$CI.UB$", "$\\beta$", "$p$"),
+          note = "$N$ = 271-275; coefficients are unstandardized slopes $B$ with their standard errors $SE$ and 95\\% confidence intervals ($CI.LB$ = lower bound, $CI.UB$ = upper bound), $\\beta$ is the standardized slope and $p$ the respective $p$-vcalues",
+          align = c("l", rep("c",ncol(mr.report.german))),
+          escape = F,
+          font_size = "scriptsize")
+```
+
