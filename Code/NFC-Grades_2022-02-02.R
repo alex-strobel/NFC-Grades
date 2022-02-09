@@ -8,6 +8,7 @@ renv::restore()
 # required packages -----------------------------------------------------------
 library(haven)      # for reading SPSS data file
 library(lavaan)     # for latent change score modeling
+library(naniar)     # test data with missings for MCAR
 library(papaja)     # for easier reporting
 library(psych)      # for correlation analysis, Mardia test etc.
 library(shape)      # for plotting
@@ -257,7 +258,15 @@ df.math       = data.frame(grd.1 = GRM1, asc.1 = ASM1, int.1 = INM1, hfs.1 = HFS
 df.physics    = data.frame(grd.1 = GRP1, asc.1 = ASP1, int.1 = INP1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRP2, asc.2 = ASP2, int.2 = INP2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
 df.chemistry  = data.frame(grd.1 = GRC1, asc.1 = ASC1, int.1 = INC1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRC2, asc.2 = ASC2, int.2 = INC2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
 
+# test whether missings are MCAR ----
 
+mcar = as.data.frame(rbind(mcar_test(df.overall),
+                           mcar_test(df.german),
+                           mcar_test(df.math),
+                           mcar_test(df.chemistry),
+                           mcar_test(df.physics)))
+
+rownames(mcar) = c("GPA", "German", "Math", "Physics", "Chemistry")
 # deviation from normality ----------------------------------------------------
 
 # univariate normality
@@ -536,22 +545,39 @@ mr.report.overall = cbind(printnum(mr.overall$p$p.full.mod[1:7, c(4:5, 8:9, 10)]
 colnames(mr.report.overall) = mr.col.names
 rownames(mr.report.overall) = c("Intercept", "GPA", "Ability Self-Concept", "Interest", "Hope for Success", "Fear of Failure", "Need for Cognition")
 
-# report subject-specific regression results (supplement)
+# report subject-specific regression results
 mr.report.german = cbind(printnum(mr.german$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.german$p$p.full.mod[1:7, 7]))
 colnames(mr.report.german) = mr.col.names
 rownames(mr.report.german) = c("Intercept", "Grade German", "Ability Self-Concept German", "Interest in German", "Hope for Success", "Fear of Failure", "Need for Cognition")
+
+frg.c2.diff     = anova(mr.german$f$f.with.nfc,mr.german$f$f.wout.nfc)
+frg.chi.sq.diff = paste0("$\\chi^2$(", frg.c2.diff$`Df diff`[2],") = ", printnum(frg.c2.diff$`Chisq diff`[2]), 
+                         ", $p$ = ", printp(frg.c2.diff$`Pr(>Chisq)`[2]))
 
 mr.report.math = cbind(printnum(mr.math$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.math$p$p.full.mod[1:7, 7]))
 colnames(mr.report.math) = mr.col.names
 rownames(mr.report.math) = c("Intercept", "Grade Math", "Ability Self-Concept Math", "Interest in Math", "Hope for Success", "Fear of Failure", "Need for Cognition")
 
+frm.c2.diff     = anova(mr.math$f$f.with.nfc,mr.math$f$f.wout.nfc)
+frm.chi.sq.diff = paste0("$\\chi^2$(", frm.c2.diff$`Df diff`[2],") = ", printnum(frm.c2.diff$`Chisq diff`[2]), 
+                         ", $p$ = ", printp(frm.c2.diff$`Pr(>Chisq)`[2]))
+
 mr.report.physics = cbind(printnum(mr.physics$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.physics$p$p.full.mod[1:7, 7]))
 colnames(mr.report.physics) = mr.col.names
 rownames(mr.report.physics) = c("Intercept", "Grade Physics", "Ability Self-Concept Physics", "Interest in Physics", "Hope for Success", "Fear of Failure", "Need for Cognition")
 
+frp.c2.diff     = anova(mr.physics$f$f.with.nfc,mr.physics$f$f.wout.nfc)
+frp.chi.sq.diff = paste0("$\\chi^2$(", frp.c2.diff$`Df diff`[2],") = ", printnum(frp.c2.diff$`Chisq diff`[2]), 
+                         ", $p$ = ", printp(frp.c2.diff$`Pr(>Chisq)`[2]))
+
 mr.report.chemistry = cbind(printnum(mr.chemistry$p$p.full.mod[1:7, c(4:5, 8:9, 10)], digits = 3, gt1 = c(T, T, T, T, F)), printp(mr.chemistry$p$p.full.mod[1:7, 7]))
 colnames(mr.report.chemistry) = mr.col.names
 rownames(mr.report.chemistry) = c("Intercept", "Grade Chemistry", "Ability Self-Concept Chemistry", "Interest in Chemistry", "Hope for Success", "Fear of Failure", "Need for Cognition")
+
+frc.c2.diff     = anova(mr.chemistry$f$f.with.nfc,mr.chemistry$f$f.wout.nfc)
+frc.chi.sq.diff = paste0("$\\chi^2$(", frc.c2.diff$`Df diff`[2],") = ", printnum(frc.c2.diff$`Chisq diff`[2]), 
+                         ", $p$ = ", printp(frc.c2.diff$`Pr(>Chisq)`[2]))
+
 
 mr.nobs = paste0(range(c(fit.results(mr.overall$f$f.full.mod)$fit.measures$n.obs,
                          fit.results(mr.german$f$f.full.mod)$fit.measures$n.obs,
@@ -856,14 +882,14 @@ par(mfrow = c(1, 1), mar = c(5,4,4,2))
 # save plot automatically as EPS (it won't look nice, though)
 # dev.copy2eps(file="Fig1_auto.eps",width=mm2in(190), height = mm2in(250))
 
-# save all variables for use im R Markdown document
+# save all variables for use in R Markdown document ---------------------------
 save.image(here::here("Data","NFC-Grades.RData"))
 
 # knit document ---------------------------------------------------------------
 # now open "NFC-Grades.Rmd" in the "Manuscript" folder and hit the Knit button
 # on top of your RStudio window
 
-# delete unnecessary output pf papaja either by hand or via
+# delete unnecessary output of papaja either by hand or via
 dir_manuscript  = dir(here::here("Manuscript"))
 files_to_delete = dir_manuscript[grep("fff|log|tex|ttt", dir_manuscript)]
 eval(parse(text = paste0("unlink('Manuscript/", files_to_delete, "')")))

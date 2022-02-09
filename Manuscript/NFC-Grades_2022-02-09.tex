@@ -266,12 +266,22 @@ With the present study, we aim at adding to the existing body of research by exa
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
 
-We report how we determined our sample size, all data exclusions, all manipulations, and all measures in the study (cf. Simmons, Nelson, \& Simonsohn, 2012). All data and materials for reproducing our analyses are permanently and openly accessible at \ldots{} The study was not preregistered.
+\hypertarget{openness-and-transparency}{%
+\subsection{Openness and transparency}\label{openness-and-transparency}}
+
+We report how we determined our sample size, all data exclusions, all manipulations, and all measures in the study (cf. Simmons, Nelson, \& Simonsohn, 2012) and follow JARS (Publications and Journal Article Reporting Standards (n.d.)).
+Data were analyzed using R, version 4.1.1 (for details see below, \emph{Statistical analyses}).
+All data and code for reproducing our analyses are permanently and openly accessible at \url{https://github.com/alex-strobel/NFC-Grades}.
+This study was not preregistered.
 
 \hypertarget{participants}{%
 \subsection{Participants}\label{participants}}
 
-Sample size was determined by pragmatic considerations, i.e., to collect as many participants given existing time constraints and the longitudinal nature of the project. We eventually managed to recruit a sample of \(N\) = 277 participants (60\% women) at the first measurement occasion (T1) of which \(N\) = 251 participants (61\% women) also took part at the second measurement occasion (T2) that took place 53-59 weeks later. Age range was 14-19 years (median = 17 years) at T1 and 15-20 years (median = 18 years) at T2. With the sample size accomplished at T2, we were able to detect correlations of \emph{r} \(\ge\) .18 at \(\alpha\) = .05 (two-sided) and 1-\(\beta\) = .80. Yet, we tried to impute missing values to raise power (see below, \emph{Statistical analyses}).
+Sample size was determined by pragmatic considerations, i.e., to collect as many participants given existing time constraints and the longitudinal nature of the project.
+We eventually managed to recruit a sample of \(N\) = 277 participants (60\% women) at the first measurement occasion (T1) of which \(N\) = 251 participants (61\% women) also took part at the second measurement occasion (T2) that took place 53-59 weeks later.
+Age range was 14-19 years (median = 17 years) at T1 and 15-20 years (median = 18 years) at T2.
+With the sample size accomplished at T2, we were able to detect correlations of \emph{r} \(\ge\) .18 at \(\alpha\) = .05 (two-sided) and 1-\(\beta\) = .80.
+Yet, we tried to impute missing values to raise power (see below, \emph{Statistical analyses}).
 
 \hypertarget{material}{%
 \subsection{Material}\label{material}}
@@ -286,7 +296,7 @@ We used the following self-report measures to assess the measures of interest fo
 
 The \emph{Ability Self-Concept} in school in general and in the four subjects German, math, physics, and chemistry were assessed with four items per domain using the Scales for the Assessment of Academic Self-Concept (Schöne, Dickhäuser, Spinath, \& Stiensmeier-Pelster, 2002) (example item: ``I can do well in \ldots{} (school, math, German, physics, chemistry).''). Items were answered on a 5-point scale ranging from 1 () to 5 (). The scales' internal consistency, Cronbach's \(\alpha\ge.80\), and retest reliability, \(r_{tt}\ge.59\) across six months, can be considered as high.
 
-\emph{Interest} in school in general and in the above four subjects were measured using Interest subscales of the Scales for the Assessment of Subjective Values in School (Steinmayr \& Spinath, 2010). Answers to three items per domain (example item: ``How much do you like \ldots{} (school, math, German, physics, chemistry).'') were recorded on a 5-point scale ranging from 1 () to 5 (). The scales have high internal consistency, Cronbach's \(\alpha\ge.89\), and retest reliability, \(r_{tt} = .72\) across six months (Steinmayr \& Spinath, 2010).
+\emph{Interest} in school in general and in the above four subjects were measured using Interest subscales of the Scales for the Assessment of Subjective Values in School (Steinmayr \& Spinath, 2010). Answers to three items per domain (example item: ``How much do you like \ldots{} (school, math, German, physics, chemistry).'') were recorded on a 5-point scale ranging from 1 (\ldots{}) to 5 (\ldots{}). The scales have high internal consistency, Cronbach's \(\alpha\ge.89\), and retest reliability, \(r_{tt} = .72\) across six months (Steinmayr \& Spinath, 2010).
 
 \hypertarget{procedure}{%
 \subsection{Procedure}\label{procedure}}
@@ -296,15 +306,15 @@ The \emph{Ability Self-Concept} in school in general and in the four subjects Ge
 \hypertarget{statistical-analysis}{%
 \subsection{Statistical analysis}\label{statistical-analysis}}
 
-We used \emph{RStudio} {[}Version 2021.9.0.351; RStudio Team (2016){]} with R (Version 4.1.1; R Core Team, 2018) and the R-packages \emph{lavaan} (Version 0.6.10; Rosseel, 2012), \emph{psych} (Version 2.1.9; Revelle, 2018), and \emph{pwr} (Version 1.3.0; Champely, 2018). This manuscript was created using RMarkdown with the packages \emph{papaja} {[}Version 0.1.0.9997; Aust and Barth (2018){]}, \emph{knitr} {[}Version 1.37; Xie (2015){]}, and \emph{shape} {[}Version 1.4.6; Soetaert (2021){]}.
+We used \emph{RStudio} (Version 2021.9.0.351, RStudio Team, 2016) with R (Version 4.1.1; R Core Team, 2018) and the R-packages \emph{lavaan} (Version 0.6.10; Rosseel, 2012), \emph{naniar} (Version 0.6.1; Tierney, Cook, McBain, \& Fay, 2021), \emph{psych} (Version 2.1.9; Revelle, 2018), and \emph{pwr} (Version 1.3.0; Champely, 2018). This manuscript was created using RMarkdown with the packages \emph{papaja} (Version 0.1.0.9997, Aust \& Barth, 2018), \emph{knitr} (Version 1.37, Xie, 2015), and \emph{shape} (Version 1.4.6, Soetaert, 2018). Additionally, the packages \emph{renv} (Version 0.14.0, Ushey, 2021) and \emph{here} (Version 1.0.1, Müller, 2020) were employed to enhance the reproducibility of the present project (see \url{https://github.com/alex-strobel/NFC-Grades}).
 
 First the variables were separated into four sets, each containing the T1 and T2 measurements of the variables Hope for Success (HfS), Fear of Failure (FoF), and Need for Cognition (NFC) as well as either GPA, overall ability self-concept regarding school, and general interest in school, or domain-specific grades, ability self-concept and interest in German, math, physics, and chemistry. All measures were initially analyzed with regard to descriptive statistics, reliability (retest-reliability \(r_{tt}\) as well as Cronbach's \(\alpha\)), and possible deviation from univariate and multivariate normality. Almost all relevant variables deviated from univariate normality as determined using Shapiro-Wilks tests with a threshold of \(\alpha\) = .20, all \(p\le\) .089 except for NFC at T2, \emph{p} = .461. Also, there was deviation from multivariate normality as determined using Mardia tests, all \(p_{skew}\) and \(p_{kurtosis}\) \textless{} .001. Therefore, we used more robust variants for the statistical tests to be performed, i.e., Spearman rank correlations (\(r_s\)) for correlation analyses and Robust Maximum Likelihood (MLR) for regression analyses and latent change score modeling.
 
 Possible differences between the measurement occasions T1 and T2 were descriptively assessed via boxplots, with overlapping notches---that can roughly be interpreted as 95\% confidence intervals of a given median---pointing to noteworthy differences. Otherwise differences between time points were not considered further given the scope of the present report. Correlation analyses were performed separately for the five sets of data (see Table 1 and Supplementary Tables S1 to S4). Where appropriate, evaluation of statistical significance was based on 95\% confidence intervals (CI) that did not include zero. Evaluation of effect sizes of correlations was based on the empirically derived guidelines for personality and social psychology research provided by Gignac and Szodorai (2016), i.e., correlations were regarded as small for \(r < .20\), as medium for .20 \(\le r \le\) .30, and as large for \(r > .30\).
 
-To examine which variables measured at T1 would be significant predictors of school grades at T2, we ran a five regression analyses with the GPA and the four subject-specific grades as criterion and used the results of the first regression analysis (with the domain-general Ability Self-Concept, Interest in School, Hope for Success and Fear of failure, and NFC measured at T1 as predictors and GPA at T2 as criterion) to select the variables for latent change score modeling. Significant predictors in this model were used for all latent change score models even if for certain subjects, the predictors were not significant in the respective regression models. Regression models were fitted via \emph{lavaan}, using MLR as estimation technique and the Full-Information Maximum Likelihood (FIML) approach to impute missing values. Due to missing patterns, this resulted in an effective sample size of \(N\) = 271-276. To asses whether a model that included NFC was superior to a model that included established predictors of academic achievement, we (1) evaluated the fit of the respective models based on the recommendations by Hu and Bentler (1999), with values of CFI \(\ge\) .95, RMSEA \(\le\) .06, and SRMR \(\le\) 0.08 indicating good model fit, and (2) performed \(\chi^2\)-difference tests between the former and the latter model (and all other variables' loadings fixed to zero).
+To examine which variables measured at T1 would be significant predictors of school grades at T2, we ran a five regression analyses with the GPA and the four subject-specific grades as criterion and used the results of the first regression analysis (with the domain-general Ability Self-Concept, Interest in School, Hope for Success and Fear of failure, and NFC measured at T1 as predictors and GPA at T2 as criterion) to select the variables for latent change score modeling. Significant predictors in this model were used for all latent change score models even if for certain subjects, the predictors were not significant in the respective regression models. Regression models were fitted via \emph{lavaan}, using MLR as estimation technique and---because missing data were missing completely at random (MCAR), all \(p\ge\) .169---the Full-Information Maximum Likelihood (FIML) approach to impute missing values. Due to missing patterns, this resulted in an effective sample size of \(N\) = 271-276. To assess whether a model that included NFC was superior to a model that included established predictors of academic achievement, we (1) evaluated the fit of the respective models based on the recommendations by Hu and Bentler (1999), with values of CFI \(\ge\) .95, RMSEA \(\le\) .06, and SRMR \(\le\) 0.08 indicating good model fit, and (2) performed \(\chi^2\)-difference tests between the former and the latter model (and all other variables' loadings fixed to zero).
 
-In the final step, latent change score modeling was applied. In this approach (see Kievit et al., 2018), one can examine (1) whether true change in a variable has occurred via a latent change score that is modeled from the respective measurements of this variable at different measurement occasions, here T1 and T2, (2) to what extent the change in a variable is a function of the measurement of the \emph{same} variable at T1 (self-feedback) and (3) to what extent the change in this variable is a function of the measurement of \emph{other} variables in the model at T1 (cross-domain coupling). Thereby, cross-domain effects, i.e., whether the change in one domain (e.g., school grades) is a function of the baseline score of another (e.g., NFC) and vice versa could be examined. In addition, correlated change in the variables of interest can be examined, i.e., to what extent does the change in one variable correlate with the change in another variable. Again, MLR estimation and imputation of missing values via FIML was employed.
+In the final step, latent change score modeling was applied. In this approach (see Kievit et al., 2018), one can examine (1) whether true change in a variable has occurred via a latent change score that is modeled from the respective measurements of this variable at different measurement occasions, here T1 and T2, (2) to what extent the change in a variable is a function of the measurement of the \emph{same} variable at T1 (self-feedback) and (3) to what extent the change in this variable is a function of the measurement of \emph{other} variables in the model at T1 (cross-domain coupling). Thereby, cross-domain effects, i.e., whether the change in one domain (e.g., school grades) is a function of the baseline score of another (e.g., NFC) and vice versa could be examined. In addition, correlated change in the variables of interest can be examined, i.e., to what extent does the change in one variable correlate with the change in another variable. Fig. 1A provides an example of a bivariate latent change score model. For latent change score modeling, again MLR estimation and imputation of missing values via FIML was employed.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
@@ -393,7 +403,7 @@ Need for Cognition & 0.089 & 0.040 & 0.012 & 0.167 & .140 & .024\\
 
 A multiple regression analysis involving all measures at T1 (see Table \ref{tab:mr}) showed that apart from GPA at T1, \(B=\) 0.61, 95\% CI {[}0.49, 0.73{]}, \(p< .001\), the only significant predictors were the domain-general ability self-concept, \(B=\) 0.12, 95\% CI {[}0.01, 0.22{]}, \(p=.031\), and NFC, \(B=\) 0.09, 95\% CI {[}0.01, 0.17{]}, \(p=.024\). Model fit was better for a model that included GPA, the ability self-concept, and NFC at T1 (while all other predictors were set to zero), \(\chi^2(3)\) = 3.68, \(p\) .299, CFI = 1.00, RMSEA = .03 with 90\% CI {[}0.00, 0.11{]}, SRMR = .01, than a model that included GPA and the ability self-concept only, \(\chi^2(4)\) = 10.91, \(p\) .028, CFI = 0.96, RMSEA = .08 with 90\% CI {[}0.02, 0.14{]}, SRMR = .02, and a \(\chi^2\)-difference test supported the superiority of the former compared to the latter model, \(\chi^2\)(1) = 6.34, \(p\) = .012.
 
-We therefore further examined a trivariate latent change score model involving school grades, the ability self-concept, and NFC. Figure 1B gives the results of the latent change score modeling with regard to the prediction of change and correlated change in overall school grades, i.e., GPA. While the best predictor of change on GPA was GPA at T1 (i.e., self-feedback), \(B=\) -0.37, 95\% CI {[}-0.48, -0.25{]}, \(p< .001\), \(\beta=\) -.55, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, \(B=\) 0.13, 95\% CI {[}0.02, 0.24{]}, \(p=.020\), \(\beta=\) .19, and \(B=\) 0.08, 95\% CI {[}0.02, 0.15{]}, \(p=.009\), \(\beta=\) .19, respectively. Correlated change was observed for GPA and the ability self-concept, \(B=\) 0.03, 95\% CI {[}0.01, 0.05{]}, \(p=.001\), \(\beta=\) .22, and the ability self-concept and NFC, \(B=\) 0.05, 95\% CI {[}0.02, 0.08{]}, \(p.001\), \(\beta=\) .22, while the correlated changes in GPA and NFC did not reach significance, \(B=\) 0.03, 95\% CI {[}0.00, 0.05{]}, \(p=.053\), \(\beta=\) .14.
+We therefore further examined a trivariate latent change score model involving school grades, the ability self-concept, and NFC. Fig. 1B gives the results of the latent change score modeling with regard to the prediction of change and correlated change in overall school grades, i.e., GPA. While the best predictor of change on GPA was GPA at T1 (i.e., self-feedback), \(B=\) -0.37, 95\% CI {[}-0.48, -0.25{]}, \(p< .001\), \(\beta=\) -.55, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, \(B=\) 0.13, 95\% CI {[}0.02, 0.24{]}, \(p=.020\), \(\beta=\) .19, and \(B=\) 0.08, 95\% CI {[}0.02, 0.15{]}, \(p=.009\), \(\beta=\) .19, respectively. Correlated change was observed for GPA and the ability self-concept, \(B=\) 0.03, 95\% CI {[}0.01, 0.05{]}, \(p=.001\), \(\beta=\) .22, and the ability self-concept and NFC, \(B=\) 0.05, 95\% CI {[}0.02, 0.08{]}, \(p.001\), \(\beta=\) .22, while the correlated changes in GPA and NFC did not reach significance, \(B=\) 0.03, 95\% CI {[}0.00, 0.05{]}, \(p=.053\), \(\beta=\) .14.
 
 \begin{figure}
 \centering
@@ -404,14 +414,18 @@ We therefore further examined a trivariate latent change score model involving s
 \hypertarget{domain-specific-grades}{%
 \subsection{Domain-specific grades}\label{domain-specific-grades}}
 
-For the four subjects examined, i.e., German, math, physics, and chemistry, similar results were obtained with regard to correlation analyses (see Supplementary Tables Sx to Sy). As regards multiple regression analyses (see Supplementary Table Sz), for all subjects, grades at T2 were significant predictors of grades at T2, \(p<.001\). The subject-specific ability self concept at T1 was a significant predictor of grades at T2 in German only, \(B=\) 0.29, 95\% CI {[}0.15, 0.43{]}, \(p< .001\). NFC at T1 was a significant predictor of T2 grades in German, \(B=\) 0.18, 95\% CI {[}0.05, 0.32{]}, \(p=.007\) and physics, \(B=\) 0.22, 95\% CI {[}0.07, 0.37{]}, \(p=.004\).
+For the four subjects examined, i.e., German, math, physics, and chemistry, similar results were obtained with regard to correlation analyses (see Supplementary Tables Sx to Sy). As regards multiple regression analyses (see Supplementary Table Sz), for all subjects, grades at T2 were significant predictors of grades at T2, \(p<.001\). The subject-specific ability self concept at T1 was a significant predictor of grades at T2 in German only, \(B=\) 0.29, 95\% CI {[}0.15, 0.43{]}, \(p< .001\). NFC at T1 was a significant predictor of T2 grades in German, \(B=\) 0.18, 95\% CI {[}0.05, 0.32{]}, \(p=.007\) and physics, \(B=\) 0.22, 95\% CI {[}0.07, 0.37{]}, \(p=.004\). In both cases, models with NFC as predictor together with grades at T1 and ability self-concept were superior to models with grades at T1 and ability self-concept only, German: \(\chi^2\)(1) = 9.31, \(p\) = .002, physics: \(\chi^2\)(1) = 13.49, \(p\) = \textless{} .001.
 
 As regards the latent change score models, there was evidence for significant self-feedback for all subjects, all \(p<.001\). With regard to the subject-specific ability self-concept, cross-domain coupling with changes in grades was observed for German, \(B=\) 0.28, 95\% CI {[}0.16, 0.40{]}, \(p< .001\), \(\beta=\) .36, and chemistry, \(B=\) 0.09, 95\% CI {[}0.00, 0.18{]}, \(p=.042\), \(\beta=\) .14. NFC at T1 showed cross-domain coupling with grades at T2 for German, \(B=\) 0.13, 95\% CI {[}0.04, 0.21{]}, \(p=.005\), \(\beta=\) .17, physics, \(B=\) 0.23, 95\% CI {[}0.13, 0.33{]}, \(p< .001\), \(\beta=\) .24, and chemistry, \(B=\) 0.10, 95\% CI {[}0.00, 0.20{]}, \(p=.047\), \(\beta=\) .13. Correlated change between grades and the subject-specific ability self-concept was observed for all subjects, while correlated change between grades and NFC was observed for German, math, and physics only (see Fig. 1C-F).
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
-The present study was conducted in order to \ldots{} It would be most convenient if you could write the Discussion directly in the R Markdown document. If you want to highlight something, set it in \emph{italics} via asterisks before and after the word/phrase to be highlighted. And please enter references as @AuthorYear if you want them to appear directly in the text or as {[}@AuthorYear{]} to give them in parentheses. Example: Diseth and Martinsen (2003) found \ldots{} (see also Robbins et al., 2004)
+The present study was conducted in order to \ldots{} It would be most convenient if you could write the Discussion directly in the R Markdown document. If you want to highlight something, set it in \emph{italics} via asterisks before and after the word/phrase to be highlighted. And please enter references as @AuthorYear if you want them to appear directly in the text or as {[}@AuthorYear{]} to give them in parentheses. Example: Diseth and Martinsen (2003) found \ldots{} (see also Robbins et al., 2004). If you cite new references that not already appeared in the Introduction, just paste them at the end of the Discussion as plain text like:
+
+Weber, H. S., Lu, L., Shi, J., and Spinath, F. M. (2013). The roles of cognitive and motivational predictors in explaining school achievement in elementary school. Learn. Individ. Differ. 25, 85--92. doi: 10.1016/j.lindif.2013.03.008
+
+Format does not matter.
 
 \hypertarget{subheading-1}{%
 \subsection{Subheading 1}\label{subheading-1}}
@@ -547,6 +561,9 @@ Meier, E., Vogl, K., \& Preckel, F. (2014). Motivational characteristics of stud
 \leavevmode\vadjust pre{\hypertarget{ref-Moeller2004}{}}%
 Möller, J., \& Köller, O. (2004). Die genese akademischer selbstkonzepte {[}the genesis of academic self-concepts{]}. \emph{Psychologische Rundschau}, \emph{55}(1), 19--27. \url{https://doi.org/10.1026/0033-3042.55.1.19}
 
+\leavevmode\vadjust pre{\hypertarget{ref-R-here}{}}%
+Müller, K. (2020). \emph{Here: A simpler way to find your files}. Retrieved from \url{https://CRAN.R-project.org/package=here}
+
 \leavevmode\vadjust pre{\hypertarget{ref-Murray1938}{}}%
 Murray, H. A. (1938). \emph{Explorations in personality}. Oxford University Press.
 
@@ -555,6 +572,9 @@ Olson, K. R., Camp, C. J., \& Fuller, D. (1984). Curiosity and need for cognitio
 
 \leavevmode\vadjust pre{\hypertarget{ref-Preckel2014}{}}%
 Preckel, F. (2014). Assessing {Need} for {Cognition} in early adolescence: Validation of a german adaption of the {Cacioppo}/{Petty} scale. \emph{European Journal of Psychological Assessment}, \emph{30}(1), 65--72. \url{https://doi.org/10.1027/1015-5759/a000170}
+
+\leavevmode\vadjust pre{\hypertarget{ref-APA2008}{}}%
+Publications, A., \& Journal Article Reporting Standards, C. B. W. G. on. (n.d.). Reporting standards for research in psychology: Why do we need them? What might they be? \emph{American Psychologist}, \emph{63}, 839--851. \url{https://doi.org/10.1037/0003-066X.63.9.839}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-base}{}}%
 R Core Team. (2018). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
@@ -584,7 +604,7 @@ Schöne, C., Dickhäuser, O., Spinath, B., \& Stiensmeier-Pelster, J. (2002). \e
 Simmons, J. P., Nelson, L. D., \& Simonsohn, U. (2012). \emph{A 21 word solution}. \url{https://doi.org/10.2139/ssrn.2160588}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-shape}{}}%
-Soetaert, K. (2021). \emph{Shape: Functions for plotting graphical shapes, colors}. Retrieved from \url{https://CRAN.R-project.org/package=shape}
+Soetaert, K. (2018). \emph{Shape: Functions for plotting graphical shapes, colors}. Retrieved from \url{https://CRAN.R-project.org/package=shape}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Steinmayr2009}{}}%
 Steinmayr, R., \& Spinath, B. (2009). The importance of motivation as a predictor of school achievement. \emph{Learning and Individual Differences}, \emph{19}(1), 80--90. \url{https://doi.org/10.1016/j.lindif.2008.05.004}
@@ -601,8 +621,14 @@ Strobel, A., Behnke, A., Grass, J., \& Strobel, A. (2019). The interplay of inte
 \leavevmode\vadjust pre{\hypertarget{ref-vonStumm2013}{}}%
 Stumm, S. von, \& Ackerman, P. (2013). Investment and intellect: A review and meta-analysis. \emph{Psychological Bulletin}, \emph{139}, 841--869. \url{https://doi.org/10.1037/a0030746}
 
+\leavevmode\vadjust pre{\hypertarget{ref-R-naniar}{}}%
+Tierney, N., Cook, D., McBain, M., \& Fay, C. (2021). \emph{Naniar: Data structures, summaries, and visualisations for missing data}. Retrieved from \url{https://CRAN.R-project.org/package=naniar}
+
 \leavevmode\vadjust pre{\hypertarget{ref-Tolentino1990}{}}%
 Tolentino, E., Curry, L., \& Leak, G. (1990). Further validation of the short form of the need for cognition scale. \emph{Psychological Reports}, \emph{66}(1), 321--322. \url{https://doi.org/10.2466/PR0.66.1.321-322}
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-renv}{}}%
+Ushey, K. (2021). \emph{Renv: Project environments}. Retrieved from \url{https://CRAN.R-project.org/package=renv}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Wigfield2010}{}}%
 Wigfield, A., \& Cambria, J. (2010). Students' achievement values, goal orientations, and interest: Definitions, development, and relations to achievement outcomes. \emph{Developmental Review}, \emph{30}(1), 1--35. \url{https://doi.org/10.1016/j.dr.2009.12.001}
