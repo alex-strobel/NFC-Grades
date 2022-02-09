@@ -176,7 +176,6 @@ Over the past decades, a large body of research has examined variables predictin
 
 Over the last years, an additional predictor of academic performance came into the focus of researchers in this field of research: Need for Cognition (NFC), the stable intrinsic motivation of an individual to engage in and enjoy challenging intellectual activity [@Cacioppo1996]. According to the Investment Theory [@Ackerman1997], traits such as NFC determine how individuals invest their cognitive resources and how they deal with cognitively challenging material. Studies could show that NFC is related to academic performance in different stages of academic life [e.g., @Ginet2000; @Preckel2014; @Luong2017; @Grass2017; for a meta-analytical review see von @vonStumm2013] as well as to behaviour associated with success in learning. As examples, NFC was found to be related to ability self-concept [e.g., @Dickhaeuser2010; @Luong2017], to interest in school [e.g., @Preckel2014] or to deeper processing while learning [@Evans2003; @Luong2017]. 
 
-@Diseth2003
 
 # Methods
 <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->

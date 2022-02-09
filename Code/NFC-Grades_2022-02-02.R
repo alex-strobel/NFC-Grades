@@ -21,21 +21,21 @@ rp <- function(p, bound = "max") {
     if (p >= .001) {
       # returns "p = ..."
       p_out = paste0("$p=", papaja::printp(p), "$")
-    } else {
+  } else {
       # returns "p < .001"
       p_out = paste0("$p", papaja::printp(p), "$")
-    } 
-  } else if (length(p) > 1) {
+  } 
+} else if (length(p) > 1) {
     # vector of p-values is passed
     if (bound == "max") {
       # returns "p <= ..."
       p_out = paste0("$p", "\\le", papaja::printp(max(p)), "$")
-    } else if (bound == "min") {
+  } else if (bound == "min") {
       # returns "p >= ..."
       p_out = paste0("$p", "\\ge", papaja::printp(min(p)), "$")
-    }
-    
   }
+    
+}
   return(p_out)
 }
 
@@ -46,27 +46,27 @@ rr <-  function(r, symbol = "$r_{s}", bound = "max", absval = F) {
   # shall absolute value of correlations be returned?
   if (absval == T) {
     symbol = paste0("$|", sub("[$]", "", symbol), "|")
-  }
+}
   
   if (length(r) == 1) {
     # single correlation is passed
     if (r < .01) {
       # returns "r < .01"
       r_out = paste0(symbol, "<", papaja::printnum(r, gt1 = F), "$")
-    } else {
+  } else {
       # returns "r = ..."
       r_out = paste0(symbol, "=", papaja::printnum(r, gt1 = F), "$")
-    }  
-  } else {
+  }  
+} else {
     # vector of correlations is passed
     if (bound == "max") {
       # returns "r <= ..."
       r_out = paste0(symbol, "\\le", papaja::printnum(max(r), gt1 = F), "$")
-    } else if (bound == "min") {
+  } else if (bound == "min") {
       # returns "r >= ..."
       r_out = paste0(symbol, "\\ge", papaja::printnum(min(r), gt1 = F), "$")
-    }
   }
+}
   return(r_out)
 }
 
@@ -274,7 +274,7 @@ sw <- function(x) {
     colnames(v) = c("W","p")
     rownames(v) = n[i]
     r = rbind(r,v)
-  }
+}
   return(round(r,3))
 }
 
@@ -327,34 +327,34 @@ corr.report <- function(df, method = "Spearman", diagonal = NULL, Tdiff = c(53, 
   if (length(corr.tab$n) == 1) {
     n = corr.tab$n
     n.note = ""
-  } else {
+} else {
     n = paste0(range(corr.tab$n), collapse = "-")
     n.note = " due to missings"
-  }
+}
   ct = printnum(corr.tab$r, gt1 = F)
   ct[lower.tri(ct)] = ""
   
   if (!is.null(diagonal)) {
     min.ic = printnum(min(diagonal, na.rm = T), gt1 = F)
     diag(ct) = paste("\\textit{", sub("NA", "—", printnum(diagonal, gt1 = F)), "}", sep = "") # removes leading zero
-  } else {
+} else {
     min.ic = NA
     diag(ct) = rep("—", ncol(df))
-  }
+}
   
   # set retest reliabilities to bold italic 
   if (rtt.bold == T) {
     for (i in 1:nvars) {
       ct[i, i + nvars] = paste("\\textbf{\\textit{", ct[i, i + nvars], "}}", sep = "")
-    }
+  }
     retest.note = paste(
       "bold-faced coefficients give the",
       paste(Tdiff, collapse = "-"),
       "week retest reliability; "
     )
-  } else {
+} else {
     retest.note = ""
-  }
+}
   
   if (descriptives == T) {
     # get descriptives 
@@ -367,31 +367,31 @@ corr.report <- function(df, method = "Spearman", diagonal = NULL, Tdiff = c(53, 
                format(dt[5:6, ], nsmall = 2))
     rownames(dt) = c("Mean", "SD", "Min", "Max", "Skew", "Kurtosis")
     caption = paste(method, "correlations and descriptive statistics of the", what.measures)
-  } else {
+} else {
     dt = NA
     caption = paste(method, "correlations of the", what.measures)
-  }
+}
   
   # create caption and note to correlation table 
   measure.description = paste(unique(sub("1|2", "", colnames(df))), measure.names, sep = " = ", collapse = ", ")
   if (what.diagonal == "Cronbach") {
     diagonal.description = "coefficients in the diagonal are Cronbach’s $\\alpha$, "
-  } else if (what.diagonal == "MacDonald") {
+} else if (what.diagonal == "MacDonald") {
     diagonal.description = "coefficients in the diagonal are MacDonald’s $\\omega$, with the entries for CEI1 and CEI2 containing the total $\\omega$ of the factor model, "
-  } else {
+} else {
     diagonal.description = ""
-  }
+}
   
   if (p.note == "le") {
     p.note = paste("all coefficients significant at \\textit{p} $\\leq$ ", sub("< ", "", printp(max(corr.tab$ci$p))), "; ", sep = "")
-  } else if (p.note == "gt") {
+} else if (p.note == "gt") {
     if (method == "Pearson") {
       p.note = paste0("$p < .05$ for $|r|$ > ", printnum(abs(corr.tab$r[which.min(abs(.05 - corr.tab$p))]), gt1 = F), "; ")
-    } else {
+  } else {
       p.note = paste0("$p < .05$ for $|r_{s}|$ > ", printnum(abs(corr.tab$r[which.min(abs(.05 - corr.tab$p))]), gt1 = F), "; ")
-    }
-    
   }
+    
+}
   
   note = paste("\\textit{N} = ", n, n.note, "; ",
                p.note, diagonal.description, retest.note, 
@@ -819,7 +819,7 @@ demo.lcsm <-  function(index, title) {
   add.label = function(x, y, label, font = 1, cex = 1, pos = NULL, col = 1) {
     points(x, y, pch = 19, cex = cex + 3, col = 0)
     text(x, y, label, font = font, cex = cex, pos = pos, col = col)
-  }
+}
   
   # fixed regressions
   # left

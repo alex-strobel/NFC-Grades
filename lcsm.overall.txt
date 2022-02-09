@@ -1,0 +1,107 @@
+                         npar                          fmin                         chisq                            df 
+                       27.000                         0.000                         0.000                         0.000 
+                       pvalue                  chisq.scaled                     df.scaled                 pvalue.scaled 
+                           NA                         0.000                         0.000                            NA 
+         chisq.scaling.factor                baseline.chisq                   baseline.df               baseline.pvalue 
+                           NA                       727.201                        15.000                         0.000 
+        baseline.chisq.scaled            baseline.df.scaled        baseline.pvalue.scaled baseline.chisq.scaling.factor 
+                      665.364                        15.000                         0.000                         1.093 
+                          cfi                           tli                    cfi.scaled                    tli.scaled 
+                        1.000                         1.000                         1.000                         1.000 
+                   cfi.robust                    tli.robust                          logl             unrestricted.logl 
+                        1.000                         1.000                     -1069.417                     -1069.417 
+                          aic                           bic                        ntotal                          bic2 
+                     2192.834                      2290.682                       277.000                      2205.069 
+                        rmsea                rmsea.ci.lower                rmsea.ci.upper                  rmsea.pvalue 
+                        0.000                         0.000                         0.000                            NA 
+                 rmsea.scaled         rmsea.ci.lower.scaled         rmsea.ci.upper.scaled           rmsea.pvalue.scaled 
+                        0.000                         0.000                         0.000                            NA 
+                 rmsea.robust         rmsea.ci.lower.robust         rmsea.ci.upper.robust           rmsea.pvalue.robust 
+                        0.000                         0.000                         0.000                            NA 
+                         srmr 
+                        0.000 
+$FIT
+                         npar                          fmin                         chisq                            df 
+                       27.000                         0.000                         0.000                         0.000 
+                       pvalue                  chisq.scaled                     df.scaled                 pvalue.scaled 
+                           NA                         0.000                         0.000                            NA 
+         chisq.scaling.factor                baseline.chisq                   baseline.df               baseline.pvalue 
+                           NA                       727.201                        15.000                         0.000 
+        baseline.chisq.scaled            baseline.df.scaled        baseline.pvalue.scaled baseline.chisq.scaling.factor 
+                      665.364                        15.000                         0.000                         1.093 
+                          cfi                           tli                    cfi.scaled                    tli.scaled 
+                        1.000                         1.000                         1.000                         1.000 
+                   cfi.robust                    tli.robust                          logl             unrestricted.logl 
+                        1.000                         1.000                     -1069.417                     -1069.417 
+                          aic                           bic                        ntotal                          bic2 
+                     2192.834                      2290.682                       277.000                      2205.069 
+                        rmsea                rmsea.ci.lower                rmsea.ci.upper                  rmsea.pvalue 
+                        0.000                         0.000                         0.000                            NA 
+                 rmsea.scaled         rmsea.ci.lower.scaled         rmsea.ci.upper.scaled           rmsea.pvalue.scaled 
+                        0.000                         0.000                         0.000                            NA 
+                 rmsea.robust         rmsea.ci.lower.robust         rmsea.ci.upper.robust           rmsea.pvalue.robust 
+                        0.000                         0.000                         0.000                            NA 
+                         srmr 
+                        0.000 
+
+$PE
+     lhs op   rhs   label exo         est          se          z       pvalue     std.lv    std.all    std.nox
+1  grd.2  ~ grd.1           0  1.00000000 0.000000000         NA           NA  1.0000000  1.0088935  1.0088935
+2  grd.d =~ grd.2           0  1.00000000 0.000000000         NA           NA  0.3681604  0.6785980  0.6785980
+3  grd.d ~1                 0  0.50724887 0.185788252   2.730253 6.328580e-03  1.3777931  1.3777931  1.3777931
+4  grd.1 ~1                 0  3.30975668 0.033760540  98.036249 0.000000e+00  3.3097567  6.0468094  6.0468094
+5  grd.2 ~1                 0  0.00000000 0.000000000         NA           NA  0.0000000  0.0000000  0.0000000
+6  grd.1 ~~ grd.1           0  0.29959846 0.025717181  11.649739 0.000000e+00  0.2995985  1.0000000  1.0000000
+7  grd.2 ~~ grd.2           0  0.00000000 0.000000000         NA           NA  0.0000000  0.0000000  0.0000000
+8  grd.d ~~ grd.d           0  0.11007094 0.013035430   8.443982 0.000000e+00  0.8120795  0.8120795  0.8120795
+9  asc.2  ~ asc.1           0  1.00000000 0.000000000         NA           NA  1.0000000  0.9486468  0.9486468
+10 asc.d =~ asc.2           0  1.00000000 0.000000000         NA           NA  0.4734272  0.8307176  0.8307176
+11 asc.1 ~1                 0  3.55259083 0.033170537 107.100794 0.000000e+00  3.5525908  6.5711426  6.5711426
+12 asc.2 ~1                 0  0.00000000 0.000000000         NA           NA  0.0000000  0.0000000  0.0000000
+13 asc.d ~1                 0  0.65614097 0.205723975   3.189424 1.425566e-03  1.3859386  1.3859386  1.3859386
+14 asc.1 ~~ asc.1           0  0.29228639 0.027111634  10.780848 0.000000e+00  0.2922864  1.0000000  1.0000000
+15 asc.2 ~~ asc.2           0  0.00000000 0.000000000         NA           NA  0.0000000  0.0000000  0.0000000
+16 asc.d ~~ asc.d           0  0.16588278 0.017019649   9.746546 0.000000e+00  0.7401078  0.7401078  0.7401078
+17 nfc.2  ~ nfc.1           0  1.00000000 0.000000000         NA           NA  1.0000000  0.9752162  0.9752162
+18 nfc.d =~ nfc.2           0  1.00000000 0.000000000         NA           NA  0.6350227  0.7277324  0.7277324
+19 nfc.1 ~1                 0  4.46824863 0.052088863  85.781266 0.000000e+00  4.4682486  5.2507209  5.2507209
+20 nfc.2 ~1                 0  0.00000000 0.000000000         NA           NA  0.0000000  0.0000000  0.0000000
+21 nfc.d ~1                 0  0.89096578 0.295426140   3.015866 2.562461e-03  1.4030457  1.4030457  1.4030457
+22 nfc.1 ~~ nfc.1           0  0.72416378 0.065770445  11.010474 0.000000e+00  0.7241638  1.0000000  1.0000000
+23 nfc.2 ~~ nfc.2           0  0.00000000 0.000000000         NA           NA  0.0000000  0.0000000  0.0000000
+24 nfc.d ~~ nfc.d           0  0.32067928 0.034362084   9.332358 0.000000e+00  0.7952295  0.7952295  0.7952295
+25 grd.d  ~ grd.1   beta1   0 -0.36685650 0.059338809  -6.182404 6.313261e-10 -0.9964583 -0.5454173 -0.5454173
+26 grd.d  ~ asc.1 gamma12   0  0.12942920 0.055637618   2.326289 2.000312e-02  0.3515565  0.1900638  0.1900638
+27 grd.d  ~ nfc.1 gamma13   0  0.08309972 0.031990577   2.597631 9.386926e-03  0.2257161  0.1920794  0.1920794
+28 asc.d  ~ grd.1 gamma21   0  0.22236007 0.062770644   3.542421 3.964715e-04  0.4696817  0.2570830  0.2570830
+29 asc.d  ~ asc.1   beta2   0 -0.55207407 0.066437527  -8.309672 0.000000e+00 -1.1661225 -0.6304469 -0.6304469
+30 asc.d  ~ nfc.1 gamma23   0  0.13862943 0.037318821   3.714732 2.034189e-04  0.2928210  0.2491843  0.2491843
+31 nfc.d  ~ grd.1 gamma31   0  0.44338993 0.088355971   5.018223 5.215173e-07  0.6982269  0.3821786  0.3821786
+32 nfc.d  ~ asc.1 gamma32   0 -0.19318821 0.090586192  -2.132645 3.295384e-02 -0.3042225 -0.1644734 -0.1644734
+33 nfc.d  ~ nfc.1   beta3   0 -0.32730726 0.055048213  -5.945829 2.750613e-09 -0.5154261 -0.4386163 -0.4386163
+34 grd.1 ~~ asc.1   phi12   0  0.17185482 0.021473080   8.003268 1.110223e-15  0.1718548  0.5807479  0.5807479
+35 grd.1 ~~ nfc.1   phi13   0  0.20777719 0.030565436   6.797783 1.062417e-11  0.2077772  0.4460768  0.4460768
+36 asc.1 ~~ nfc.1   phi23   0  0.19717367 0.032574821   6.052947 1.422195e-09  0.1971737  0.4285744  0.4285744
+37 grd.d ~~ asc.d   rho12   0  0.02950037 0.008977971   3.285862 1.016708e-03  0.2183185  0.2183185  0.2183185
+38 grd.d ~~ nfc.d   rho13   0  0.02670659 0.013827766   1.931374 5.343678e-02  0.1421499  0.1421499  0.1421499
+39 asc.d ~~ nfc.d   rho23   0  0.05079039 0.015163710   3.349470 8.096626e-04  0.2202143  0.2202143  0.2202143
+40 grd.2 r2 grd.2           0  1.00000000          NA         NA           NA         NA         NA         NA
+41 grd.d r2 grd.d           0  0.18792054          NA         NA           NA         NA         NA         NA
+42 asc.2 r2 asc.2           0  1.00000000          NA         NA           NA         NA         NA         NA
+43 asc.d r2 asc.d           0  0.25989218          NA         NA           NA         NA         NA         NA
+44 nfc.2 r2 nfc.2           0  1.00000000          NA         NA           NA         NA         NA         NA
+45 nfc.d r2 nfc.d           0  0.20477055          NA         NA           NA         NA         NA         NA
+
+lavaan 0.6-10 ended normally after 63 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        27
+                                                      
+  Number of observations                           277
+  Number of missing patterns                         7
+                                                      
+Model Test User Model:
+                                              Standard      Robust
+  Test Statistic                                 0.000       0.000
+  Degrees of freedom                                 0           0
