@@ -1,0 +1,519 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  man]{apa6}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={On the interplay of motivational characteristics and school grades: The role of Need for Cognition},
+  pdfauthor={Anja Strobel1*, Alexander Strobel2*, Franzis Preckel3, \& Ricarda Steinmayer4},
+  pdflang={en-EN},
+  pdfkeywords={Need for Cognition, Grades, Academic Self-Concept, Latent Change Score Modeling, Longitudinal},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{english}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+% Manuscript styling
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+% Table formatting
+\usepackage{longtable}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\begin{center}\begin{threeparttable}}
+%   {\end{threeparttable}\end{center}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\begin{center}\begin{ThreePartTable}}{\end{ThreePartTable}\end{center}\end{landscape}}
+
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
+
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+% Overwrite redefinition of paragraph and subparagraph by the default LaTeX template
+% See https://github.com/crsh/papaja/issues/292
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries\itshape\typesectitle}}
+
+\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-\z@\relax}%
+  {\normalfont\normalsize\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+\makeatother
+
+% \usepackage{etoolbox}
+\makeatletter
+\patchcmd{\HyOrg@maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\HyOrg@maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+
+\usepackage{xpatch}
+\makeatletter
+\xapptocmd\appendix
+  {\xapptocmd\section
+    {\addcontentsline{toc}{section}{\appendixname\ifoneappendix\else~\theappendix\fi\\: #1}}
+    {}{\InnerPatchFailed}%
+  }
+{}{\PatchFailed}
+\keywords{Need for Cognition, Grades, Academic Self-Concept, Latent Change Score Modeling, Longitudinal\newline\indent Word count: }
+\DeclareDelayedFloatFlavor{ThreePartTable}{table}
+\DeclareDelayedFloatFlavor{lltable}{table}
+\DeclareDelayedFloatFlavor*{longtable}{table}
+\makeatletter
+\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
+\makeatother
+\usepackage{lineno}
+
+\linenumbers
+\usepackage{csquotes}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{On the interplay of motivational characteristics and school grades: The role of Need for Cognition}
+\author{Anja Strobel\textsuperscript{1*}, Alexander Strobel\textsuperscript{2*}, Franzis Preckel\textsuperscript{3}, \& Ricarda Steinmayer\textsuperscript{4}}
+\date{}
+
+
+\shorttitle{NFC, Ability Self-Concept and School Grades}
+
+\authornote{
+
+{[}adjust according to APA style{]}
+* These authors contributed equally to this work.
+{[}add acknowledgements and funding if applicable{]}
+
+Correspondence concerning this article should be addressed to Anja Strobel, Department of Psychology, Chemnitz University of Technology, 09120 Chemnitz, Germany. E-mail: \href{mailto:anja.strobel@psychologie.tu-chemnitz.de}{\nolinkurl{anja.strobel@psychologie.tu-chemnitz.de}}
+
+}
+
+\affiliation{\vspace{0.5cm}\textsuperscript{1} Department of Psychology, Chemnitz University of Technology, Chemnitz, Germany\\\textsuperscript{2} Faculty of Psychology, Technische Universität Dresden, Dresden, Germany\\\textsuperscript{3} Department of Psychology, University of Trier, Trier, Germany\\\textsuperscript{4} Department of Psychology, TU Dortmund University, Dortmund, Germany}
+
+\abstract{
+\ldots{}
+}
+
+
+
+\begin{document}
+\maketitle
+
+In recent decades, a great deal of research has been conducted on the prediction of school performance. Meta-analyses indicate that intelligence is the strongest predictor for academic achievement (e.g., Deary, Strand, Smith, \& Fernandes, 2007; Kriegbaum, Becker, \& Spinath, 2018). Still, motivational variables have consistently been found to also have predictive value for school performance (e.g., Kriegbaum et al., 2018; Steinmayr, Weidinger, Schwinger, \& Spinath, 2019). In this context, motivational concepts like ability self-concept, hope for success and fear of failure, interest and values are well known and equally established indicators (Wigfield \& Cambria, 2010; e.g., Wigfield \& Eccles, 2000) that are subsumed under the umbrella term of achievement motivation (Steinmayr et al., 2019).
+
+Over the last years, an additional predictor of academic performance came into the focus of researchers in this field of research: Need for Cognition (NFC), the stable intrinsic motivation of an individual to engage in and enjoy challenging intellectual activity (Cacioppo, Petty, Feinstein, \& Jarvis, 1996). According to the Investment Theory (Ackerman \& Heggestad, 1997), traits such as NFC determine how individuals in general invest their cognitive resources and how they deal with cognitively challenging material. It has been shown that NFC is related to academic performance in different stages of academic life (e.g., Ginet \& Py, 2000; Grass, Strobel, \& Strobel, 2017; Luong et al., 2017; Preckel, 2014; for a meta-analytical review see von Stumm \& Ackerman, 2013) as well as to behaviour associated with success in learning. As examples, NFC was found to be related to ability self-concept (e.g., Dickhäuser \& Reinhard, 2010; Luong et al., 2017), interest in school (e.g., Preckel, 2014) or deeper processing while learning (Evans, Kirby, \& Fabrigar, 2003; Luong et al., 2017).
+
+The enjoyment of accomplishing something, the interest in task engagement and the intrinsic value of working on a task have been suggested to be relevant to learning and academic achievement and have been integrated into models of achievement motivation (e.g., Wigfield \& Eccles, 2000; see also Wigfield \& Cambria, 2010 for a review). Surprisingly, the concept of a more general joy of thinking, that is NFC, has not yet been investigated systematically together with established motivational indicators, especially in longitudinal studies, or integrated into models for the prediction of performance in school.
+
+Only last year, a large longitudinal study examined intelligence, the Big Five, a range of different motivational measures together with NFC in order to determine their value in predicting school performance (Lavrijsen, Vanstennkiste, Boncquet, \& Verschueren, 2021). Their results showed intelligence and NFC to be the strongest predictors of school performance. The ability self-concept was the best predictor within the group of motivational variables. This underscores the importance to consider NFC along with established predictors in gaining a comprehensive picture of the prediction of school grades.
+
+Only last year, a large longitudinal study examined intelligence, the Big Five, a range of different motivational measures together with NFC in order to determine their value in predicting school performance (Lavrijsen, Vansteenkiste, Boncquet, \& Verschueren, 2021). Their results showed intelligence and NFC to be the strongest predictors of school performance. The ability self-concept was the best predictor within the group of motivational variables. This underscores the importance to consider NFC along with established predictors in gaining a comprehensive picture of the prediction of school grades.
+
+To follow-up on these findings and to provide new insights in the interplay of school performance, NFC and motivational variables, we examined the incremental value of NFC, considering well-established motivational constructs as well as prior achievement in the prediction of school grades across different subjects in a longitudinal approach in a sample of secondary school children.
+
+\hypertarget{achievement-motivation-and-its-relation-to-school-performance}{%
+\subsection{Achievement Motivation and its relation to school performance}\label{achievement-motivation-and-its-relation-to-school-performance}}
+
+Achievement motivation is operationalized through various variables and can be seen as an essential predictor of academic achievement (e.g., Hattie, 2009; Steinmayr \& Spinath, 2009; Wigfield \& Cambria, 2010). Well-established concepts such as ability self-concept, hope for success and fear of failure, or variables such as interests and values can be found under this term (Steinmayr et al., 2019). They have found their way into essential models of achievement motivation (Kriegbaum et al., 2018; e.g., Wigfield \& Eccles, 2000), which is why they were included in this study as important motivational indicators. They are briefly introduced below.
+
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
+
+We report how we determined our sample size, all data exclusions, all manipulations, and all measures in the study (cf. Simmons, Nelson, \& Simonsohn, 2012). All data and materials for reproducing our analyses are permanently and openly accessible at \ldots{} The study was not preregistered.
+
+\hypertarget{participants}{%
+\subsection{Participants}\label{participants}}
+
+Sample size was determined by pragmatic considerations, i.e., to collect as many participants given existing time constraints and the longitudinal nature of the project. We eventually managed to recruit a sample of \(N\) = 277 participants (60\% women) at the first measurement occasion (T1) of which \(N\) = 251 participants (61\% women) also took part at the second measurement occasion (T2) that took place 53-59 weeks later. Age range was 14-19 years (median = 17 years) at T1 and 15-20 years (median = 18 years) at T2. With the sample size accomplished at T2, we were able to detect correlations of \emph{r} \(\ge\) .18 at \(\alpha\) = .05 (two-sided) and 1-\(\beta\) = .80. Yet, we tried to impute missing values to raise power (see below, \emph{Statistical analyses}).
+
+\hypertarget{material}{%
+\subsection{Material}\label{material}}
+
+We used the following self-report measures to assess the measures of interest for the present study.
+
+\emph{School Grades} in general, i.e., Grade Point Average (GPA), and grades in German, math, chemistry, and physics were assessed via self-report. In Germany, school grades range from 1 (excellent) to 6 (insufficient). For better interpretability, we reversed this coding via \(6 - grade\), so the values we used for statistical analyses ranged from 0 (insufficient) to 5 (excellent).
+
+\emph{Need for Cognition} (NFC) was assessed with the 16-item short version of the German NFC scale (Bless, Wänke, Bohner, Fellhauer, \& Schwarz, 1994). Responses to each item (e.g., ``Thinking is not my idea of fun'', recoded) were recorded on a four-point scale ranging from -3 (completely disagree) to +3 (completely agree) and were summed to the total NFC score. The scale has a comparably high internal consistency, Cronbach's \(\alpha\) \textgreater{} .80 (Bless et al., 1994; Fleischhauer et al., 2010), and retest reliability, \(r_{tt} = .83\) across 8 to 18 weeks (Fleischhauer, Strobel, \& Strobel, 2015).
+
+\emph{Hope for Successs} and \emph{Fear of Failure} were assessed using the Achievement Motive Scales (Gjesme \& Nygard, 2006; German version: Göttert \& Kuhl, 1980). For the present study, we used a short form measuring each construct with seven items. All items were answered on a four-point scale ranging from 1 (does not apply at all) to 4 (fully applies). Example items for the two scales are ``Difficult problems appeal to me'' and ``Matters that are slightly difficult disconcert me''. Both scales exhibit high internal consistencies, Cronbach's \(\alpha\ge.85\) (Steinmayr \& Spinath, 2009).
+
+The \emph{Ability Self-Concept} in school in general and in the four subjects German, math, physics, and chemistry were assessed with four items per domain using the Scales for the Assessment of Academic Self-Concept (Schöne, Dickhäuser, Spinath, \& Stiensmeier-Pelster, 2002) (example item: ``I can do well in \ldots{} (school, math, German, physics, chemistry).''). Items were answered on a 5-point scale ranging from 1 () to 5 (). The scales' internal consistency, Cronbach's \(\alpha\ge.80\), and retest reliability, \(r_{tt}\ge.59\) across six months, can be considered as high.
+
+\emph{Interest} in school in general and in the above four subjects were measured using Interest subscales of the Scales for the Assessment of Subjective Values in School (Steinmayr \& Spinath, 2010). Answers to three items per domain (example item: ``How much do you like \ldots{} (school, math, German, physics, chemistry).'') were recorded on a 5-point scale ranging from 1 () to 5 (). The scales have high internal consistency, Cronbach's \(\alpha\ge.89\), and retest reliability, \(r_{tt} = .72\) across six months (Steinmayr \& Spinath, 2010).
+
+\hypertarget{procedure}{%
+\subsection{Procedure}\label{procedure}}
+
+\ldots{}
+
+\hypertarget{statistical-analysis}{%
+\subsection{Statistical analysis}\label{statistical-analysis}}
+
+We used \emph{RStudio} {[}Version 2021.9.0.351; RStudio Team (2016){]} with R (Version 4.1.1; R Core Team, 2018) and the R-packages \emph{lavaan} (Version 0.6.10; Rosseel, 2012), \emph{psych} (Version 2.1.9; Revelle, 2018), and \emph{pwr} (Version 1.3.0; Champely, 2018). This manuscript was created using RMarkdown with the packages \emph{papaja} {[}Version 0.1.0.9997; Aust and Barth (2018){]}, \emph{knitr} {[}Version 1.37; Xie (2015){]}, and \emph{shape} {[}Version 1.4.6; Soetaert (2021){]}.
+
+First the variables were separated into four sets, each containing the T1 and T2 measurements of the variables Hope for Success (HfS), Fear of Failure (FoF), and Need for Cognition (NFC) as well as either GPA, overall ability self-concept regarding school, and general interest in school, or domain-specific grades, ability self-concept and interest in German, math, physics, and chemistry. All measures were initially analyzed with regard to descriptive statistics, reliability (retest-reliability \(r_{tt}\) as well as Cronbach's \(\alpha\)), and possible deviation from univariate and multivariate normality. Almost all relevant variables deviated from univariate normality as determined using Shapiro-Wilks tests with a threshold of \(\alpha\) = .20, all \(p\le\) .089 except for NFC at T2, \emph{p} = .461. Also, there was deviation from multivariate normality as determined using Mardia tests, all \(p_{skew}\) and \(p_{kurtosis}\) \textless{} .001. Therefore, we used more robust variants for the statistical tests to be performed, i.e., Spearman rank correlations (\(r_s\)) for correlation analyses and Robust Maximum Likelihood (MLR) for regression analyses and latent change score modeling.
+
+Possible differences between the measurement occasions T1 and T2 were descriptively assessed via boxplots, with overlapping notches---that can roughly be interpreted as 95\% confidence intervals of a given median---pointing to noteworthy differences. Otherwise differences between time points were not considered further given the scope of the present report. Correlation analyses were performed separately for the five sets of data (see Table 1 and Supplementary Tables S1 to S4). Where appropriate, evaluation of statistical significance was based on 95\% confidence intervals (CI) that did not include zero. Evaluation of effect sizes of correlations was based on the empirically derived guidelines for personality and social psychology research provided by Gignac and Szodorai (2016), i.e., correlations were regarded as small for \(r < .20\), as medium for .20 \(\le r \le\) .30, and as large for \(r > .30\).
+
+To examine which variables measured at T1 would be significant predictors of school grades at T2, we ran a five regression analyses with the GPA and the four subject-specific grades as criterion and used the results of the first regression analysis (with the domain-general Ability Self-Concept, Interest in School, Hope for Success and Fear of failure, and NFC measured at T1 as predictors and GPA at T2 as criterion) to select the variables for latent change score modeling. Significant predictors in this model were used for all latent change score models even if for certain subjects, the predictors were not significant in the respective regression models. Regression models were fitted via \emph{lavaan}, using MLR as estimation technique and the Full-Information Maximum Likelihood (FIML) approach to impute missing values. Due to missing patterns, this resulted in an effective sample size of \(N\) = 271-276. To asses whether a model that included NFC was superior to a model that included established predictors of academic achievement, we (1) evaluated the fit of the respective models based on the recommendations by Hu and Bentler (1999), with values of CFI \(\ge\) .95, RMSEA \(\le\) .06, and SRMR \(\le\) 0.08 indicating good model fit, and (2) performed \(\chi^2\)-difference tests between the former and the latter model (and all other variables' loadings fixed to zero).
+
+In the final step, latent change score modeling was applied. In this approach (see Kievit et al., 2018), one can examine (1) whether true change in a variable has occurred via a latent change score that is modeled from the respective measurements of this variable at different measurement occasions, here T1 and T2, (2) to what extent the change in a variable is a function of the measurement of the \emph{same} variable at T1 (self-feedback) and (3) to what extent the change in this variable is a function of the measurement of \emph{other} variables in the model at T1 (cross-domain coupling). Thereby, cross-domain effects, i.e., whether the change in one domain (e.g., school grades) is a function of the baseline score of another (e.g., NFC) and vice versa could be examined. In addition, correlated change in the variables of interest can be examined, i.e., to what extent does the change in one variable correlate with the change in another variable. Again, MLR estimation and imputation of missing values via FIML was employed.
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+\hypertarget{domain-general-grades}{%
+\subsection{Domain-general grades}\label{domain-general-grades}}
+
+\begin{table}[tbp]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{\label{tab:corr}Spearman correlations and descriptive statistics of the variables in the analyses on overall school grades}
+
+\footnotesize{
+
+\begin{tabular}{lcccccccccccc}
+\toprule
+ & \multicolumn{1}{c}{GRD1} & \multicolumn{1}{c}{ASC1} & \multicolumn{1}{c}{INT1} & \multicolumn{1}{c}{HFS1} & \multicolumn{1}{c}{FOF1} & \multicolumn{1}{c}{NFC1} & \multicolumn{1}{c}{GRD2} & \multicolumn{1}{c}{ASC2} & \multicolumn{1}{c}{INT2} & \multicolumn{1}{c}{HFS2} & \multicolumn{1}{c}{FOF2} & \multicolumn{1}{c}{NFC2}\\
+\midrule
+GRD1 & \textit{—} & .58 & .38 & .34 & -.24 & .44 & \textbf{\textit{.75}} & .52 & .34 & .40 & -.23 & .49\\
+ASC1 &  & \textit{.83} & .49 & .37 & -.27 & .38 & .50 & \textbf{\textit{.60}} & .32 & .34 & -.18 & .26\\
+INT1 &  &  & \textit{.88} & .32 & -.09 & .35 & .44 & .47 & \textbf{\textit{.65}} & .31 & -.05 & .26\\
+HFS1 &  &  &  & \textit{.86} & -.30 & .62 & .32 & .38 & .26 & \textbf{\textit{.57}} & -.17 & .50\\
+FOF1 &  &  &  &  & \textit{.88} & -.42 & -.17 & -.28 & -.14 & -.29 & \textbf{\textit{.59}} & -.43\\
+NFC1 &  &  &  &  &  & \textit{.89} & .46 & .43 & .25 & .62 & -.32 & \textbf{\textit{.71}}\\
+GRD2 &  &  &  &  &  &  & \textit{—} & .53 & .34 & .41 & -.18 & .48\\
+ASC2 &  &  &  &  &  &  &  & \textit{.84} & .53 & .45 & -.25 & .46\\
+INT2 &  &  &  &  &  &  &  &  & \textit{.88} & .31 & -.05 & .34\\
+HFS2 &  &  &  &  &  &  &  &  &  & \textit{.87} & -.28 & .66\\
+FOF2 &  &  &  &  &  &  &  &  &  &  & \textit{.90} & -.39\\
+NFC2 &  &  &  &  &  &  &  &  &  &  &  & \textit{.89}\\ \midrule
+Mean & 3.30 & 3.55 & 3.25 & 2.92 & 1.86 & 4.46 & 3.46 & 3.62 & 3.41 & 2.72 & 1.71 & 4.69\\
+SD & 0.55 & 0.54 & 0.83 & 0.57 & 0.61 & 0.84 & 0.52 & 0.56 & 0.82 & 0.56 & 0.61 & 0.87\\
+Min & 2.00 & 1.75 & 1.00 & 1.14 & 1.00 & 2.19 & 2.10 & 2.25 & 1.00 & 1.00 & 1.00 & 2.50\\
+Max & 5.00 & 5.00 & 5.00 & 4.00 & 4.00 & 6.94 & 5.00 & 5.00 & 5.00 & 4.00 & 3.71 & 6.88\\
+Skew & 0.17 & 0.09 & -0.27 & -0.23 & 0.45 & 0.16 & 0.31 & 0.33 & -0.21 & -0.02 & 0.89 & 0.07\\
+Kurtosis & -0.09 & 0.24 & -0.37 & -0.07 & -0.34 & 0.14 & -0.11 & -0.14 & -0.42 & 0.17 & 0.47 & -0.45\\
+\bottomrule
+\addlinespace
+\end{tabular}
+
+}
+
+\begin{tablenotes}[para]
+\normalsize{\textit{Note.} \textit{N} = 193-259 due to missings; $p < .05$ for $|r_{s}|$ > .18; coefficients in the diagonal are Cronbach’s $\alpha$, bold-faced coefficients give the 53-59 week retest reliability; GRD = Grade Point Average, ASC = Overall Ability Self-Concept, INT = Overall Interest in School, HFS = Hope for Success, FOF = Fear of Failure, NFC = Need for Cognition at measurement occasion 1, and 2, respectively}
+\end{tablenotes}
+
+\end{threeparttable}
+\end{center}
+
+\end{table}
+
+Table \ref{tab:corr} gives the descriptive statistics and intercorrelations of the variables of interest in this analysis step, i.e., the T1 and T2 measurements of GPA, domain-general ability self-concept, and general interest in school as well as the variables Hope for Success, Fear of Failure, and NFC. As can be seen in the diagonal and the upper right of the correlation table, all variables exhibited good internal consistency, Cronbach's \(\alpha\ge\) .83, and retest reliability, \(r_{tt}\ge\) .56. Among the predictors at T1, GPA at T1 showed the strongest relation to GPA at T2, \(r_{s}=.75\), followed by the domain-general ability self-concept, \(r_{s}=.53\), and NFC at T1, \(r_{s}=.46\), all \(p<\) .001. The other variables at T1 showed significant correlations with GPA at T2 as well, \(|r_{s}|\ge.20\), \(p\le.004\).
+
+\begin{table}[tbp]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{\label{tab:mr}Results of the multiple regression of school grades measured at T2 on predictors measured at T1}
+
+\begin{tabular}{lrrrrrr}
+\toprule
+ & $B$ & $SE$ & $CI.LB$ & $CI.UB$ & $\beta$ & $p$\\
+\midrule
+Intercept & 0.488 & 0.231 & 0.034 & 0.941 & .906 & .035\\
+GPA & 0.606 & 0.061 & 0.485 & 0.726 & .616 & < .001\\
+Ability Self-Concept & 0.116 & 0.054 & 0.010 & 0.222 & .117 & .031\\
+Interest & 0.057 & 0.031 & -0.005 & 0.118 & .087 & .072\\
+Hope for Success & -0.028 & 0.050 & -0.126 & 0.070 & -.029 & .578\\
+Fear of Failure & 0.013 & 0.039 & -0.063 & 0.089 & .015 & .733\\
+Need for Cognition & 0.089 & 0.040 & 0.012 & 0.167 & .140 & .024\\
+\bottomrule
+\addlinespace
+\end{tabular}
+
+\begin{tablenotes}[para]
+\normalsize{\textit{Note.} $N$ = 276; coefficients are unstandardized slopes $B$ with their standard errors $SE$ and 95\% confidence intervals ($CI.LB$ = lower bound, $CI.UB$ = upper bound), $\beta$ is the standardized slope and $p$ the respective $p$-vcalues}
+\end{tablenotes}
+
+\end{threeparttable}
+\end{center}
+
+\end{table}
+
+A multiple regression analysis involving all measures at T1 (see Table \ref{tab:mr}) showed that apart from GPA at T1, \(B=\) 0.61, 95\% CI {[}0.49, 0.73{]}, \(p< .001\), the only significant predictors were the domain-general ability self-concept, \(B=\) 0.12, 95\% CI {[}0.01, 0.22{]}, \(p=.031\), and NFC, \(B=\) 0.09, 95\% CI {[}0.01, 0.17{]}, \(p=.024\). Model fit was better for a model that included GPA, the ability self-concept, and NFC at T1 (while all other predictors were set to zero), \(\chi^2(3)\) = 3.68, \(p\) .299, CFI = 1.00, RMSEA = .03 with 90\% CI {[}0.00, 0.11{]}, SRMR = .01, than a model that included GPA and the ability self-concept only, \(\chi^2(4)\) = 10.91, \(p\) .028, CFI = 0.96, RMSEA = .08 with 90\% CI {[}0.02, 0.14{]}, SRMR = .02, and a \(\chi^2\)-difference test supported the superiority of the former compared to the latter model, \(\chi^2\)(1) = 6.34, \(p\) = .012.
+
+We therefore further examined a trivariate latent change score model involving school grades, the ability self-concept, and NFC. Figure 1B gives the results of the latent change score modeling with regard to the prediction of change and correlated change in overall school grades, i.e., GPA. While the best predictor of change on GPA was GPA at T1 (i.e., self-feedback), \(B=\) -0.37, 95\% CI {[}-0.48, -0.25{]}, \(p< .001\), \(\beta=\) -.55, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, \(B=\) 0.13, 95\% CI {[}0.02, 0.24{]}, \(p=.020\), \(\beta=\) .19, and \(B=\) 0.08, 95\% CI {[}0.02, 0.15{]}, \(p=.009\), \(\beta=\) .19, respectively. Correlated change was observed for GPA and the ability self-concept, \(B=\) 0.03, 95\% CI {[}0.01, 0.05{]}, \(p=.001\), \(\beta=\) .22, and the ability self-concept and NFC, \(B=\) 0.05, 95\% CI {[}0.02, 0.08{]}, \(p.001\), \(\beta=\) .22, while the correlated changes in GPA and NFC did not reach significance, \(B=\) 0.03, 95\% CI {[}0.00, 0.05{]}, \(p=.053\), \(\beta=\) .14.
+
+\begin{figure}
+\centering
+\includegraphics{"Fig1.jpg"}
+\caption{Latent change score models. (A) Example of a bivariate latent change score model (for details see text); legend to lines: dotted = loadings fixed to zero, red = self-feedback \(\beta\), blue = cross-domain coupling \(\gamma\), grey = correlation \(\phi\) of predictors at T1, green = correlated change \(\rho\); (B) Grade Point Average (GPA) and (C) to (F) subject-specific changes in grades at T2 (indicated by prefix \(\Delta\)) as predicted by their respective T1 levels as well as by Need for Cognition (NFC) and (overall as well as subject specific) Ability Self-Concept (ASC) at T1; coefficients are standardized coefficients.}
+\end{figure}
+
+\hypertarget{domain-specific-grades}{%
+\subsection{Domain-specific grades}\label{domain-specific-grades}}
+
+For the four subjects examined, i.e., German, math, physics, and chemistry, similar results were obtained with regard to correlation analyses (see Supplementary Tables Sx to Sy). As regards multiple regression analyses (see Supplementary Table Sz), for all subjects, grades at T2 were significant predictors of grades at T2, \(p<.001\). The subject-specific ability self concept at T1 was a significant predictor of grades at T2 in German only, \(B=\) 0.29, 95\% CI {[}0.15, 0.43{]}, \(p< .001\). NFC at T1 was a significant predictor of T2 grades in German, \(B=\) 0.18, 95\% CI {[}0.05, 0.32{]}, \(p=.007\) and physics, \(B=\) 0.22, 95\% CI {[}0.07, 0.37{]}, \(p=.004\).
+
+As regards the latent change score models, there was evidence for significant self-feedback for all subjects, all \(p<.001\). With regard to the subject-specific ability self-concept, cross-domain coupling with changes in grades was observed for German, \(B=\) 0.28, 95\% CI {[}0.16, 0.40{]}, \(p< .001\), \(\beta=\) .36, and chemistry, \(B=\) 0.09, 95\% CI {[}0.00, 0.18{]}, \(p=.042\), \(\beta=\) .14. NFC at T1 showed cross-domain coupling with grades at T2 for German, \(B=\) 0.13, 95\% CI {[}0.04, 0.21{]}, \(p=.005\), \(\beta=\) .17, physics, \(B=\) 0.23, 95\% CI {[}0.13, 0.33{]}, \(p< .001\), \(\beta=\) .24, and chemistry, \(B=\) 0.10, 95\% CI {[}0.00, 0.20{]}, \(p=.047\), \(\beta=\) .13. Correlated change between grades and the subject-specific ability self-concept was observed for all subjects, while correlated change between grades and NFC was observed for German, math, and physics only (see Fig. 1C-F).
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+The present study was conducted in order to \ldots{}
+
+\hypertarget{subheading-1}{%
+\subsection{Subheading 1}\label{subheading-1}}
+
+Our result show that \ldots{}
+
+\hypertarget{subheading-2}{%
+\subsection{Subheading 2}\label{subheading-2}}
+
+\ldots{}
+
+\hypertarget{conclusion}{%
+\subsection{Conclusion}\label{conclusion}}
+
+Taken together, the present study provides evidence that \ldots{}
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-Ackerman1997}{}}%
+Ackerman, P. L., \& Heggestad, E. D. (1997). Intelligence, personality, and interests: Evidence for overlapping traits. \emph{Psychological Bulletin}, \emph{121}(2), 219.
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-papaja}{}}%
+Aust, F., \& Barth, M. (2018). \emph{{papaja}: {Create} {APA} manuscripts with {R Markdown}}. Retrieved from \url{https://github.com/crsh/papaja}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Bless1994}{}}%
+Bless, H., Wänke, M., Bohner, G., Fellhauer, R. L., \& Schwarz, N. (1994). Need for {C}ognition: {E}ine {S}kala zur {E}rfassung von {E}ngagement und {F}reude bei {D}enkaufgaben {[}{N}eed for {C}ognition: A scale measuring engagement and happiness in cognitive tasks{]}. \emph{Zeitschrift {f}{ü}r Sozialpsychologie}, \emph{25}, 147--154.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Cacioppo1996}{}}%
+Cacioppo, J. T., Petty, R. E., Feinstein, J. A., \& Jarvis, W. B. G. (1996). Dispositional differences in cognitive motivation: The life and times of individuals varying in {N}eed for {C}ognition. \emph{Psychological Bulletin}, \emph{119}(2), 197--253. \url{https://doi.org/10.1037/0033-2909.119.2.197}
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-pwr}{}}%
+Champely, S. (2018). \emph{Pwr: Basic functions for power analysis}. Retrieved from \url{https://CRAN.R-project.org/package=pwr}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Deary2007}{}}%
+Deary, I. J., Strand, S., Smith, P., \& Fernandes, C. (2007). Intelligence and educational achievement. \emph{Intelligence}, \emph{35}(1), 13--21. \url{https://doi.org/10.1016/j.intell.2006.02.001}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Dickhaeuser2010}{}}%
+Dickhäuser, O., \& Reinhard, M.-A. (2010). How students build their performance expectancies: The importance of need for cognition. \emph{European Journal of Psychology of Education}, \emph{25}(3), 399--409. \url{https://doi.org/10.1007/s10212-010-0027-4}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Evans2003}{}}%
+Evans, C. J., Kirby, J. R., \& Fabrigar, L. R. (2003). Approaches to learning, need for cognition, and strategic flexibility among university students. \emph{British Journal of Educational Psychology}, \emph{73}(4), 507--528.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Fleischhauer2010}{}}%
+Fleischhauer, M., Enge, S., Brocke, B., Ullrich, J., Strobel, A., \& Strobel, A. (2010). Same or different? Clarifying the relationship of {N}eed for {C}ognition to personality and intelligence. \emph{Personality \& Social Psychology Bulletin}, \emph{36}(1), 82--96. \url{https://doi.org/10.1177/0146167209351886}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Fleischhauer2015}{}}%
+Fleischhauer, M., Strobel, A., \& Strobel, A. (2015). Directly and indirectly assessed {N}eed for {C}ognition differentially predict spontaneous and reflective information processing behavior. \emph{Journal of Individual Differences}, \emph{36}(2), 101--109. \url{https://doi.org/10.1027/1614-0001/a000161}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Gignac2016}{}}%
+Gignac, G. E., \& Szodorai, E. T. (2016). Effect size guidelines for individual differences researchers. \emph{Personality and Individual Differences}, \emph{102}, 74--78. \url{https://doi.org/10.1016/j.paid.2016.06.069}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Ginet2000}{}}%
+Ginet, A., \& Py, J. (2000). Le besoin de cognition: Une {é}chelle fran{ç}aise pour enfants et ses cons{é}quences au plan sociocognitif. \emph{L'ann{é}e Psychologique}, \emph{100}(4), 585--627.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Gjesme1970}{}}%
+Gjesme, T., \& Nygard, R. (2006). \emph{Achievement-related motives: Theoretical considerations and construction of a measuring instrument}. University of Oslo.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Goettert1980}{}}%
+Göttert, R., \& Kuhl, J. (1980). AMS --- {A}chievement {M}otives {S}cale von {G}jesme und {N}ygard --- {D}eutsche {F}assung {[}{AMS} --- {G}erman version{]}. In F. Rheinberg \& S. Krug (Eds.), \emph{Motivationsf{ö}rderung im {S}chulalltag {[}{E}nhancement of motivation in school context{]}} (pp. 194--200). G{ö}ttingen: Hogrefe.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Grass2017}{}}%
+Grass, J., Strobel, A., \& Strobel, A. (2017). Cognitive investments in academic success: The role of need for cognition at university. \emph{Frontiers in Psychology}, \emph{8}, 790. \url{https://doi.org/10.3389/fpsyg.2017.00790}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Hattie2009}{}}%
+Hattie, J. A. C. (2009). \emph{Visible learning: A synthesis of 800 + meta-analyses on achievement}. Oxford: Routledge.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Hu1999}{}}%
+Hu, L. T., \& Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. \emph{Structural Equation Modeling-A Multidisciplinary Journal}, \emph{6}(1), 11--55. \url{https://doi.org/10.1080/10705519909540118}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Kievit2018}{}}%
+Kievit, R. A., Brandmaier, A. M., Ziegler, G., van Harmelen, A.-L., de Mooij, S. M. M., Moutoussis, M., \ldots{} Dolan, R. J. (2018). Developmental cognitive neuroscience using latent change score models: A tutorial and applications. \emph{Developmental Cognitive Neuroscience}, \emph{33}, 99--117. \url{https://doi.org/10.1016/j.dcn.2017.11.007}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Kriegbaum2018}{}}%
+Kriegbaum, K., Becker, N., \& Spinath, B. (2018). The relative importance of intelligence and motivation as predictors of school achievement: A meta-analysis. \emph{Educational Research Review}, \emph{25}, 120--148. \url{https://doi.org/10.1016/j.edurev.2018.10.001}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Lavrijsen2021}{}}%
+Lavrijsen, J., Vansteenkiste, M., Boncquet, M., \& Verschueren, K. (2021). Does motivation predict changes in academic achievement beyond intelligence and personality? A multitheoretical perspective. \emph{Journal of Educational Psychology}. \url{https://doi.org/10.1037/edu0000666}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Luong2017}{}}%
+Luong, C., Strobel, A., Wollschläger, R., Greiff, S., Vainikainen, M.-P., \& Preckel, F. (2017). Need for cognition in children and adolescents: Behavioral correlates and relations to academic achievement and potential. \emph{Learning and Individual Differences}, \emph{53}, 103--113. \url{https://doi.org/10.1016/j.lindif.2016.10.019}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Preckel2014}{}}%
+Preckel, F. (2014). Assessing {Need} for {Cognition} in early adolescence: Validation of a german adaption of the {Cacioppo}/{Petty} scale. \emph{European Journal of Psychological Assessment}, \emph{30}(1), 65--72. \url{https://doi.org/10.1027/1015-5759/a000170}
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-base}{}}%
+R Core Team. (2018). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-psych}{}}%
+Revelle, W. (2018). \emph{Psych: Procedures for psychological, psychometric, and personality research}. Evanston, Illinois: Northwestern University. Retrieved from \url{https://CRAN.R-project.org/package=psych}
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-lavaan}{}}%
+Rosseel, Y. (2012). {lavaan}: An {R} package for structural equation modeling. \emph{Journal of Statistical Software}, \emph{48}(2), 1--36. Retrieved from \url{http://www.jstatsoft.org/v48/i02/}
+
+\leavevmode\vadjust pre{\hypertarget{ref-RStudio}{}}%
+RStudio Team. (2016). \emph{RStudio: Integrated development environment for {R}}. Boston, MA: RStudio, Inc. Retrieved from \url{http://www.rstudio.com/}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Schoene2002}{}}%
+Schöne, C., Dickhäuser, O., Spinath, B., \& Stiensmeier-Pelster, J. (2002). \emph{{Die Skalen zur Erfassung des schulischen Selbstkonzepts (SESSKO) --- Scales for measuring the academic ability self-concept}}. G{ö}ttingen: Hogrefe.
+
+\leavevmode\vadjust pre{\hypertarget{ref-Simmons2012}{}}%
+Simmons, J. P., Nelson, L. D., \& Simonsohn, U. (2012). \emph{A 21 word solution}. \url{https://doi.org/10.2139/ssrn.2160588}
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-shape}{}}%
+Soetaert, K. (2021). \emph{Shape: Functions for plotting graphical shapes, colors}. Retrieved from \url{https://CRAN.R-project.org/package=shape}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Steinmayr2009}{}}%
+Steinmayr, R., \& Spinath, B. (2009). The importance of motivation as a predictor of school achievement. \emph{Learning and Individual Differences}, \emph{19}(1), 80--90. \url{https://doi.org/10.1016/j.lindif.2008.05.004}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Steinmayr2010}{}}%
+Steinmayr, R., \& Spinath, B. (2010). {Konstruktion und erste Validierung einer Skala zur Erfassung subjektiver schulischer Werte (SESSW) - {[}Construction and first validation of a scale for the assessment of subjective values in school{]}}. \emph{Diagnostica}, \emph{56}, 195--211. \url{https://doi.org/10.1026/0012-1924/a000023}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Steinmayr2019}{}}%
+Steinmayr, R., Weidinger, A. F., Schwinger, M., \& Spinath, B. (2019). The importance of students' motivation for their academic achievement - {R}eplicating and extending previous findings. \emph{Frontiers in Psychology}, \emph{10}. \url{https://doi.org/10.3389/fpsyg.2019.01730}
+
+\leavevmode\vadjust pre{\hypertarget{ref-vonStumm2013}{}}%
+Stumm, S. von, \& Ackerman, P. (2013). Investment and intellect: A review and meta-analysis. \emph{Psychological Bulletin}, \emph{139}, 841--869. \url{https://doi.org/10.1037/a0030746}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Wigfield2010}{}}%
+Wigfield, A., \& Cambria, J. (2010). Students' achievement values, goal orientations, and interest: Definitions, development, and relations to achievement outcomes. \emph{Developmental Review}, \emph{30}(1), 1--35. \url{https://doi.org/10.1016/j.dr.2009.12.001}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Wigfield2000}{}}%
+Wigfield, A., \& Eccles, J. S. (2000). Expectancy-value theory of achievement motivation. \emph{Contemporary Educational Psychology}, \emph{25}(1), 68--81. \url{https://doi.org/10.1006/ceps.1999.1015}
+
+\leavevmode\vadjust pre{\hypertarget{ref-R-knitr}{}}%
+Xie, Y. (2015). \emph{Dynamic documents with {R} and knitr} (2nd ed.). Boca Raton, Florida: Chapman; Hall/CRC. Retrieved from \url{https://yihui.name/knitr/}
+
+\end{CSLReferences}
+
+\endgroup
+
+\newpage
+
+
+\end{document}
