@@ -6,5 +6,6 @@ This repository contains the data and code for reproducing the analyses describe
 
 The project contains the following folders:
 
-[Code](Code)
+- [Code](Code) contains the analysis code of this project
+- [Data](Data) contains the aggregated data needed to execute the analysis code and an *.RData  
 
