@@ -111,8 +111,8 @@ rl <- function(fit, label = "") {
 here::i_am("flag_root_for_NFC-Grades.txt")
 
 # data ------------------------------------------------------------------------
-d = read_sav(here::here("Data", "NFC-Grades.sav"))
-d.var.labels = data.frame(attr(d, "variable.labels"))
+d = read.csv(here::here("Data", "NFC-Grades.csv"))
+d.codebook = read.csv(here::here("Data", "NFC-Grades_Codebook.csv"))
 
 # sample description ----------------------------------------------------------
 
