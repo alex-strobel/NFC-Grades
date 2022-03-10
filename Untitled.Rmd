@@ -1,0 +1,31 @@
+---
+title: "Untitled"
+author: "Alexander Strobel"
+date: "3/10/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Method
+
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study.
+
+```{r correlation, echo = F}
+set.seed(242)
+X = rnorm(64)
+Y = .5 * X + rnorm(64)
+cor_XY = cor.test(X[-1], Y[-1])
+Pval <- function(p) {
+  if (p < .001) { pchar = '$p<.001$' } 
+  else { pchar = paste0('$p=', format(round(cor_XY$p.value, 3), nsmall = 3), '$') }
+  return(pchar)
+}
+
+```
+
+# Results
+
+As hypothesized, X was correlated with Y, $r=$ `r format(round(cor_XY$estimate, 2), nsmall = 2)`, $df=$ `r cor_XY$parameter`, `r Pval(cor_XY$p.value)`. 
