@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Method
 
-We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study.
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study [cf. @Simmons2012]. 
 
 ```{r correlation, echo = F}
 set.seed(242)
