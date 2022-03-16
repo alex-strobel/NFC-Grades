@@ -23,7 +23,7 @@ affiliation:
   - id            : "3"
     institution   : "Department of Psychology, University of Trier, Trier, Germany"
   - id            : "4"
-    institution   : "Department of Psychology, TU Dortmund University, Dortmund, Germany"
+    institution   : "Department of Psychology, Technical University Dortmund, Dortmund, Germany"
 
 
 authornote: |
