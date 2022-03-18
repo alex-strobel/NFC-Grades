@@ -258,7 +258,7 @@ _Academic achievement_ We assessed school grades in general, i.e., Grade Point A
 
 _Need for Cognition_ (NFC) was assessed with the 16-item short version of the German NFC scale [@Bless1994]. Responses to each item (e.g., "Thinking is not my idea of fun", recoded) were recorded on a four-point scale ranging from -3 (completely disagree) to +3 (completely agree) and were summed to the total NFC score. The scale has a comparably high internal consistency, Cronbach’s $\alpha$ > .80 [@Bless1994; @Fleischhauer2010], and retest reliability, $r_{tt} = .83$ across 8 to 18 weeks [@Fleischhauer2015]. 
 
-_Hope for Successs_ and _Fear of Failure_ were assessed using the Achievement Motive Scales [@Gjesme1970; German version: @Goettert1980]. For the present study, we used a short form measuring each construct with seven items. All items were answered on a four-point scale ranging from 1 (does not apply at all) to 4 (fully applies). Example items for the two scales are "Difficult problems appeal to me" and "Matters that are slightly difficult disconcert me". Both scales exhibit high internal consistencies, Cronbach's $\alpha\ge.85$ [@Steinmayr2009].
+_Hope for Successs_ and _Fear of Failure_ were assessed using the Achievement Motive Scales [German version: @Goettert1980]. For the present study, we used a short form measuring each construct with seven items. All items were answered on a four-point scale ranging from 1 (does not apply at all) to 4 (fully applies). Example items for the two scales are "Difficult problems appeal to me" and "Matters that are slightly difficult disconcert me". Both scales exhibit high internal consistencies, Cronbach's $\alpha\ge.85$ [@Steinmayr2009].
 
 The _Ability Self-Concept_ in school in general and in the four subjects German, Math, Physics, and Chemistry were assessed with four items per domain using the Scales for the Assessment of Academic Self-Concept [@Schoene2002] (example item: "I can do well in ... (school, Math, German, Physics, Chemistry)."). Items were answered on a 5-point scale ranging from 1 (...<!-- anchor? -->) to 5 (...<!-- anchor? -->). The scales' internal consistency, Cronbach's $\alpha\ge.80$, and retest reliability, $r_{tt}\ge.59$ across six months, can be considered as high.
 
@@ -267,7 +267,7 @@ _Interest_ in school in general and in the above four subjects were measured usi
 
 ## Procedure
 
-...
+Testing took place during a regular school day between March 2008 and 2009. Tests were administered at school during a regular class, which was scheduled for our study. Parents of underaged students (age < 18) provided informed consent. As the school actively supported the study participation rate was very high (96%). However, some students could not participate at measurement point 1 or 2 due to illness or other reasons (T1: n = 18; T2: n = 26). Students were separated into groups of about 20 and tested by trained research assistants. The test sessions lasted approximately 45 minutes. 
 
 
 ## Statistical analysis
