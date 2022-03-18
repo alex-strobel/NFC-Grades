@@ -1,6 +1,6 @@
 ---
-title             : "On the interplay of motivational characteristics and school grades: The role of Need for Cognition"
-shorttitle        : "NFC, Ability Self-Concept and School Grades"
+title             : "On the interplay of motivational characteristics and academic achievement: The role of Need for Cognition"
+shorttitle        : "NFC, Ability Self-Concept and academic achievement"
 
 author: 
   - name          : "Anja Strobel"
@@ -35,7 +35,7 @@ authornote: |
 
   Ricarda Steinmayr: https://orcid.org/0000-0002-0294-1045
   
-  § These authors contributed equally to this work.
+  § These authors contributed equally to this work..
 
 abstract: | 
   ...  
@@ -186,7 +186,7 @@ Over the last years, an additional predictor of academic performance came into t
 
 The enjoyment of accomplishing something, the interest in task engagement and the intrinsic value of working on a task have been suggested to be relevant to learning and academic achievement and have been integrated into models of achievement motivation [e.g., @Wigfield2000; see also @Wigfield2010 for a review]. Surprisingly, the concept of a more general joy of thinking, that is NFC, has not yet been investigated systematically together with established motivational indicators, especially in longitudinal studies, or integrated into models for the prediction of performance in school.
 
-Only last year, a large longitudinal study examined intelligence, the Big Five, a range of different motivational measures together with NFC in order to determine their value in predicting school performance [@Lavrijsen2021]. Their results showed intelligence and NFC to be the strongest predictors of school performance. The ability self-concept was the best predictor within the group of motivational variables. This underscores the importance to consider NFC along with established predictors in gaining a comprehensive picture of the prediction of school grades.
+Only last year, a large longitudinal study examined intelligence, the Big Five, a range of different motivational measures together with NFC in order to determine their value in predicting school performance [@Lavrijsen2021]. Their results showed intelligence and NFC to be the strongest predictors of school performance. The ability self-concept was the best predictor within the group of motivational variables. This underscores the importance to consider NFC along with established predictors in gaining a comprehensive picture of the prediction of academic achievement.
 
 To follow-up on these findings and to provide new insights in the interplay of school performance, NFC and motivational variables, we examined the incremental value of NFC, considering well-established motivational constructs as well as prior achievement in the prediction of school grades across different subjects in a longitudinal approach in a sample of secondary school children.
 
