@@ -220,10 +220,12 @@ Overall, NFC has been proven to be a very promising predictor of academic achiev
 
 With the present study, we aim at adding to the existing body of research by examining NFC, motivational indicators (ability self-concept, hope for success and fear of failure, interests, each of them general and subject-specific) and academic achievement (assessed via GPA, and grades in German, Math, Physics, and Chemistry) at two points of time. By considering GPA plus four subject grades we extend the existing literature on predicting academic achievement in school not only in general and in the domains of math and German (see Steinmayr & Spinath, 2009), but also on focusing on the further domains Physics and Chemistry. By applying latent change score modelling, we will be able to determine the influence of our different predictors on the change of academic achievement in general and in different domains in school over time. At the same time, mutual influences of changes in academic achievement, NFC and motivational constructs can be detected (i.e., correlated change). We examine the following hypotheses and research questions:
 
-1. What is the incremental value of Need for Cognition in the prediction of academic achievement over and above different motivational constructs and prior achievement in school?
-2. Is Need for Cognition able to predict changes in school achievement over time?
-3. Are changes in motivational variables, Need for Cognition and academic achievement related over time?
-
+1. Is Need for Cognition able to predict changes in academic achievement over time?
+Because of evidence of relations of NFC with academic achievement in cross-sectional studies, we expect NFC to also be able to predict changes in academic achievement over time.
+2. What is the incremental value of Need for Cognition in the prediction of academic achievement over and above different     motivational constructs and prior achievement in school?
+At the background of we assume that ... 
+3. Are changes in motivational variables, Need for Cognition and academic achievement in school related over time?
+<!-- Wegen der Hypothesenanmerkung von Franzis habe ich mir noch einmal Gedanken gemacht: Ich würde nur Annahmen zu NFC formulieren, da dieses Merkmal in unserem Fokus ist. Die anderen Merkmale werden ja sozusagen vor diesem Fokus betrachtet. Ich habe die Reihenfolge der ersten beiden Forschungsfragen getauscht und dort zumindest schon einmal Annahmen formuliert, die ich aber nicht in explizite Hypothesenform fassen würde, da die Kernfragen ja tatsächlich noch nicht untersucht wurden. Insofern ist dies eine Erststudie zu Change etc., bei der Forschungsfragen ausreichen sollten. Wenn wir Hypothesen zu den Korrelationen aufstellen würden, müssten die ja einzeln diskutiert werden, was das Paper m.E. unnötig aufblähen würde. -->
 
 # Methods
 
