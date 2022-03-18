@@ -245,7 +245,7 @@ load(here::here("Data", "NFC-Grades.RData"))
 ```
 
 Sample size was determined by pragmatic considerations, i.e., to collect as many participants given existing time constraints and the longitudinal nature of the project.
-We eventually managed to recruit a sample of $N$ = `r age$n[1]` participants (`r round(100*gender[1,'%female'])`% women) at the first measurement occasion (T1) of which $N$ = `r age$n[2]` participants (`r round(100*gender[2,'%female'])`% women) also took part at the second measurement occasion (T2) that took place `r paste(Tdiff, collapse="-")` weeks later. 
+We eventually managed to recruit a sample of $N$ = `r age$n[1]` participants (`r round(100*gender[1,'%female'])`% women) at the first measurement occasion (T1) of which $N$ = `r age$n[2]` participants (`r round(100*gender[2,'%female'])`% women) also took part at the second measurement occasion (T2) that took place `r paste(Tdiff, collapse="-")` weeks later. Students attended eleventh grade at two academic-track schools in Baden-Wuerttemberg at T1. 
 Age range was `r paste(age[1, 8:9], collapse = "-")` years (median = `r age$median[1]` years) at T1 and `r paste(age[2, 8:9], collapse = "-")` years (median = `r age$median[2]` years) at T2. 
 With the sample size accomplished at T2, we were able to detect correlations of _r_ $\ge$ `r printnum(pwr.r.test(n = age$n[2], sig.level = .05, power = .8)$r, gt1 = F)` at $\alpha$ = .05 (two-sided) and 1-$\beta$ = .80. 
 Yet, we tried to impute missing values to raise power (see below, _Statistical analyses_).
