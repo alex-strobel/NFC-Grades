@@ -35,7 +35,7 @@ authornote: |
 
   Ricarda Steinmayr: https://orcid.org/0000-0002-0294-1045
   
-  § These authors contributed equally to this work..
+  § These authors contributed equally to this work.
 
 abstract: | 
   ...  
