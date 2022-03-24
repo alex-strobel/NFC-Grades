@@ -2,8 +2,6 @@
 
 # 1) Activate R environment via the renv package (default option) -------------
 
-# Code partly taken from Philippe Jawinski, https://github.com/pjawinski
-
 # To activate the R environment this project was written in and have everything 
 # working properly, edit the path below to match the directory you cloned the 
 # R-Markdown repository in
