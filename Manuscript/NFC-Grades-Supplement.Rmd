@@ -1,5 +1,5 @@
 ---
-title             : "Need for Cognition and Ability Self-Concepts as Predictors of Changes in School Grades\\newline Supplementary Tables"
+title             : "On the interplay of motivational characteristics and academic achievement: The role of Need for Cognition\\newline Supplementary Tables"
 shorttitle        : "Supplementary Tables"
 
 author: 
@@ -23,13 +23,19 @@ affiliation:
   - id            : "3"
     institution   : "Department of Psychology, University of Trier, Trier, Germany"
   - id            : "4"
-    institution   : "Department of Psychology, TU Dortmund University, Dortmund, Germany"
+    institution   : "Department of Psychology, Technical University Dortmund, Dortmund, Germany"
 
 
 authornote: |
-  [adjust according to APA style]
-  * These authors contributed equally to this work.
-  [add acknowledgements and funding if applicable]
+  Anja Strobel:      https://orcid.org/0000-0002-0313-0615
+  
+  Alexander Strobel: https://orcid.org/0000-0002-9426-5397
+  
+  Franzis Preckel:   https://orcid.org/0000-0002-5768-8702
+
+  Ricarda Steinmayr: https://orcid.org/0000-0002-0294-1045
+  
+  § These authors contributed equally to this work.
 
 wordcount         : ""
 bibliography      : ["NFC-Grades_References.bib"]
