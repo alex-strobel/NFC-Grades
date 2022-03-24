@@ -235,7 +235,7 @@ With the present study, we aim at adding to the existing body of research by exa
 
 We report how we determined our sample size, all data exclusions, all manipulations, and all measures in the study [cf. @Simmons2012] and follow JARS [@APA2008].
 Data were analyzed using R [version `r R_version`, @R-base].
-All data and code for reproducing our analyses are permanently and openly accessible at <https://github.com/alex-strobel/NFC-Grades>.
+All data and code for reproducing our analyses are permanently and openly accessible at <https://osf.io/34yav/?view_only=3bf5e46b6a444bd8b69300041f838523> (project blinded for review, and to ensure blind review, please do not follow the "View this file on GitHub" link).
 This study was not preregistered.
 
 ## Participants
