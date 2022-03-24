@@ -2,7 +2,7 @@
 
 **Data and Code for manuscript "On the interplay of motivational characteristics and school grades: The role of Need for Cognition"**
 
-2022-02-09
+2022-03-24
 
 This repository contains the data and code for reproducing the analyses described in the above manuscript. To use it, simply clone the project via the green `Code` button top right. As the project is maintained using the R packages [`renv`](https://rstudio.github.io/renv/articles/renv.html) and [`here`](https://here.r-lib.org), you should be able to reproduce all results of the manuscript in an instance ... well, apart from the time it takes to load all the packages used for our analyses when you activate the project via `activate_project.R` located in the root folder.
 
@@ -13,6 +13,4 @@ The project contains the following folders:
 - [Manuscript](Manuscript) contains the R Markdown files written (main manuscript and supplement) to create the manuscript for this project and the PDF files generated
 - [renv](renv) contains the information on all the R packages used for this project as well as a routine for installing the package versions used to be able to fully reproduce the results of our manuscript even if you have other versions of these packages installed   
 
-To use this project, simply clone this project, open `activate_course.R` in the root folder under [RStudio](https://www.rstudio.com/products/rstudio/), and then follow the instructions in the comments of `activate_course.R`. Once all package versions have been loaded (which may take a while), execute the script in the Code folder and then you should be able to reproduce our manuscript from the `NFC-Grades.Rmd` file in the Manuscript folder by hitting the `Knit` button in RStudio (better make a copy of the `*.pdf` file already provided in this folder to compare your output with ours). To reproduce the supplemental material, knit the file `NFC-Grades-Supplement.Rmd` file. 
-
-<!-- If you have questions on how to use this project, on the code and/or statistical analyses, please do not hesitate to contact [Alexander Strobel](mailto:alsexander.strobel@tu-dresden.de). -->
+To use this project, simply clone this project, open `activate_course.R` in the root folder under [RStudio](https://www.rstudio.com/products/rstudio/), and then follow the instructions in the comments of `activate_course.R`. Once all package versions have been loaded (which may take a while), execute the script in the Code folder and then you should be able to reproduce our manuscript from the `NFC-Grades.Rmd` file in the Manuscript folder by hitting the `Knit` button in RStudio (better make a copy of the `*.pdf` file already provided in this folder to compare your output with ours). To reproduce the supplemental material, knit the file `NFC-Grades-Supplement.Rmd` file.
