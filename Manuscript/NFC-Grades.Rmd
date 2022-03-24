@@ -49,7 +49,7 @@ floatsintext      : no
 figurelist        : no
 tablelist         : no
 footnotelist      : no
-mask              : no
+mask              : yes
 draft             : no    
 
 documentclass     : "apa6"

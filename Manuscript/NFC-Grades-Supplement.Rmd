@@ -1,5 +1,5 @@
 ---
-title             : "On the interplay of motivational characteristics and academic achievement: The role of Need for Cognition\\newline Supplementary Tables"
+title             : "On the interplay of motivational characteristics and academic achievement: The role of Need for Cognition---Supplementary Tables"
 shorttitle        : "Supplementary Tables"
 
 author: 
@@ -45,7 +45,7 @@ floatsintext      : no
 figurelist        : no
 tablelist         : yes
 footnotelist      : no
-mask              : no
+mask              : yes
 draft             : no
 
 documentclass     : "apa6"
