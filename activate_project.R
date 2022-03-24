@@ -36,4 +36,4 @@ renv::restore()
 #
 # Yet, this may cause another problem: R does not (seem to) restart but to 
 # freeze. In this case simply close RStudio and reopen it. Now, everything
-# should work..
+# should work.
