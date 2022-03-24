@@ -1,6 +1,6 @@
 # NFC-Grades
 
-**Data and Code for Strobel, Strobel, Steinmayr & Preckel (in prep.). On the interplay of motivational characteristics and school grades: The role of Need for Cognition**
+**Data and Code for manuscript "On the interplay of motivational characteristics and school grades: The role of Need for Cognition"**
 
 2022-02-09
 
@@ -15,4 +15,4 @@ The project contains the following folders:
 
 To use this project, simply clone this project, open `activate_course.R` in the root folder under [RStudio](https://www.rstudio.com/products/rstudio/), and then follow the instructions in the comments of `activate_course.R`. Once all package versions have been loaded (which may take a while), execute the script in the Code folder and then you should be able to reproduce our manuscript from the `NFC-Grades.Rmd` file in the Manuscript folder by hitting the `Knit` button in RStudio (better make a copy of the `*.pdf` file already provided in this folder to compare your output with ours). To reproduce the supplemental material, knit the file `NFC-Grades-Supplement.Rmd` file. 
 
-If you have questions on how to use this project, on the code and/or statistical analyses, please do not hesitate to contact [Alexander Strobel](mailto:alsexander.strobel@tu-dresden.de).
+<!-- If you have questions on how to use this project, on the code and/or statistical analyses, please do not hesitate to contact [Alexander Strobel](mailto:alsexander.strobel@tu-dresden.de). -->
