@@ -60,7 +60,7 @@ draft             : no
 
 documentclass     : "apa6"
 classoption       : "man"
-output            : redoc::redoc
+output            : papaja::apa6_pdf
 
 ---
 
@@ -185,7 +185,7 @@ rl <- function(parameter_estimates, label = "") {
 }
 
 ```
-<!-- Note: Placing every sentence on a new line makes it easier to sollaborate on the manuscript using GitHub, because every change of a sentence (aka commit) will be directly visible. -->
+<!-- Note: Placing every sentence on a new line makes it easier to collaborate on the manuscript using GitHub, because every change of a sentence (aka commit) will be directly visible. -->
 In recent decades, a great deal of research has been conducted on the prediction of academic achievement.
 While meta-analyses indicate that intelligence is the strongest predictor for academic achievement [e.g., @Deary2007; @Roth2015; @Zaboski2018], motivational variables have consistently been found to have incremental value for academic achievement [e.g., @Kriegbaum2018; @Steinmayr2019].
 Concepts like ability self-concept, hope for success and fear of failure, interest and values are well known and equally established indicators [e.g., @Wigfield2000; @Wigfield2010] that are subsumed under the umbrella term of achievement motivation [@Steinmayr2019].
