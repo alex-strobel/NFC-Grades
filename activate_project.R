@@ -9,7 +9,7 @@
 # Change to project directory via here package
 library(here) 
 # set top level directory to source file
-here::i_am("flag_project_root_RMDcourse.txt")
+here::i_am("flag_root_for_NFC-Grades.txt")
 
 # Detach other packages if there are any to avoid conflicts with packages of 
 # the R environment of this project
