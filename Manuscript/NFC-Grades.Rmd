@@ -58,7 +58,7 @@ footnotelist      : no
 mask              : yes
 draft             : no    
 
-documentclass     : "apa6"
+documentclass     : "apa7"
 classoption       : "man"
 output            : papaja::apa6_pdf
 
