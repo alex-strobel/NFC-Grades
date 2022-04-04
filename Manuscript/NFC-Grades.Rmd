@@ -262,7 +262,7 @@ Yet, we tried to impute missing values to raise power (see below, *Statistical a
 
 We used the following self-report measures to assess the measures of interest for the present study.
 
-*Academic achievement* We assessed school grades in general, i.e., Grade Point Average (GPA <!-- FP: über welche wurde das gebildet - nur die 4 im Paper oder weitere? AS: das müsste sicher genauer beschrieben werden -->), and grades in German, Math, Physics, and Chemistry via self-report.
+*Academic achievement* We assessed school grades in general, i.e., Grade Point Average (GPA), and grades in German, Math, Physics, and Chemistry via self-report.
 In Germany, school grades range from 1 (excellent) to 6 (insufficient). For better interpretability, we reversed this coding via $6 - grade$, so the values we used for statistical analyses ranged from 0 (insufficient) to 5 (excellent).
 
 *Need for Cognition* (NFC) was assessed with the 16-item short version of the German NFC scale [@Bless1994].
