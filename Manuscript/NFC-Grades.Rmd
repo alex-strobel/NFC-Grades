@@ -50,7 +50,7 @@ keywords          : "Need for Cognition, Academic Achievement, Academic Self-Con
 wordcount         : "5809"
 bibliography      : ["NFC-Grades_References.bib"]
 
-linenumbers       : yes
+linenumbers       : no
 floatsintext      : no
 figurelist        : no
 tablelist         : no
@@ -399,12 +399,21 @@ In a sample of secondary school students, we examined the (incremental) validity
 By applying latent change score modelling, we determined the influence of these predictors on the change of academic achievement over one year.
 At the same time, we examined mutual influences of change in these variables. The main results are discussed below.
 
-## Validity of NFC for predicting change in academic achievement
+## Validity of NFC for predicting academic achievement
 
-Concerning associations of all predictors examined and academic achievement, we found typical correlation patterns: 
+NFC showed positive concurrent and predictive correlations with achievement and all motivational variables, except for fear of failure for which concurrent and predictive correlations were negative.
+This correlational pattern was found for domain-general measures as well as for the four subjects.
+Correlations were of medium to large effect size.
+These findings clearly support the relevance of NFC for learning and the development of achievement.
+Of all variables under study, NFC showed the second-highest correlations with GPA, after ability self-concept.
+With regard to the four subjects, NFC showed the third-highest correlations with grades, after domain-specific ability self-concept and domain-specific interest.
+@Ginet2000 or @Luong2017 reported comparable associations for NFC.
+
+With regard to the prediction of change in GPA, NFC turned out to be a significant positive predictor together with prior GPA and academic self-concept. In line with former findings (e.g., Hailikari et al., 2007; Steinmayr et al., 2019), prior achievement was the best predictor of change in GPA. NFC and academic self-concepts showed relations of comparable size (β = .19) with change in GPA. With regard to the prediction of change in the four subject grades, prior achievement again was the best predictor of change in grades. NFC positively predicted change in grades in all subjects; however, the regression weight for math missed the significance level. Of note, subject-specific academic self-concepts significantly predicted change in academic achievement in two subjects, only (German and Chemistry). 
+
+<!-- Concerning associations of all predictors examined and academic achievement, we found typical correlation patterns: 
 In line with former findings [@Hailikari2007; @Steinmayr2019], prior achievement showed a strong relation to GPA at the second time of assessment.
-Also mirroring previous findings [@Steinmayr2019], among the motivational variables, ability self-concept showed the highest correlations with academic achievement, and this held for general as well as domain-specific ability self-concept.
-Furthermore, comparable to associations reported by @Ginet2000 or @Luong2017, moderate to strong associations were found for academic achievement and NFC pointing to the relevance of this variable in the school context.
+Also mirroring previous findings [@Steinmayr2019], among the motivational variables, ability self-concept showed the highest correlations with academic achievement, and this held for general as well as domain-specific ability self-concept. -->
 
 ## Incremental validity of NFC
 
