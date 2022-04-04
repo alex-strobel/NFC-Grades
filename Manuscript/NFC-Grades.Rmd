@@ -430,9 +430,9 @@ Furthermore, concerning correlated change, the amount of change in grades at the
 This is a plausible interplay as ability self-concept is subject to change through feedback and the experience of success or failure and enhances achievement in turn [e.g., @Marsh2005; @Spinath2005].
 The same association was observable for changes in grades and NFC in German, Math and Physics.
 Thus, change in grades was accompanied by larger change in the enjoyment of and motivation for thinking, particularly in these subjects.
-Changes in ability self-concept and NFC, in turn, were correlated for GPA and Chemistry.
+Changes in ability self-concept and NFC, in turn, were correlated in the GPA and Chemistry model.
 Taken together, this lends support to self-enhancement and skill-development processes for both, ability self-concept and NFC.
-While such reciprocal relations of academic achievement and the ability self-concept are well-confirmed [@Marsh2011; @Moeller2011; @Moeller2020], to our knowledge, this has not yet been demonstrated for NFC as well.
+While such positive reciprocal relations of academic achievement and the ability self-concept are well-confirmed [@Marsh2011; @Moeller2011; @Moeller2020], to our knowledge, this has not yet been demonstrated for NFC as well.
 Academic achievement and NFC appear to mutually strengthen or weaken each other.
 Therefore, fostering NFC at school can be an essential part of ensuring that children can develop their full intellectual potential.
 The findings of @Meier2014 support this assumption: for the attendance of a gifted class, the level of NFC played a pivotal role even after controlling for cognitive ability or ability self-concept.
