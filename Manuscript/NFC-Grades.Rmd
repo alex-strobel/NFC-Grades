@@ -395,11 +395,11 @@ Correlated change between grades and the subject-specific ability self-concept w
 # Discussion
 
 The present study was conducted to provide new insights into the interplay of academic achievement, motivational variables and NFC.
-In a sample of secondary school students, we examined the incremental value of NFC, considering ability self-concept, interest (general and domain-specific), hope for success and fear of failure as well as prior achievement in the prediction of academic achievement (assessed via GPA and grades in German, Math, Physics, and Chemistry.
+In a sample of secondary school students, we examined the (incremental) validity of NFC for explaining academic achievement and its development, considering ability self-concept, interest (general and domain-specific), hope for success and fear of failure as well as prior achievement in the prediction of academic achievement (assessed via GPA and grades in German, Math, Physics, and Chemistry.
 By applying latent change score modelling, we determined the influence of these predictors on the change of academic achievement over one year.
 At the same time, we examined mutual influences of change in these variables. The main results are discussed below.
 
-## Predictive value of NFC
+## Validity of NFC for predicting change in academic achievement
 
 Concerning associations of all predictors examined and academic achievement, we found typical correlation patterns: 
 In line with former findings [@Hailikari2007; @Steinmayr2019], prior achievement showed a strong relation to GPA at the second time of assessment.
