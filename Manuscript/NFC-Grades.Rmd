@@ -406,7 +406,7 @@ In line with former findings [@Hailikari2007; @Steinmayr2019], prior achievement
 Also mirroring previous findings [@Steinmayr2019], among the motivational variables, ability self-concept showed the highest correlations with academic achievement, and this held for general as well as domain-specific ability self-concept.
 Furthermore, comparable to associations reported by @Ginet2000 or @Luong2017, moderate to strong associations were found for academic achievement and NFC pointing to the relevance of this variable in the school context.
 
-## Incremental value of NFC
+## Incremental validity of NFC
 
 The importance of NFC becomes even more apparent when looking at the prediction models:
 Multiple regression analyses showed NFC to incrementally predict academic achievement as reflected in GPA, German and Physics grades over and above prior achievement and the general or domain-specific ability self-concept.
