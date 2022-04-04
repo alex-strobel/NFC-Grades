@@ -397,33 +397,35 @@ Correlated change between $\Delta$grades and $\Delta$ in subject-specific abilit
 The present study was conducted to provide new insights into the interplay of academic achievement, motivational variables and NFC.
 In a sample of secondary school students, we examined the (incremental) validity of NFC for explaining academic achievement and its development, considering ability self-concept, interest (general and domain-specific), hope for success and fear of failure as well as prior achievement in the prediction of academic achievement (assessed via GPA and grades in German, Math, Physics, and Chemistry.
 By applying latent change score modelling, we determined the influence of these predictors on the change of academic achievement over one year.
-At the same time, we examined mutual influences of change in these variables. The main results are discussed below.
+At the same time, we examined mutual influences of change in these variables.
+The main results are discussed below.
 
 ## Validity of NFC for predicting academic achievement over time
 
-NFC showed positive concurrent and predictive correlations with achievement and all motivational variables, except for fear of failure for which concurrent and predictive correlations were negative. 
-This correlational pattern was found for domain-general measures as well as for the four subjects. 
-Correlations were of medium to large effect size. 
-These findings clearly support the relevance of NFC for learning and the development of achievement. 
-Of all variables under study, NFC showed the second-highest correlations with GPA, after ability self-concept. 
-With regard to the four subjects, NFC showed the third-highest correlations with grades, after domain-specific ability self-concept and domain-specific interest. 
-@Ginet2000 or @Luong2017 reported associations in comparable size for NFC and grades. 
-In line with former findings [@Hailikari2007; @Steinmayr2019], prior achievement showed a strong relation to GPA at the second time of assessment. 
+NFC showed positive concurrent and predictive correlations with achievement and all motivational variables, except for fear of failure for which concurrent and predictive correlations were negative.
+This correlational pattern was found for domain-general measures as well as for the four subjects.
+Correlations were of medium to large effect size.
+These findings clearly support the relevance of NFC for learning and the development of achievement.
+Of all variables under study, NFC showed the second-highest correlations with GPA, after ability self-concept.
+With regard to the four subjects, NFC showed the third-highest correlations with grades, after domain-specific ability self-concept and domain-specific interest.
+@Ginet2000 or @Luong2017 reported associations in comparable size for NFC and grades.
+In line with former findings [@Hailikari2007; @Steinmayr2019], prior achievement showed a strong relation to GPA at the second time of assessment.
 Also mirroring previous findings [@Steinmayr2019], among the motivational variables, ability self-concept showed the highest correlations with academic achievement, and this held for general as well as domain-specific ability self-concept.
 Concerning the prediction of change in grades, NFC and the general ability self-concept significantly positively predicted change in GPA.
 Furthermore, NFC predicted changes in Physics, German, and Chemistry, while domain specific ability self-concept was a significant predictor only for the latter two.  
 
 ## Incremental validity of NFC over and above established motivational constructs and prior achievement
 
-The importance of NFC for learning becomes even more apparent when looking at the results of the multiple regression analyses. 
-When including all predictor variables, NFC incrementally explained academic achievement as reflected in GPA, German and Physics grades over and above prior achievement and the general or domain-specific ability self-concept. Concerning Chemistry, the prediction by NFC barely missed the significance level. 
-However, findings from the latent change score models revealed that NFC predicted changes in grades for this subject alongside with prior achievement. 
-
-Compelling evidence of the incremental validity of NFC also emerges from further examination of the latent change score models. 
-For GPA, German and Chemistry, prior achievement positively predicted changes in grades, as did NFC and general, or domain specific ability self-concept, respectively. Concerning Physics, only NFC was found to predict changes in grades for this subject alongside with prior achievement.
-Only for Math, NFC did not significantly explain achievement over and above the other predictor variables, and prior achievement was the only relevant predictor. 
-It is noteworthy that the stability of the Math’s grade is lower than that of the other subjects included. 
-There could be many possible reasons for this finding, however, we are not able to draw firm conclusions on the basis of the available information. 
+The importance of NFC for learning becomes even more apparent when looking at the results of the multiple regression analyses.
+When including all predictor variables, NFC incrementally explained academic achievement as reflected in GPA, German and Physics grades over and above prior achievement and the general or domain-specific ability self-concept.
+Concerning Chemistry, the prediction by NFC barely missed the significance level.
+However, findings from the latent change score models revealed that NFC predicted changes in grades for this subject alongside with prior achievement.
+Compelling evidence of the incremental validity of NFC also emerges from further examination of the latent change score models.
+For GPA, German and Chemistry, prior achievement positively predicted changes in grades, as did NFC and general, or domain specific ability self-concept, respectively.
+Concerning Physics, only NFC was found to predict changes in grades for this subject alongside with prior achievement.
+Only for Math, NFC did not significantly explain achievement over and above the other predictor variables, and prior achievement was the only relevant predictor.
+It is noteworthy that the stability of the Math’s grade is lower than that of the other subjects included.
+There could be many possible reasons for this finding, however, we are not able to draw firm conclusions on the basis of the available information.
 Subject and potential teaching specific differences should be addressed in further studies.
 To conclude, with regard to all grades examined and comparable to the results of @Lavrijsen2021, NFC proved to be a valuable predictor of academic achievement that should be considered alongside established motivational variables in order to gain a comprehensive picture of the factors that influence grades and their development.
 
