@@ -47,7 +47,7 @@ Consequently, we propose to include NFC in models for the comprehensive explanat
   
   
 keywords          : "Need for Cognition, Academic Achievement, Academic Self-Concept, Latent Change Score Modeling, Longitudinal"
-wordcount         : "5809"
+wordcount         : "5962"
 bibliography      : ["NFC-Grades_References.bib"]
 
 linenumbers       : no
@@ -351,7 +351,7 @@ The other variables at T1 showed significant correlations with GPA at T2 as well
 apa_table(mr.report.overall, 
           caption = "Results of the multiple regression of academic achievement measured at T2 on predictors measured at T1",
           col.names = c("", "$B$", "$SE$", "$CI.LB$", "$CI.UB$", "$\\beta$", "$p$"),
-          note = "$N$ = 276; coefficients are unstandardized slopes $B$ with their standard errors $SE$ and 95\\% confidence intervals ($CI.LB$ = lower bound, $CI.UB$ = upper bound), $\\beta$ is the standardized slope and $p$ the respective $p$-vcalues",
+          note = "$N$ = 276; coefficients are unstandardized slopes $B$ with their standard errors $SE$ and 95\\% confidence intervals ($CI.LB$ = lower bound, $CI.UB$ = upper bound), $\\beta$ is the standardized slope and $p$ the respective $p$-values",
           align = c("l", rep("r", ncol(mr.report.overall))),
           escape = F)
 
@@ -375,7 +375,7 @@ Correlated change was observed for $\Delta$GPA and $\Delta$ability self-concept,
 apa_table(list(German = mr.report.german, Math = mr.report.math, Physics = mr.report.physics, Chemistry = mr.report.chemistry),
           caption = "Multiple regressions of subject grades at T2 on predictors at T1",
           col.names = c("", "$B$", "$SE$", "$CI.LB$", "$CI.UB$", "$\\beta$", "$p$"),
-          note = "$N$ = 271-275; coefficients are unstandardized slopes $B$ with their standard errors $SE$ and 95\\% confidence intervals ($CI.LB$ = lower bound, $CI.UB$ = upper bound), $\\beta$ is the standardized slope and $p$ the respective $p$-vcalues",
+          note = "$N$ = 271-275; coefficients are unstandardized slopes $B$ with their standard errors $SE$ and 95\\% confidence intervals ($CI.LB$ = lower bound, $CI.UB$ = upper bound), $\\beta$ is the standardized slope and $p$ the respective $p$-values",
           align = c("l", rep("c",ncol(mr.report.german))),
           escape = F,
           font_size = "scriptsize")
