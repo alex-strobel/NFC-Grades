@@ -442,7 +442,7 @@ The findings of @Meier2014 support this assumption: for the attendance of a gift
 Some limitations of our study have to be noted.
 We assessed all data in a convenience sample, and while it was large enough to have adequate power to detect small to medium correlations, it was not representative for the German population of adolescents.
 Furthermore, there were missing values in the data and we had to impute them in order to increase power for our analyses.
-Yet, the FIML approach to treat missing values employed here was shown to lead to adequate estimates for the standard error of regression estimates [@Larson2011].
+Yet, the FIML approach <!-- FP: Bei FIML werden eigentlich keine Daten imputiert --> to treat missing values employed here was shown to lead to adequate estimates for the standard error of regression estimates [@Larson2011].
 Also, we did not have the opportunity to examine the predictive value of intelligence together with the predictors in our study.
 Although we assessed prior achievement as a relevant predictor also mirroring intellectual potential, further studies should also assess intelligence in order to gain a more comprehensive picture of the interplay of all variables of relevance.
 Furthermore, because of the trait-character of NFC, hope for success and fear of failure, we did not assess these variables in a domain-specific way.
@@ -452,9 +452,9 @@ As a last aspect, it would be interesting to longitudinally investigate the pote
 
 ## Conclusion
 
-Taken together, using a longitudinal approach and including a large set of established predictors of academic achievement, the present study shows that NFC is of incremental value when aiming at a comprehensive picture on the prediction of academic achievement.
+Taken together, using a longitudinal approach and including a large set of established constructs of academic motivation, the present study shows that NFC is of incremental value when aiming at a comprehensive picture on the prediction of academic achievement.
 Associations of NFC with grades were comparable or even stronger than for well-established motivational variables.
-In the prediction of grades over time, NFC could largely consistently prove its predictive value over and above prior achievement.
+In the prediction of grades over time, NFC could largely consistently prove its predictive and incremental value over and above prior achievement and academic self-concept.
 Furthermore, a mutual influence of NFC and academic achievement could be demonstrated with first evidence for skill-development as well as self-enhancement processes taken place in this interplay.
 To sum up, we propose that NFC should be included in models aiming at comprehensively explaining academic achievement in school.
 In addition, we consider fostering the general joy of thinking and conquering cognitively challenging tasks a worthwhile endeavor to help children to unfold their intellectual potential.
