@@ -37,14 +37,11 @@ authornote: |
   
   § These authors contributed equally to this work.
 
-abstract: "While intelligence and motivational variables are well-established predictors of academic achievement, Need for Cognition (NFC), the stable intrinsic motivation to engage in and enjoy challenging intellectual activity, has not yet been considered comprehensively in this field of research approaches, especially not longitudinally. 
-By applying latent change score modelling, we examined the incremental value of NFC, considering well-established motivational constructs as well as prior achievement in the prediction of academic achievement across different subjects in a longitudinal approach in a sample of secondary school students ($N=271$ and 255, respectively). 
-Correlations of NFC with grades were comparable to those of established predictors. 
-NFC incrementally predicted academic achievement over and above prior achievement as well as ability self-concept. 
-Furthermore, a mutual influence of NFC and academic achievement was found pointing to skill-development as well as self-enhancement processes taken place in this interplay.
-Consequently, we propose to include NFC in models for the comprehensive explanation of academic achievement in school."
+abstract: "While intelligence and motivational variables are well-established predictors of academic
+achievement, Need for Cognition (NFC), the stable intrinsic motivation to engage in and
+enjoy challenging intellectual activity, has not yet been considered comprehensively in this
+field, especially not longitudinally. By applying latent change score modelling, we examined the incremental value of NFC, considering well-established motivational constructs and prior achievement in the prediction of academic achievement across different subjects in a longitudinal approach in a sample of secondary school students ($N$ = 271 and 255). Correlations of NFC with grades were comparable to those of established predictors. NFC incrementally predicted academic achievement over and above prior achievement and ability self-concept. A mutual influence of NFC and academic achievement was found pointing to skill-development as well as self-enhancement processes taken place in this interplay. Consequently, we propose to include NFC in models for the comprehensive explanation of academic achievement in school."
 
-  
   
 keywords          : "Need for Cognition, Academic Achievement, Academic Self-Concept, Latent Change Score Modeling, Longitudinal"
 wordcount         : "5962"
