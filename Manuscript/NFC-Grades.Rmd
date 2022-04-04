@@ -185,7 +185,7 @@ rl <- function(parameter_estimates, label = "") {
 }
 
 ```
-<!-- Note: Placing every sentence on a new line makes it easier to collaborate on the manuscript using GitHub, because every change of a sentence (aka commit) will be directly visible. -->
+
 In recent decades, a great deal of research has been conducted on the prediction of academic achievement.
 While meta-analyses indicate that intelligence is the strongest predictor for academic achievement [e.g., @Deary2007; @Roth2015; @Zaboski2018], motivational variables have consistently been found to have incremental value for academic achievement [e.g., @Kriegbaum2018; @Steinmayr2019].
 Concepts like ability self-concept, hope for success and fear of failure, interest and values are well known and equally established indicators [e.g., @Wigfield2000; @Wigfield2010] that are subsumed under the umbrella term of achievement motivation [@Steinmayr2019].
@@ -363,8 +363,8 @@ A $\chi^2$-difference test supported the superiority of the former compared to t
 
 We therefore further examined a trivariate latent change score model involving academic achievement, the ability self-concept, and NFC.
 Fig. 1B gives the results of the latent change score modeling with regard to the prediction of change and correlated change in overall academic achievement, i.e., GPA.
-While the best predictor of change on GPA was GPA at T1 (i.e., self-feedback via prior achievement), `r rl(fit.overall, "beta1")`<!-- FP: Also weniger Verbesserung bei besseren Ausgangsnoten (ggf. Kompensationseffekt oder Deckeneffekt der Notenskala) … ggf. Noch in Diskussion aufnehmen? -->, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, `r rl(fit.overall, "gamma12")`, and `r rl(fit.overall, "gamma13")`, respectively.
-Correlated change was observed for Δ <!-- hier hat FP vor jd. Variable ein Delta eingefügt --> GPA and the ability self-concept, `r rl(fit.overall, "rho12")`, and the ability self-concept and NFC, `r rl(fit.overall, "rho23")`, while the correlated changes in GPA and NFC did not reach significance, `r rl(fit.overall, "rho13")`.
+While the best predictor of change in GPA was GPA at T1 (i.e., self-feedback via prior achievement), `r rl(fit.overall, "beta1")`<!-- FP: Also weniger Verbesserung bei besseren Ausgangsnoten (ggf. Kompensationseffekt oder Deckeneffekt der Notenskala) … ggf. Noch in Diskussion aufnehmen? -->, there was also evidence for cross-domain coupling, as the overall ability self-concept and NFC at T1 also significantly predicted change in GPA, `r rl(fit.overall, "gamma12")`, and `r rl(fit.overall, "gamma13")`, respectively.
+Correlated change was observed for $\Delta$GPA and $\Delta$ability self-concept, `r rl(fit.overall, "rho12")`, and for $\Delta$ability self-concept and $\Delta$NFC, `r rl(fit.overall, "rho23")`, while the correlated changes in $\Delta$GPA and $\Delta$NFC did not reach significance, `r rl(fit.overall, "rho13")`.
 
 ![Latent change score models. (A) Example of a bivariate latent change score model (for details see text); legend to lines: dotted = loadings fixed to zero, red = self-feedback $\beta$, blue = cross-domain coupling $\gamma$, grey = correlation $\phi$ of predictors at T1, green = correlated change $\rho$; (B) Grade Point Average (GPA) and (C) to (F) subject-specific changes in grades at T2 (indicated by prefix $\Delta$) as predicted by their respective T1 levels as well as by Need for Cognition (NFC) and (overall as well as subject specific) Ability Self-Concept (ASC) at T1; coefficients are standardized coefficients.]("Fig1.jpg")
 
@@ -390,7 +390,7 @@ In both cases, models with NFC as predictor together with grades at T1 and abili
 As regards the latent change score models, there was evidence for significant self-feedback for all subjects, all $p<.001$.
 With regard to the subject-specific ability self-concept, cross-domain coupling with changes in grades was observed for German, `r rl(fit.german, "gamma12")`,  and Chemistry, `r rl(fit.chemistry, "gamma12")`.
 NFC at T1 showed cross-domain coupling with changes in grades at T2 for German, `r rl(fit.german, "gamma13")`, Physics, `r rl(fit.physics, "gamma13")`, and Chemistry, `r rl(fit.chemistry, "gamma13")`.
-Correlated change between grades and the subject-specific ability self-concept was observed for all subjects, while correlated change between grades and NFC was observed for German, Math, and Physics only (see Fig. 1C-F). <!-- FP: Correlated change between Δ grades and the Δ  in subject-specific ability self-concepts was observed for all subjects, while correlated change between Δ grades and Δ NFC was observed for  German, Math, and Physics only (see Fig. 1C-F). -->
+Correlated change between $\Delta$grades and $\Delta$ in subject-specific ability self-concept was observed for all subjects, while correlated change between $\Delta$grades and $\Delta$NFC was observed for German, Math, and Physics only (see Fig. 1C-F).
 
 # Discussion
 
@@ -441,8 +441,8 @@ The findings of @Meier2014 support this assumption: for the attendance of a gift
 
 Some limitations of our study have to be noted.
 We assessed all data in a convenience sample, and while it was large enough to have adequate power to detect small to medium correlations, it was not representative for the German population of adolescents.
-Furthermore, there were missing values in the data and we had to impute them in order to increase power for our analyses.
-Yet, the FIML approach <!-- FP: Bei FIML werden eigentlich keine Daten imputiert --> to treat missing values employed here was shown to lead to adequate estimates for the standard error of regression estimates [@Larson2011].
+Furthermore, there were missing values in the data.
+Yet, the FIML approach to treat missing values employed here was shown to lead to adequate estimates for the standard error of regression estimates [@Larson2011].
 Also, we did not have the opportunity to examine the predictive value of intelligence together with the predictors in our study.
 Although we assessed prior achievement as a relevant predictor also mirroring intellectual potential, further studies should also assess intelligence in order to gain a more comprehensive picture of the interplay of all variables of relevance.
 Furthermore, because of the trait-character of NFC, hope for success and fear of failure, we did not assess these variables in a domain-specific way.
