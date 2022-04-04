@@ -44,7 +44,7 @@ field, especially not longitudinally. By applying latent change score modelling,
 
   
 keywords          : "Need for Cognition, Academic Achievement, Academic Self-Concept, Latent Change Score Modeling, Longitudinal"
-wordcount         : "5962"
+wordcount         : "5961"
 bibliography      : ["NFC-Grades_References.bib"]
 
 linenumbers       : no
@@ -57,7 +57,7 @@ draft             : no
 
 documentclass     : "apa7"
 classoption       : "man"
-output            : papaja::apa6_pdf
+output            : papaja::apa6_word
 
 ---
 
