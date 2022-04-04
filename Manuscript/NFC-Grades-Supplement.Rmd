@@ -12,7 +12,7 @@ author:
     affiliation   : "2*"
   - name          : "Franzis Preckel"
     affiliation   : "3"
-  - name          : "Ricarda Steinmayer"
+  - name          : "Ricarda Steinmayr"
     affiliation   : "4"
 
 affiliation:
