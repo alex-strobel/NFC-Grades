@@ -654,7 +654,7 @@ asc.d ~~  rho23 * nfc.d
 
 # overall grades and ability self-concept together with NFC
 fit.overall <- lavaan(lcsm, data = df.overall, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
-# summary(fit.overall, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+summary(fit.overall, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 
 # German grades and ability self-concept together with NFC
 fit.german <- lavaan(lcsm, data = df.german, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
