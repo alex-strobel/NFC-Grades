@@ -2,7 +2,7 @@
 
 **Data and Code for manuscript "On the interplay of motivational characteristics and school grades: The role of Need for Cognition"**
 
-2022-03-24
+2022-03-25
 
 This repository contains the data and code for reproducing the analyses described in the above manuscript. As this project is maintained using the R packages [`renv`](https://rstudio.github.io/renv/articles/renv.html) and [`here`](https://here.r-lib.org), you should be able to instantly reproduce all results of the manuscript.
 
