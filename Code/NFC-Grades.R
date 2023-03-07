@@ -11,6 +11,7 @@ library(lavaan)     # for latent change score modeling
 library(naniar)     # test data with missings for MCAR
 library(papaja)     # for easier reporting
 library(psych)      # for correlation analysis, Mardia test etc.
+library(semTools)   # for various SEM related tools
 library(shape)      # for plotting
 
 # global functions ------------------------------------------------------------
@@ -893,3 +894,781 @@ save.image(here::here("Data","NFC-Grades.RData"))
 dir_manuscript  = dir(here::here("Manuscript"))
 files_to_delete = dir_manuscript[grep("fff|log|tex|ttt", dir_manuscript)]
 eval(parse(text = paste0("unlink('Manuscript/", files_to_delete, "')")))
+
+
+
+# new analyses based on comments during peer-review ---------------------------
+
+# measurement model (?) NFC
+
+# get variable names of nfc items and paste them to console,
+# 1) all items at each time point
+# 2) separately for positive and negative formulated items
+nfc_items_1 = colnames(d)[grep("nfc", colnames(d))][1:16]
+nfc_posit_1 = nfc_items_1[-grep("g", nfc_items_1)]
+nfc_negat_1 = nfc_items_1[ grep("g", nfc_items_1)]
+nfc_items_2 = colnames(d)[grep("nfc", colnames(d))][18:33]
+nfc_posit_2 = nfc_items_2[-grep("g", nfc_items_2)]
+nfc_negat_2 = nfc_items_2[ grep("g", nfc_items_2)]
+paste(nfc_items_1, collapse = " + ")
+paste(nfc_posit_1, collapse = " + ")
+paste(nfc_negat_1, collapse = " + ")
+paste(nfc_items_2, collapse = " + ")
+paste(nfc_posit_2, collapse = " + ")
+paste(nfc_negat_2, collapse = " + ")
+
+# simple model
+m_nfc = '
+NFC1 =~ nfc_01 + nfc_02 + nfc_03 + nfc_05 + nfc_13 + nfc_14 + nfc_04g + nfc_06g + nfc_07g + nfc_08g + nfc_09g + nfc_10g + nfc_11g + nfc_12g + nfc_15g + nfc_16g 
+NFC2 =~ nfc_01_2 + nfc_02_2 + nfc_03_2 + nfc_05_2 + nfc_13_2 + nfc_14_2 + nfc_04g_2 + nfc_06g_2 + nfc_07g_2 + nfc_08g_2 + nfc_09g_2 + nfc_10g_2 + nfc_11g_2 + nfc_12g_2 + nfc_15g_2 + nfc_16g_2
+NFC1 ~~ NFC2
+'
+
+# models with method factors
+m_nfc_1 = '
+NFC1 =~ nfc_01 + nfc_02 + nfc_03 + nfc_05 + nfc_13 + nfc_14 + nfc_04g + nfc_06g + nfc_07g + nfc_08g + nfc_09g + nfc_10g + nfc_11g + nfc_12g + nfc_15g + nfc_16g 
+M_pos1 =~ nfc_01 + nfc_02 + nfc_03 + nfc_05 + nfc_13 + nfc_14
+M_neg1 =~ nfc_04g + nfc_06g + nfc_07g + nfc_08g + nfc_09g + nfc_10g + nfc_11g + nfc_12g + nfc_15g + nfc_16g
+M_pos1 ~~ 0*M_neg1
+'
+
+m_nfc_2 = '
+NFC2 =~ nfc_01_2 + nfc_02_2 + nfc_03_2 + nfc_05_2 + nfc_13_2 + nfc_14_2 + nfc_04g_2 + nfc_06g_2 + nfc_07g_2 + nfc_08g_2 + nfc_09g_2 + nfc_10g_2 + nfc_11g_2 + nfc_12g_2 + nfc_15g_2 + nfc_16g_2
+M_pos2 =~ nfc_01_2 + nfc_02_2 + nfc_03_2 + nfc_05_2 + nfc_13_2 + nfc_14_2
+M_neg2 =~ nfc_04g_2 + nfc_06g_2 + nfc_07g_2 + nfc_08g_2 + nfc_09g_2 + nfc_10g_2 + nfc_11g_2 + nfc_12g_2 + nfc_15g_2 + nfc_16g_2
+M_pos2 ~~ 0*M_neg2
+'
+
+f_nfc = cfa(m_nfc, data = d, estimator = "MLR", missing = "FIML")
+summary(f_nfc, fit.measures = T, standardized = T)
+
+f_nfc_1 = cfa(m_nfc_1, data = d, estimator = "MLR", missing = "FIML")
+summary(f_nfc_1, fit.measures = T, standardized = T)
+
+f_nfc_2 = cfa(m_nfc_2, data = d, estimator = "MLR", missing = "FIML")
+summary(f_nfc_2, fit.measures = T, standardized = T)
+
+# measurement models with parcels 
+
+source("~/Documents/R/functions/parcel.gen.R")
+df_nfc_1 = d[grep("nfc", colnames(d))][ 1:16]
+df_nfc_2 = d[grep("nfc", colnames(d))][18:33]
+
+nfc_parcels_1 = parcel.gen(as.numeric(principal(df_nfc_1, nfactors = 1)$loadings), parcels = 4)
+nfc_parcels_2 = parcel.gen(as.numeric(principal(df_nfc_2, nfactors = 1)$loadings), parcels = 4)
+
+df_nfc_p = data.frame(nfc_p1_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 1]]),
+                      nfc_p2_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 2]]),
+                      nfc_p3_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 3]]),
+                      nfc_p4_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 4]]),
+                      nfc_p1_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 1]]),
+                      nfc_p2_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 2]]),
+                      nfc_p3_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 3]]),
+                      nfc_p4_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 4]]))
+
+mp_nfc = '
+NFC1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
+NFC2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
+NFC1 ~~ NFC2
+nfc_p1_1 ~~ nfc_p1_2
+nfc_p2_1 ~~ nfc_p2_2
+nfc_p3_1 ~~ nfc_p3_2
+nfc_p4_1 ~~ nfc_p4_2
+'
+fp_nfc = cfa(mp_nfc, data = df_nfc_p, estimator = "MLR", missing = "FIML")
+summary(fp_nfc, fit.measures = T, standardized = T)
+
+# Ability Self-Concept overall
+
+paste(colnames(d)[grep("kom_al", colnames(d))], collapse = " + ")
+
+m_asc = '
+ASC1 =~ kom_al1 + kom_al2 + kom_al3 + kom_al4 
+ASC2 =~ kom_al1_2 + kom_al2_2 + kom_al3_2 + kom_al4_2
+kom_al1 ~~ kom_al1_2
+kom_al2 ~~ kom_al2_2
+kom_al3 ~~ kom_al3_2
+kom_al4 ~~ kom_al4_2
+ASC1 ~~ ASC2
+'
+
+f_asc = cfa(m_asc, data = d, estimator = "MLR", missing = "FIML")
+summary(f_asc, fit.measures = T, standardized = T)
+
+# Ability Self-Concept combined
+
+paste(colnames(d)[grep("kom_", colnames(d))], collapse = " + ")
+
+m_asc = '
+ASO1 =~ kom_al1 + kom_al2 + kom_al3 + kom_al4 
+ASG1 =~ kom_d1 + kom_d2 + kom_d3 + kom_d4 
+ASM1 =~ kom_m1 + kom_m2 + kom_m3 + kom_m4 
+ASP1 =~ kom_p1 + kom_p2 + kom_p3 + kom_p4 
+ASC1 =~ kom_c1 + kom_c2 + kom_c3 + kom_c4
+ASO2 =~ kom_al1_2 + kom_al2_2 + kom_al3_2 + kom_al4_2
+ASG2 =~ kom_d1_2 + kom_d2_2 + kom_d3_2 + kom_d4_2
+ASM2 =~ kom_m1_2 + kom_m2_2 + kom_m3_2 + kom_m4_2
+ASP2 =~ kom_p1_2 + kom_p2_2 + kom_p3_2 + kom_p4_2
+ASC2 =~ kom_c1_2 + kom_c2_2 + kom_c3_2 + kom_c4_2
+ASO1 ~~ ASO2
+ASG1 ~~ ASG2
+ASM1 ~~ ASM2
+ASP1 ~~ ASP2
+ASC1 ~~ ASC2
+'
+
+f_asc = cfa(m_asc, data = d, estimator = "MLR", missing = "FIML")
+summary(f_asc, fit.measures = T, standardized = T)
+
+#  NFC and ASC combined
+
+m_comb = '
+# Ability Self Concept
+ASO1 =~ kom_al1 + kom_al2 + kom_al3 + kom_al4 
+ASG1 =~ kom_d1 + kom_d2 + kom_d3 + kom_d4 
+ASM1 =~ kom_m1 + kom_m2 + kom_m3 + kom_m4 
+ASP1 =~ kom_p1 + kom_p2 + kom_p3 + kom_p4 
+ASC1 =~ kom_c1 + kom_c2 + kom_c3 + kom_c4
+ASO2 =~ kom_al1_2 + kom_al2_2 + kom_al3_2 + kom_al4_2
+ASG2 =~ kom_d1_2 + kom_d2_2 + kom_d3_2 + kom_d4_2
+ASM2 =~ kom_m1_2 + kom_m2_2 + kom_m3_2 + kom_m4_2
+ASP2 =~ kom_p1_2 + kom_p2_2 + kom_p3_2 + kom_p4_2
+ASC2 =~ kom_c1_2 + kom_c2_2 + kom_c3_2 + kom_c4_2
+ASO1 ~~ ASO2
+ASG1 ~~ ASG2
+ASM1 ~~ ASM2
+ASP1 ~~ ASP2
+ASC1 ~~ ASC2
+
+# Need for Cognition
+NFC1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
+NFC2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
+NFC1 ~~ NFC2
+
+note_all_2 ~ note_all + ASO1 + NFC1
+note_d_2  ~ note_d + ASG1 + NFC1
+not_m_2   ~ not_m  + ASM1 + NFC1
+note_p_2  ~ note_p + ASP1 + NFC1
+note_c_2  ~ note_c + ASC1 + NFC1
+'
+
+f_comb = cfa(m_comb, data = cbind(d, df_nfc_p), estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f_comb, fit.measures = T, standardized = T)
+
+
+mo = '
+# Need for Cognition
+nfc.1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
+nfc.2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
+nfc.1 ~~ nfc.2
+
+'
+
+f0 = cfa(m0, data = dfo, estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f0, fit.measures = T, standardized = T)
+
+
+
+# latent change score modeling ------------------------------------------------
+
+dfo = data.frame(grd.1 = d$note_all, grd.2 = d$note_all_2, d, df_nfc_p)
+lcsm <- '
+# --------------------- VARIABLE LABELS
+# grd                   School Grades 
+# nfc                   Need for Cognition
+# asc                   Academic Self Concept
+# .1                    First Assessment
+# .2                    Second Assessment
+# .d                    Latent Change Score
+
+# --------------------- GRADES REGRESSIONS
+grd.2  ~ 1 * grd.1      # This parameter regresses grd.2 perfectly on grd.1
+grd.d =~ 1 * grd.2      # This defines the latent change score factor as measured perfectly by scores on grd.2
+
+# --------------------- GRADES INTERCEPTS
+grd.d  ~ 1              # This estimates the intercept of the grd change score
+grd.1  ~ 1              # This estimates the intercept of grd.1
+grd.2  ~ 0 * 1          # This constrains the intercept of grd.2 to 0
+
+# --------------------- GRADES VARIANCES
+grd.1 ~~ grd.1          # This estimates the variance of the grd.1
+grd.2 ~~ 0 * grd.2      # This fixes the variance of the grd.2 to 0
+grd.d ~~ grd.d          # This estimates the variance of the change scores
+
+# --------------------- ABILITY SELF-CONCEPT REGRESSIONS
+asc.2  ~ 1 * asc.1      # This parameter regresses asc.2 perfectly on asc.1
+asc.d =~ 1 * asc.2      # This defines the latent change score factor as measured perfectly by scores on asc.2
+
+# --------------------- ABILITY SELF-CONCEPT INTERCEPTS
+asc.1  ~ 1              # This estimates the intercept of asc.1
+asc.2  ~ 0 * 1          # This line constrains the intercept of asc.2 to 0
+asc.d  ~ 1              # This estimates the intercept of the change score
+
+# --------------------- ABILITY SELF-CONCEPT VARIANCES
+asc.1 ~~ asc.1          # This estimates the variance of asc.1
+asc.2 ~~ 0 * asc.2      # This fixes the variance of the asc.2 to 0
+asc.d ~~ asc.d          # This estimates the variance of the change scores
+# 
+# --------------------- NEED FOR COGNITION REGRESSIONS
+nfc.2  ~ 1 * nfc.1      # This parameter regresses nfc.2 perfectly on nfc.1
+nfc.d =~ 1 * nfc.2      # This defines the latent change score factor as measured perfectly by scores on nfc.2
+
+# --------------------- NEED FOR COGNITION INTERCEPTS
+nfc.1  ~ 1              # This estimates the intercept of nfc.1
+nfc.2  ~ 0 * 1          # This constrains the intercept of nfc.2 to 0
+nfc.d  ~ 1              # This estimates the intercept of the change score
+
+# --------------------- NEED FOR COGNITION VARIANCES
+nfc.1 ~~ nfc.1          # This estimates the variance of nfc.1
+nfc.2 ~~ 0 * nfc.2      # This fixes the variance of the nfc.2 to 0
+nfc.d ~~ nfc.d          # This estimates the variance of the change scores
+
+# --------------------- SELF-FEEDBACK & CROSS-DOMAIN COUPLING
+grd.d  ~ beta1 * grd.1 + gamma12 * asc.1 + gamma13 * nfc.1
+asc.d  ~ gamma21 * grd.1 + beta2 * asc.1 + gamma23 * nfc.1
+nfc.d  ~ gamma31 * grd.1 + gamma32 * asc.1 + beta3 * nfc.1
+
+# --------------------- COVARIANCES
+grd.1 ~~  phi12 * asc.1 # This estimates the covariances at T1
+grd.1 ~~  phi13 * nfc.1
+asc.1 ~~  phi23 * nfc.1
+grd.d ~~  rho12 * asc.d # This estimates the change score covariances
+grd.d ~~  rho13 * nfc.d
+asc.d ~~  rho23 * nfc.d
+'
+
+
+
+fo = cfa(lcsm, data = df.nfc_asc_grd, estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(fo, fit.measures = T, standardized = T)
+
+
+m_comb = '
+
+# Need for Cognition
+NFC1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
+NFC2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
+NFC1 ~~ NFC2
+
+# Hope for Success
+HFS1 =~ lm_1 + lm_2 + lm_3 + lm_4 + lm_5 + lm_6 + lm_7
+HFS2 =~ lm_1_2 + lm_2_2 + lm_3_2 + lm_4_2 + lm_5_2 + lm_6_2 + lm_7_2
+HFS1 ~~ HFS2
+
+# Fear of Failure
+FOF1 =~ lm_1 + lm_2 + lm_3 + lm_4 + lm_5 + lm_6 + lm_7
+FOF2 =~ an_1_2 + an_2_2 + an_3_2 + an_4_2 + an_5_2 + an_6_2 + an_7_2
+FOF1 ~~ FOF2
+
+# Ability Self Concept Overall
+ASO1 =~ kom_al1 + kom_al2 + kom_al3 + kom_al4 
+ASO2 =~ kom_al1_2 + kom_al2_2 + kom_al3_2 + kom_al4_2
+ASO1 ~~ ASO2
+
+# Ability Self Concept German
+ASG1 =~ kom_d1 + kom_d2 + kom_d3 + kom_d4 
+ASG2 =~ kom_d1_2 + kom_d2_2 + kom_d3_2 + kom_d4_2
+ASG1 ~~ ASG2
+
+# Ability Self Concept Math
+ASM1 =~ kom_m1 + kom_m2 + kom_m3 + kom_m4 
+ASM2 =~ kom_m1_2 + kom_m2_2 + kom_m3_2 + kom_m4_2
+ASM1 ~~ ASM2
+
+# Ability Self Concept Physics
+ASP1 =~ kom_p1 + kom_p2 + kom_p3 + kom_p4 
+ASP2 =~ kom_p1_2 + kom_p2_2 + kom_p3_2 + kom_p4_2
+ASP1 ~~ ASP2
+
+# Ability Self Concept Chemistry
+ASC1 =~ kom_c1 + kom_c2 + kom_c3 + kom_c4 
+ASC2 =~ kom_c1_2 + kom_c2_2 + kom_c3_2 + kom_c4_2
+ASC1 ~~ ASC2
+
+# Interest Overall
+INO1 =~ in_al1 + in_al2 + in_al3
+INO2 =~ in_al1_2 + in_al2_2 + in_al3_2
+INO1 ~~ INO2
+
+# Interest German
+ING1 =~ in_d1 + in_d2 + in_d3
+ING2 =~ in_d1_2 + in_d2_2 + in_d3_2
+ING1 ~~ ING2
+
+# Interest Math
+INM1 =~ in_m1 + in_m2 + in_m3
+INM2 =~ in_m1_2 + in_m2_2 + in_m3_2
+INM1 ~~ INM2
+
+# Interest Physics
+INP1 =~ in_p1 + in_p2 + in_p3
+INP2 =~ in_p1_2 + in_p2_2 + in_p3_2
+INP1 ~~ INP2
+
+# Interest Chemistry
+INC1 =~ in_c1 + in_c2 + in_c3
+INC2 =~ in_c1_2 + in_c2_2 + in_c3_2
+INC1 ~~ INC2
+
+#note_all   ~ ASO1 + NFC1 + INO1
+#note_d   ~ ASG1 + NFC1 + ING1
+
+note_all_2 ~ note_all + ASO1 + NFC1 + INO1 + HFS1 + FOF1
+note_d_2   ~ note_d   + ASG1 + NFC1 + ING1 + HFS1 + FOF1
+not_m_2    ~ not_m    + ASM1 + NFC1 + INM1 + HFS1 + FOF1
+note_p_2   ~ note_p   + ASP1 + NFC1 + INP1 + HFS1 + FOF1
+note_c_2   ~ note_c   + ASC1 + NFC1 + INC1 + HFS1 + FOF1
+
+'
+
+f_comb = cfa(m_comb, data = cbind(d, df_nfc_p), estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f_comb, fit.measures = T, standardized = T)
+
+m_c = '
+# Interest Chemistry
+INC1 =~ in_c1 + in_c2 + in_c3
+INC2 =~ in_c1_2 + in_c2_2 + in_c3_2
+INC1 ~~ INC2
+
+'
+
+f_c = cfa(m_c, data = cbind(d, df_nfc_p), estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f_c, fit.measures = T, standardized = T)
+
+# measurement models for the constructs of interest ---------------------------
+
+# Need for Cognition
+mm_nfc = '
+NFC1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
+NFC2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
+NFC1 ~~ NFC2
+'
+
+f_nfc = cfa(mm_nfc, data = df_nfc_p, estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f_nfc, fit.measures = T, standardized = T)
+
+# Hope for Success
+mm_hfs = '
+HFS1 =~ lm_1 + lm_2 + lm_3 + lm_4 + lm_5 + lm_6 + lm_7
+HFS2 =~ lm_1_2 + lm_2_2 + lm_3_2 + lm_4_2 + lm_5_2 + lm_6_2 + lm_7_2
+HFS1 ~~ HFS2
+'
+
+f_hfs = cfa(mm_hfs, data = d, estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f_hfs, fit.measures = T, standardized = T)
+
+# Fear of Failure
+mm_fof = '
+FOF1 =~ an_1 + an_2 + an_3 + an_4 + an_5 + an_6 + an_7
+FOF2 =~ an_1_2 + an_2_2 + an_3_2 + an_4_2 + an_5_2 + an_6_2 + an_7_2
+FOF1 ~~ FOF2
+'
+
+# --------------------------------------------------------------------
+# Need for Cognition
+mm_trt = '
+NFC1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
+NFC2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
+NFC1 ~~ NFC2
+
+HFS1 =~ lm_1 + lm_2 + lm_3 + lm_4 + lm_5 + lm_6 + lm_7
+HFS2 =~ lm_1_2 + lm_2_2 + lm_3_2 + lm_4_2 + lm_5_2 + lm_6_2 + lm_7_2
+HFS1 ~~ HFS2
+
+FOF1 =~ an_1 + an_2 + an_3 + an_4 + an_5 + an_6 + an_7
+FOF2 =~ an_1_2 + an_2_2 + an_3_2 + an_4_2 + an_5_2 + an_6_2 + an_7_2
+FOF1 ~~ FOF2
+'
+
+f_trt = cfa(mm_trt, data = cbind(d, df_nfc_p), estimator = "MLR", missing = "FIML")
+summary(f_trt, fit.measures = T, standardized = T)
+
+
+#--------------------------------------------------------------------
+
+f_fof = cfa(mm_fof, data = d, estimator = "MLR", missing = "FIML")
+summary(f_fof, fit.measures = T, standardized = T)
+
+# derive factor scores
+fs_trt = data.frame(cbind(lavPredict(f_nfc), lavPredict(f_hfs), lavPredict(f_fof)))
+
+# Ability Self Concept
+mm_asc = '
+# Ability Self Concept Overall
+ASO1 =~ kom_al1 + kom_al2 + kom_al3 + kom_al4 
+ASO2 =~ kom_al1_2 + kom_al2_2 + kom_al3_2 + kom_al4_2
+ASO1 ~~ ASO2
+
+# Ability Self Concept German
+ASG1 =~ kom_d1 + kom_d2 + kom_d3 + kom_d4 
+ASG2 =~ kom_d1_2 + kom_d2_2 + kom_d3_2 + kom_d4_2
+ASG1 ~~ ASG2
+
+# Ability Self Concept Math
+ASM1 =~ kom_m1 + kom_m2 + kom_m3 + kom_m4 
+ASM2 =~ kom_m1_2 + kom_m2_2 + kom_m3_2 + kom_m4_2
+ASM1 ~~ ASM2
+
+# Ability Self Concept Physics
+ASP1 =~ kom_p1 + kom_p2 + kom_p3 + kom_p4 
+ASP2 =~ kom_p1_2 + kom_p2_2 + kom_p3_2 + kom_p4_2
+ASP1 ~~ ASP2
+
+# Ability Self Concept Chemistry
+ASC1 =~ kom_c1 + kom_c2 + kom_c3 + kom_c4 
+ASC2 =~ kom_c1_2 + kom_c2_2 + kom_c3_2 + kom_c4_2
+ASC1 ~~ ASC2
+'
+
+f_asc = cfa(mm_asc, data = d, estimator = "MLR", missing = "FIML")
+
+# Interest 
+mm_int = '
+# Interest Overall
+INO1 =~ in_al1 + in_al2 + in_al3
+INO2 =~ in_al1_2 + in_al2_2 + in_al3_2
+INO1 ~~ INO2
+
+# Interest German
+ING1 =~ in_d1 + in_d2 + in_d3
+ING2 =~ in_d1_2 + in_d2_2 + in_d3_2
+ING1 ~~ ING2
+
+# Interest Math
+INM1 =~ in_m1 + in_m2 + in_m3
+INM2 =~ in_m1_2 + in_m2_2 + in_m3_2
+INM1 ~~ INM2
+
+# Interest Physics
+INP1 =~ in_p1 + in_p2 + in_p3
+INP2 =~ in_p1_2 + in_p2_2 + in_p3_2
+INP1 ~~ INP2
+
+# Interest Chemistry
+INC1 =~ in_c1 + in_c2 + in_c3
+INC2 =~ in_c1_2 + in_c2_2 + in_c3_2
+INC1 ~~ INC2
+'
+
+f_int = cfa(mm_int, data = d, estimator = "MLR", missing = "FIML")
+
+# combine factor scores
+fs_tot = data.frame(cbind(fs_trt,
+                          lavPredict(f_asc),
+                          lavPredict(f_int),
+                          GRO1 = 6 - d$note_all,
+                          GRO2 = 6 - d$note_all_2,
+                          GRG1 = 6 - d$note_d,
+                          GRG2 = 6 - d$note_d_2,
+                          GRM1 = 6 - d$not_m,
+                          GRM2 = 6 - d$not_m_2,
+                          GRP1 = 6 - d$note_p,
+                          GRP2 = 6 - d$note_p_2,
+                          GRC1 = 6 - d$note_c,
+                          GRC2 = 6 - d$note_c_2))
+
+# regressions of grades on motivational variables incl. NFC
+m_reg = ' 
+GRO2 ~ GRO1 + ASO1 + INO1 + HFS1 + FOF1 + NFC1
+GRG2 ~ GRG1 + ASG1 + ING1 + HFS1 + FOF1 + NFC1
+GRM2 ~ GRM1 + ASM1 + INM1 + HFS1 + FOF1 + NFC1
+GRP2 ~ GRP1 + ASP1 + INP1 + HFS1 + FOF1 + NFC1
+GRC2 ~ GRC1 + ASC1 + INC1 + HFS1 + FOF1 + NFC1
+'
+
+f_reg = sem(m_reg, data = fs_tot, estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f_reg, fit.measures = T, standardized = T)
+
+# regressions of grades on motivational variables excl. NFC
+m_reg_0 = ' 
+GRO2 ~ GRO1 + ASO1 + INO1 + HFS1 + FOF1 + 0*NFC1
+GRG2 ~ GRG1 + ASG1 + ING1 + HFS1 + FOF1 + 0*NFC1
+GRM2 ~ GRM1 + ASM1 + INM1 + HFS1 + FOF1 + 0*NFC1
+GRP2 ~ GRP1 + ASP1 + INP1 + HFS1 + FOF1 + 0*NFC1
+GRC2 ~ GRC1 + ASC1 + INC1 + HFS1 + FOF1 + 0*NFC1
+'
+
+f_reg_0 = sem(m_reg_0, data = fs_tot, estimator = "MLR", missing = "FIML", fixed.x = F)
+summary(f_reg_0, fit.measures = T, standardized = T)
+
+# chi-square difference test
+anova(f_reg, f_reg_0)
+
+# latent change score modeling ------------------------------------------------
+
+lcsm_ext <- '
+  # --------------------- VARIABLE LABELS
+  # grd                   School Grades 
+  # nfc                   Need for Cognition
+  # asc                   Academic Self Concept
+  # .1                    First Assessment
+  # .2                    Second Assessment
+  # .d                    Latent Change Score
+  
+  # --------------------- GRADES REGRESSIONS
+  grd.2  ~ 1 * grd.1      # This parameter regresses grd.2 perfectly on grd.1
+  grd.d =~ 1 * grd.2      # This defines the latent change score factor as measured perfectly by scores on grd.2
+  
+  # --------------------- GRADES INTERCEPTS
+  grd.d  ~ 1              # This estimates the intercept of the grd change score
+  grd.1  ~ 1              # This estimates the intercept of grd.1
+  grd.2  ~ 0 * 1          # This constrains the intercept of grd.2 to 0
+  
+  # --------------------- GRADES VARIANCES
+  grd.1 ~~ grd.1          # This estimates the variance of the grd.1
+  grd.2 ~~ 0 * grd.2      # This fixes the variance of the grd.2 to 0
+  grd.d ~~ grd.d          # This estimates the variance of the change scores
+  
+  
+  # --------------------- ABILITY SELF-CONCEPT REGRESSIONS
+  asc.2  ~ 1 * asc.1      # This parameter regresses asc.2 perfectly on asc.1
+  asc.d =~ 1 * asc.2      # This defines the latent change score factor as measured perfectly by scores on asc.2
+  
+  # --------------------- ABILITY SELF-CONCEPT INTERCEPTS
+  asc.1  ~ 1              # This estimates the intercept of asc.1
+  asc.2  ~ 0 * 1          # This line constrains the intercept of asc.2 to 0
+  asc.d  ~ 1              # This estimates the intercept of the change score
+  
+  # --------------------- ABILITY SELF-CONCEPT VARIANCES
+  asc.1 ~~ asc.1          # This estimates the variance of asc.1
+  asc.2 ~~ 0 * asc.2      # This fixes the variance of the asc.2 to 0
+  asc.d ~~ asc.d          # This estimates the variance of the change scores
+  
+  
+  # --------------------- INTEREST REGRESSIONS
+  int.2  ~ 1 * int.1      # This parameter regresses int.2 perfectly on int.1
+  int.d =~ 1 * int.2      # This defines the latent change score factor as measured perfectly by scores on int.2
+  
+  # --------------------- INTEREST INTERCEPTS
+  int.1  ~ 1              # This estimates the intercept of int.1
+  int.2  ~ 0 * 1          # This line constrains the intercept of int.2 to 0
+  int.d  ~ 1              # This estimates the intercept of the change score
+  
+  # --------------------- INTEREST VARIANCES
+  int.1 ~~ int.1          # This estimates the variance of int.1
+  int.2 ~~ 0 * int.2      # This fixes the variance of the int.2 to 0
+  int.d ~~ int.d          # This estimates the variance of the change scores
+  
+  
+  # --------------------- HOPE FOR SUCCESS REGRESSIONS
+  hfs.2  ~ 1 * hfs.1      # This parameter regresses hfs.2 perfectly on hfs.1
+  hfs.d =~ 1 * hfs.2      # This defines the latent change score factor as measured perfectly by scores on hfs.2
+  
+  # --------------------- HOPE FOR SUCCESS INTERCEPTS
+  hfs.1  ~ 1              # This estimates the intercept of hfs.1
+  hfs.2  ~ 0 * 1          # This line constrains the intercept of hfs.2 to 0
+  hfs.d  ~ 1              # This estimates the intercept of the change score
+  
+  # --------------------- HOPE FOR SUCCESS VARIANCES
+  hfs.1 ~~ hfs.1          # This estimates the variance of hfs.1
+  hfs.2 ~~ 0 * hfs.2      # This fixes the variance of the hfs.2 to 0
+  hfs.d ~~ hfs.d          # This estimates the variance of the change scores
+  
+  
+  # --------------------- FEAR OF FAILURE REGRESSIONS
+  fof.2  ~ 1 * fof.1      # This parameter regresses fof.2 perfectly on fof.1
+  fof.d =~ 1 * fof.2      # This defines the latent change score factor as measured perfectly by scores on fof.2
+  
+  # --------------------- FEAR OF FAILURE INTERCEPTS
+  fof.1  ~ 1              # This estimates the intercept of fof.1
+  fof.2  ~ 0 * 1          # This line constrains the intercept of fof.2 to 0
+  fof.d  ~ 1              # This estimates the intercept of the change score
+  
+  # --------------------- FEAR OF FAILURE VARIANCES
+  fof.1 ~~ fof.1          # This estimates the variance of fof.1
+  fof.2 ~~ 0 * fof.2      # This fixes the variance of the fof.2 to 0
+  fof.d ~~ fof.d          # This estimates the variance of the change scores
+  
+  
+  # --------------------- NEED FOR COGNITION REGRESSIONS
+  nfc.2  ~ 1 * nfc.1      # This parameter regresses nfc.2 perfectly on nfc.1
+  nfc.d =~ 1 * nfc.2      # This defines the latent change score factor as measured perfectly by scores on nfc.2
+  
+  # --------------------- NEED FOR COGNITION INTERCEPTS
+  nfc.1  ~ 1              # This estimates the intercept of nfc.1
+  nfc.2  ~ 0 * 1          # This constrains the intercept of nfc.2 to 0
+  nfc.d  ~ 1              # This estimates the intercept of the change score
+  
+  # --------------------- NEED FOR COGNITION VARIANCES
+  nfc.1 ~~ nfc.1          # This estimates the variance of nfc.1
+  nfc.2 ~~ 0 * nfc.2      # This fixes the variance of the nfc.2 to 0
+  nfc.d ~~ nfc.d          # This estimates the variance of the change scores
+  
+  
+  # --------------------- SELF-FEEDBACK & CROSS-DOMAIN COUPLING
+  grd.d  ~ beta1   * grd.1 + gamma21 * asc.1 + gamma31 * int.1 + gamma41 * hfs.1 + gamma51 * fof.1 + gamma61 * nfc.1  
+  asc.d  ~ gamma12 * grd.1 + beta2   * asc.1 + gamma32 * int.1 + gamma42 * hfs.1 + gamma52 * fof.1 + gamma62 * nfc.1
+  int.d  ~ gamma13 * grd.1 + gamma23 * asc.1 + beta3   * int.1 + gamma43 * hfs.1 + gamma53 * fof.1 + gamma63 * nfc.1
+  hfs.d  ~ gamma14 * grd.1 + gamma24 * asc.1 + gamma34 * int.1 + beta4   * hfs.1 + gamma54 * fof.1 + gamma64 * nfc.1
+  fof.d  ~ gamma15 * grd.1 + gamma25 * asc.1 + gamma35 * int.1 + gamma45 * hfs.1 + beta5   * fof.1 + gamma65 * nfc.1
+  nfc.d  ~ gamma16 * grd.1 + gamma26 * asc.1 + gamma36 * int.1 + gamma46 * hfs.1 + gamma56 * fof.1 + beta6   * nfc.1 
+  
+  
+  # --------------------- COVARIANCES
+  grd.1 ~~ phi2  * asc.1  # This estimates the covariances at T1
+  grd.1 ~~ phi3  * int.1
+  grd.1 ~~ phi4  * hfs.1
+  grd.1 ~~ phi5  * fof.1
+  grd.1 ~~ phi6  * nfc.1
+  asc.1 ~~ phi23 * int.1
+  asc.1 ~~ phi24 * hfs.1
+  asc.1 ~~ phi25 * fof.1
+  asc.1 ~~ phi26 * nfc.1
+  int.1 ~~ phi34 * hfs.1
+  int.1 ~~ phi35 * fof.1
+  int.1 ~~ phi36 * nfc.1
+  hfs.1 ~~ phi45 * fof.1
+  hfs.1 ~~ phi46 * nfc.1
+  fof.1 ~~ phi56 * nfc.1
+  
+  
+  grd.d ~~ rho2 * asc.d # This estimates the change score covariances
+  grd.d ~~ rho3 * int.d
+  grd.d ~~ rho4 * hfs.d
+  grd.d ~~ rho5 * fof.d
+  grd.d ~~ rho6 * nfc.d
+  asc.d ~~ rho23 * int.d
+  asc.d ~~ rho24 * hfs.d
+  asc.d ~~ rho25 * fof.d
+  asc.d ~~ rho26 * nfc.d
+  int.d ~~ rho34 * hfs.d
+  int.d ~~ rho35 * fof.d
+  int.d ~~ rho36 * nfc.d
+  hfs.d ~~ rho45 * fof.d
+  hfs.d ~~ rho46 * nfc.d
+  fof.d ~~ rho56 * nfc.d
+  
+  '
+
+# overall grades
+df.overall = with(fs_tot, data.frame(grd.1 = GRO1, grd.2 = GRO2, 
+                                     asc.1 = ASO1, asc.2 = ASO2, 
+                                     int.1 = INO1, int.2 = INO2, 
+                                     hfs.1 = HFS1, hfs.2 = HFS2,
+                                     fof.1 = FOF1, fof.2 = FOF2,
+                                     nfc.1 = NFC1, nfc.2 = NFC2))
+
+fit.overall <- lavaan(lcsm_ext, data = df.overall, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
+summary(fit.overall, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+
+format.pe <- function(fit) {
+  pe = parameterestimates(fit, standardized = T)[49:84, c("est", "se", "pvalue", "ci.lower", "ci.upper", "std.nox")]
+  pe = cbind(round(pe[, c(1,2,4:6)], 2), round(pe[, 3], 3))
+  colnames(pe) = c("B", "SE", "lower", "upper", "beta", "p")
+  pe$sig = rep("", nrow(pe))
+  pe$sig[which(pe$p <  .05)] = "*"
+  pe$sig[which(pe$p <  .01)] = "**"
+  pe$sig[which(pe$p < .001)] = "***"
+  return(pe)
+}
+
+pe.overall=format.pe(fit.overall)
+write.csv(pe.overall, file = "pe.overall.csv", row.names = F)
+
+format.cor <- function(fit) {
+  pe = parameterestimates(fit, standardized = T)[85:114, c("est", "pvalue", "std.nox")]
+  cor = pval = data.frame(matrix(rep("—", 36), nrow = 6))
+  colnames(cor) = colnames(pval) = c("GRD", "ASC", "INT", "HfS", "FoF", "NFC")
+  rownames(cor) = rownames(pval) = c("GRD", "ASC", "INT", "HfS", "FoF", "NFC")
+  # parameter estimates ------------------------------------------------------------
+  # T1 correlations
+  cor[1, 2:6] = sub("0.", ".", format(round(pe$std.nox[ 1: 5], 2), nsmall = 2))
+  cor[2, 3:6] = sub("0.", ".", format(round(pe$std.nox[ 6: 9], 2), nsmall = 2))
+  cor[3, 4:6] = sub("0.", ".", format(round(pe$std.nox[10:12], 2), nsmall = 2))
+  cor[4, 5:6] = sub("0.", ".", format(round(pe$std.nox[13:14], 2), nsmall = 2))
+  cor[5, 6:6] = sub("0.", ".", format(round(pe$std.nox[15:15], 2), nsmall = 2))
+  # Correlated Change
+  cor[2:6, 1] = sub("0.", ".", format(round(pe$std.nox[15 +  1: 5], 2), nsmall = 2))
+  cor[3:6, 2] = sub("0.", ".", format(round(pe$std.nox[15 +  6: 9], 2), nsmall = 2))
+  cor[4:6, 3] = sub("0.", ".", format(round(pe$std.nox[15 + 10:12], 2), nsmall = 2))
+  cor[5:6, 4] = sub("0.", ".", format(round(pe$std.nox[15 + 13:14], 2), nsmall = 2))
+  cor[6:6, 5] = sub("0.", ".", format(round(pe$std.nox[15 + 15:15], 2), nsmall = 2))
+  # p-values -----------------------------------------------------------------------
+  # T1 correlations
+  pval[1, 2:6] = sub("0.", ".", format(round(pe$pval[ 1: 5], 3), nsmall = 3))
+  pval[2, 3:6] = sub("0.", ".", format(round(pe$pval[ 6: 9], 3), nsmall = 3))
+  pval[3, 4:6] = sub("0.", ".", format(round(pe$pval[10:12], 3), nsmall = 3))
+  pval[4, 5:6] = sub("0.", ".", format(round(pe$pval[13:14], 3), nsmall = 3))
+  pval[5, 6:6] = sub("0.", ".", format(round(pe$pval[15:15], 3), nsmall = 3))
+  # Correlated Change
+  pval[2:6, 1] = sub("0.", ".", format(round(pe$pval[15 +  1: 5], 3), nsmall = 3))
+  pval[3:6, 2] = sub("0.", ".", format(round(pe$pval[15 +  6: 9], 3), nsmall = 3))
+  pval[4:6, 3] = sub("0.", ".", format(round(pe$pval[15 + 10:12], 3), nsmall = 3))
+  pval[5:6, 4] = sub("0.", ".", format(round(pe$pval[15 + 13:14], 3), nsmall = 3))
+  pval[6:6, 5] = sub("0.", ".", format(round(pe$pval[15 + 15:15], 3), nsmall = 3))  
+  return(list(rho = cor, p = pval))
+  
+}
+
+format.cor(fit.overall)
+
+# German grades
+df.german  = with(fs_tot, data.frame(grd.1 = GRG1, grd.2 = GRG2, 
+                                     asc.1 = ASG1, asc.2 = ASG2, 
+                                     int.1 = ING1, int.2 = ING2, 
+                                     hfs.1 = HFS1, hfs.2 = HFS2,
+                                     fof.1 = FOF1, fof.2 = FOF2,
+                                     nfc.1 = NFC1, nfc.2 = NFC2))
+
+fit.german <- lavaan(lcsm_ext, data = df.german, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
+summary(fit.german, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+
+pe.german=format.pe(fit.german)
+write.csv(pe.german, file = "pe.german.csv", row.names = F)
+
+format.cor(fit.german)
+
+# Math grades
+df.math    = with(fs_tot, data.frame(grd.1 = GRM1, grd.2 = GRM2, 
+                                     asc.1 = ASM1, asc.2 = ASM2, 
+                                     int.1 = INM1, int.2 = INM2, 
+                                     hfs.1 = HFS1, hfs.2 = HFS2,
+                                     fof.1 = FOF1, fof.2 = FOF2,
+                                     nfc.1 = NFC1, nfc.2 = NFC2))
+
+fit.math <- lavaan(lcsm_ext, data = df.math, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
+summary(fit.math, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+pe.math=format.pe(fit.math)
+write.csv(pe.math, file = "pe.math.csv", row.names = F)
+
+format.cor(fit.math)
+
+# Physics grades
+df.physics = with(fs_tot, data.frame(grd.1 = GRP1, grd.2 = GRP2, 
+                                     asc.1 = ASP1, asc.2 = ASP2, 
+                                     int.1 = INP1, int.2 = INP2, 
+                                     hfs.1 = HFS1, hfs.2 = HFS2,
+                                     fof.1 = FOF1, fof.2 = FOF2,
+                                     nfc.1 = NFC1, nfc.2 = NFC2))
+
+fit.physics <- lavaan(lcsm_ext, data = df.physics, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
+summary(fit.physics, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+pe.physics = format.pe(fit.physics)
+write.csv(pe.physics, file = "pe.physics.csv", row.names = F)
+
+format.cor(fit.physics)
+
+# Chemistry grades
+df.chemistry = with(fs_tot, data.frame(grd.1 = GRC1, grd.2 = GRC2, 
+                                       asc.1 = ASC1, asc.2 = ASC2, 
+                                       int.1 = INC1, int.2 = INC2, 
+                                       hfs.1 = HFS1, hfs.2 = HFS2,
+                                       fof.1 = FOF1, fof.2 = FOF2,
+                                       nfc.1 = NFC1, nfc.2 = NFC2))
+   
+fit.chemistry <- lavaan(lcsm_ext, data = df.chemistry, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
+summary(fit.chemistry, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+pe.chemistry = format.pe(fit.chemistry)
+write.csv(pe.chemistry, file = "pe.chemistry.csv", row.names = F)
+
+fcc = format.cor(fit.chemistry)
+
+asterisk = "***"
+for (i in 1:6) {
+  for (j in 1:6) {
+    if (fcc$p[i, j] != "—") {
+      sig = sum(as.numeric(fcc$p[i, j]) < c(.05, .01, .001))
+      fcc$rho[i, j] = paste0(fcc$rho[i, j], substr(asterisk, 1, sig))
+    }
+  }
+}
