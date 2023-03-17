@@ -387,7 +387,7 @@ corr.report <- function(df, method = "Spearman", diagonal = NULL, Tdiff = c(53, 
   if (what.diagonal == "Cronbach") {
     diagonal.description = "coefficients in the diagonal are Cronbach’s $\\alpha$, "
 } else if (what.diagonal == "MacDonald") {
-    diagonal.description = "coefficients in the diagonal are MacDonald’s $\\omega$, with the entries for CEI1 and CEI2 containing the total $\\omega$ of the factor model, "
+    diagonal.description = "coefficients in the diagonal are MacDonald’s $\\omega$, "
 } else {
     diagonal.description = ""
 }
@@ -899,14 +899,44 @@ eval(parse(text = paste0("unlink('Manuscript/", files_to_delete, "')")))
 
 # new analyses based on comments during peer-review ---------------------------
 
+# The reviewers requested - among other issues - that we should 
+# 1) use measurement models/factor scores instead of sum/mean scores 
+# 2) drop multiple regression and instead directly test all relations in a LCSM
+# 3) provide descriptives and reliabilities in a different way
+
 # measurement models for variables of interest --------------------------------
+
+df_grd = 6 - d[, grep("not", colnames(d))]
+
+mm_grd = '
+GRO1 =~ note_all
+GRO2 =~ note_all_2
+GRO1 ~~ GRO2
+
+GRG1 =~ note_d
+GRG2 =~ note_d_2
+GRG1 ~~ GRG2
+
+GRM1 =~ not_m
+GRM2 =~ not_m_2
+GRM1 ~~ GRM2
+
+GRP1 =~ note_p
+GRP2 =~ note_p_2
+GRP1 ~~ GRP2
+
+GRC1 =~ note_c
+GRC2 =~ note_c_2
+GRC1 ~~ GRC2
+'
+
+f_grd = cfa(mm_grd, data = df_grd, estimator = "MLR", missing = "FIML")
+summary(f_grd, fit.measures = T, standardized = T)
+fs_grd = data.frame(lavPredict(f_grd))
+
 
 # motivational traits
 mm_mtrt = '
-NFC1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
-NFC2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
-NFC1 ~~ NFC2
-
 HFS1 =~ lm_1 + lm_2 + lm_3 + lm_4 + lm_5 + lm_6 + lm_7
 HFS2 =~ lm_1_2 + lm_2_2 + lm_3_2 + lm_4_2 + lm_5_2 + lm_6_2 + lm_7_2
 HFS1 ~~ HFS2
@@ -914,6 +944,10 @@ HFS1 ~~ HFS2
 FOF1 =~ an_1 + an_2 + an_3 + an_4 + an_5 + an_6 + an_7
 FOF2 =~ an_1_2 + an_2_2 + an_3_2 + an_4_2 + an_5_2 + an_6_2 + an_7_2
 FOF1 ~~ FOF2
+
+NFC1 =~ nfc_p1_1 + nfc_p2_1 + nfc_p3_1 + nfc_p4_1
+NFC2 =~ nfc_p1_2 + nfc_p2_2 + nfc_p3_2 + nfc_p4_2
+NFC1 ~~ NFC2
 '
 
 f_mtrt = cfa(mm_mtrt, data = cbind(d, df_nfc_p), estimator = "MLR", missing = "FIML")
@@ -978,26 +1012,40 @@ INP1 ~~ INP2
 INC1 =~ in_c1 + in_c2 + in_c3
 INC2 =~ in_c1_2 + in_c2_2 + in_c3_2
 INC1 ~~ INC2
+
 '
 
 f_int = cfa(mm_int, data = d, estimator = "MLR", missing = "FIML")
 summary(f_int, fit.measures = T, standardized = T)
 fs_int = data.frame(lavPredict(f_int))
 
+# reliabilities ---------------------------------------------------------------
+
+# Cronbach's alpha & MacDonald's omega (N/A for grades)
+rel_trt = reliability(f_mtrt)[c(1, 4),c(1,3,5,2,4,6)]
+rel_asc = reliability(f_asc)[c(1, 4),]
+rel_int = reliability(f_int)[c(1, 4),] 
+
+# retest
+
+rtt_grd = diag(corr.test(fs_grd[, c(1,3,5,7,9)], fs_grd[, c(2,4,6,8,10)], method = "spearman")$r)
+names(rtt_grd) = c("GRO", "GRG", "GRM", "GRP", "GRC")
+attr(rtt_grd, "N") = corr.test(fs_grd[, c(1,3,5,7,9)], fs_grd[, c(2,4,6,8,10)], method = "spearman")$n
+
+rtt_trt = diag(corr.test(fs_mtrt[, c(1,3,5)], fs_mtrt[, c(2,4,6)], method = "spearman")$r)
+names(rtt_trt) = c("HFS", "FOF", "NFC")
+attr(rtt_trt, "N") = corr.test(fs_mtrt[, c(1,3,5)], fs_mtrt[, c(2,4,6)], method = "spearman")$n
+
+rtt_asc = diag(corr.test(fs_asc[, c(1,3,5,7,9)], fs_asc[, c(2,4,6,8,10)], method = "spearman")$r)
+names(rtt_asc) = c("ASO", "ASG", "ASM", "ASP", "ASC")
+attr(rtt_asc, "N") = corr.test(fs_asc[, c(1,3,5,7,9)], fs_asc[, c(2,4,6,8,10)], method = "spearman")$n
+
+rtt_int = diag(corr.test(fs_int[, c(1,3,5,7,9)], fs_int[, c(2,4,6,8,10)], method = "spearman")$r)
+names(rtt_int) = c("INO", "ING", "INM", "INP", "INC")
+attr(rtt_int, "N") = corr.test(fs_int[, c(1,3,5,7,9)], fs_int[, c(2,4,6,8,10)], method = "spearman")$n
+
 # combine factor scores
-fs_tot = data.frame(cbind(fs_mtrt,
-                          fs_asc,
-                          fs_int,
-                          GRO1 = 6 - d$note_all,
-                          GRO2 = 6 - d$note_all_2,
-                          GRG1 = 6 - d$note_d,
-                          GRG2 = 6 - d$note_d_2,
-                          GRM1 = 6 - d$not_m,
-                          GRM2 = 6 - d$not_m_2,
-                          GRP1 = 6 - d$note_p,
-                          GRP2 = 6 - d$note_p_2,
-                          GRC1 = 6 - d$note_c,
-                          GRC2 = 6 - d$note_c_2))
+fs_tot = data.frame(cbind(fs_grd, fs_mtrt, fs_asc, fs_int))
 
 # latent change score modeling including all variables' factor scores ---------
 
@@ -1110,11 +1158,11 @@ lcsm_ext <- '
   
   
   # --------------------- COVARIANCES
-  grd.1 ~~ phi2  * asc.1  # This estimates the covariances at T1
-  grd.1 ~~ phi3  * int.1
-  grd.1 ~~ phi4  * hfs.1
-  grd.1 ~~ phi5  * fof.1
-  grd.1 ~~ phi6  * nfc.1
+  grd.1 ~~ phi12  * asc.1  # This estimates the covariances at T1
+  grd.1 ~~ phi13  * int.1
+  grd.1 ~~ phi14  * hfs.1
+  grd.1 ~~ phi15  * fof.1
+  grd.1 ~~ phi16  * nfc.1
   asc.1 ~~ phi23 * int.1
   asc.1 ~~ phi24 * hfs.1
   asc.1 ~~ phi25 * fof.1
@@ -1127,11 +1175,11 @@ lcsm_ext <- '
   fof.1 ~~ phi56 * nfc.1
   
   
-  grd.d ~~ rho2 * asc.d # This estimates the change score covariances
-  grd.d ~~ rho3 * int.d
-  grd.d ~~ rho4 * hfs.d
-  grd.d ~~ rho5 * fof.d
-  grd.d ~~ rho6 * nfc.d
+  grd.d ~~ rho12 * asc.d # This estimates the change score covariances
+  grd.d ~~ rho13 * int.d
+  grd.d ~~ rho14 * hfs.d
+  grd.d ~~ rho15 * fof.d
+  grd.d ~~ rho16 * nfc.d
   asc.d ~~ rho23 * int.d
   asc.d ~~ rho24 * hfs.d
   asc.d ~~ rho25 * fof.d
@@ -1257,10 +1305,10 @@ lcsm_power <- '
   
   
   # --------------------- COVARIANCES
-  grd.1 ~~ phi2  * asc.1  # This estimates the covariances at T1
-  grd.1 ~~ phi3  * int.1
-  grd.1 ~~ phi4  * hfs.1
-  grd.1 ~~ phi5  * fof.1
+  grd.1 ~~ phi12  * asc.1  # This estimates the covariances at T1
+  grd.1 ~~ phi13  * int.1
+  grd.1 ~~ phi14  * hfs.1
+  grd.1 ~~ phi15  * fof.1
   grd.1 ~~ 0  * nfc.1
   asc.1 ~~ phi23 * int.1
   asc.1 ~~ phi24 * hfs.1
@@ -1289,10 +1337,11 @@ lcsm_power <- '
   hfs.d ~~ rho45 * fof.d
   hfs.d ~~ 0 * nfc.d
   fof.d ~~ 0 * nfc.d
-  
   '
 
-# poer analysis testing the full model against the model without any NFC-related paths
+# the above model has 22 df
+
+# power analysis testing the full model against the model without any NFC-related paths ---------
 semPower::semPower.postHoc(effect = .06, effect.measure = "RMSEA", alpha = .05, df = 22, N = 277)
 
 # overall grades
@@ -1306,30 +1355,28 @@ df.overall = with(fs_tot, data.frame(grd.1 = GRO1, grd.2 = GRO2,
 fit.overall <- lavaan(lcsm_ext, data = df.overall, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 summary(fit.overall, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 
-
-
-
 # functions for reporting paremeter estimates and intercorrelations 
 format.pe <- function(fit) {
-  pe = parameterestimates(fit, standardized = T)[49:84, c("est", "se", "pvalue", "ci.lower", "ci.upper", "std.nox")]
+  pe = parameterestimates(fit, standardized = T)[49:114, c(1:6, 8:10, 13)]
+  rn = NULL
+  for (i in 1:nrow(pe)) { rn = c(rn, paste0(pe[i,1:4], collapse = " ")) }
+  pe = pe[, -c(1, 2, 3, 4)]
   pe$sig = rep("", nrow(pe))
   pe$sig[which(pe$p <  .05)] = "*"
   pe$sig[which(pe$p <  .01)] = "**"
   pe$sig[which(pe$p < .001)] = "***"
   pe = cbind(printnum(pe[, c(1,2,4:6)], gt1 = c(T,T,T,T,F)), printp(pe[, 3], 3))
   colnames(pe) = c("B", "SE", "CI.LB", "CI.UB", "beta", "p")
+  rownames(pe) = rn
   return(pe)
 }
-
-pe.overall = format.pe(fit.overall)
-write.csv(pe.overall, file = "pe.overall.csv", row.names = F)
 
 format.cor <- function(fit) {
   pe = parameterestimates(fit, standardized = T)[85:114, c("est", "pvalue", "std.nox")]
   cor = pval = data.frame(matrix(rep("—", 36), nrow = 6))
   colnames(cor) = colnames(pval) = c("GRD", "ASC", "INT", "HfS", "FoF", "NFC")
   rownames(cor) = rownames(pval) = c("GRD", "ASC", "INT", "HfS", "FoF", "NFC")
-  # parameter estimates ------------------------------------------------------------
+  # parameter estimates 
   # T1 correlations
   cor[1, 2:6] = sub("0.", ".", format(round(pe$std.nox[ 1: 5], 2), nsmall = 2))
   cor[2, 3:6] = sub("0.", ".", format(round(pe$std.nox[ 6: 9], 2), nsmall = 2))
@@ -1342,7 +1389,6 @@ format.cor <- function(fit) {
   cor[4:6, 3] = sub("0.", ".", format(round(pe$std.nox[15 + 10:12], 2), nsmall = 2))
   cor[5:6, 4] = sub("0.", ".", format(round(pe$std.nox[15 + 13:14], 2), nsmall = 2))
   cor[6:6, 5] = sub("0.", ".", format(round(pe$std.nox[15 + 15:15], 2), nsmall = 2))
-  # p-values -----------------------------------------------------------------------
   # T1 correlations
   pval[1, 2:6] = sub("0.", ".", format(round(pe$pval[ 1: 5], 3), nsmall = 3))
   pval[2, 3:6] = sub("0.", ".", format(round(pe$pval[ 6: 9], 3), nsmall = 3))
@@ -1359,7 +1405,62 @@ format.cor <- function(fit) {
   
 }
 
-format.cor(fit.overall)
+format.cor.new <- function(fit) {
+  pe = parameterestimates(fit, standardized = T)[85:114, c("est", "pvalue", "std.nox")]
+  cor.1 = cor.d = pval.1 = pval.d = data.frame(matrix(rep("", 36), nrow = 6))
+  colnames(cor.1) = colnames(pval.1) = rownames(cor.1) = rownames(pval.1) = paste0(c("GRD", "ASC", "INT", "HfS", "FoF", "NFC"), ".1")
+  colnames(cor.d) = colnames(pval.d) = rownames(cor.d) = rownames(pval.d) = paste0(c("GRD", "ASC", "INT", "HfS", "FoF", "NFC"), ".d")
+  diag(cor.1) = diag(cor.d) = diag(pval.1) = diag(pval.d) = rep("—", 6)
+  
+  # parameter estimates 
+  # T1 correlations
+  cor.1[1, 2:6] = sub("0.", ".", format(round(pe$std.nox[ 1: 5], 2), nsmall = 2))
+  cor.1[2, 3:6] = sub("0.", ".", format(round(pe$std.nox[ 6: 9], 2), nsmall = 2))
+  cor.1[3, 4:6] = sub("0.", ".", format(round(pe$std.nox[10:12], 2), nsmall = 2))
+  cor.1[4, 5:6] = sub("0.", ".", format(round(pe$std.nox[13:14], 2), nsmall = 2))
+  cor.1[5, 6:6] = sub("0.", ".", format(round(pe$std.nox[15:15], 2), nsmall = 2))
+  # Correlated Change
+  cor.d[1, 2:6] = sub("0.", ".", format(round(pe$std.nox[15 +  1: 5], 2), nsmall = 2))
+  cor.d[2, 3:6] = sub("0.", ".", format(round(pe$std.nox[15 +  6: 9], 2), nsmall = 2))
+  cor.d[3, 4:6] = sub("0.", ".", format(round(pe$std.nox[15 + 10:12], 2), nsmall = 2))
+  cor.d[4, 5:6] = sub("0.", ".", format(round(pe$std.nox[15 + 13:14], 2), nsmall = 2))
+  cor.d[5, 6:6] = sub("0.", ".", format(round(pe$std.nox[15 + 15:15], 2), nsmall = 2))
+  
+  # p-values
+  # T1 correlations
+  pval.1[1, 2:6] = sub("0.", ".", format(round(pe$pval[ 1: 5], 3), nsmall = 3))
+  pval.1[2, 3:6] = sub("0.", ".", format(round(pe$pval[ 6: 9], 3), nsmall = 3))
+  pval.1[3, 4:6] = sub("0.", ".", format(round(pe$pval[10:12], 3), nsmall = 3))
+  pval.1[4, 5:6] = sub("0.", ".", format(round(pe$pval[13:14], 3), nsmall = 3))
+  pval.1[5, 6:6] = sub("0.", ".", format(round(pe$pval[15:15], 3), nsmall = 3))
+  # Correlated Change
+  pval.d[1, 2:6] = sub("0.", ".", format(round(pe$pval[15 +  1: 5], 3), nsmall = 3))
+  pval.d[2, 3:6] = sub("0.", ".", format(round(pe$pval[15 +  6: 9], 3), nsmall = 3))
+  pval.d[3, 4:6] = sub("0.", ".", format(round(pe$pval[15 + 10:12], 3), nsmall = 3))
+  pval.d[4, 5:6] = sub("0.", ".", format(round(pe$pval[15 + 13:14], 3), nsmall = 3))
+  pval.d[5, 6:6] = sub("0.", ".", format(round(pe$pval[15 + 15:15], 3), nsmall = 3))  
+  return(list(cor.1 = cor.1, p.1 = pval.1, cor.d = cor.d, p.d = pval.d))
+  
+}
+
+write.excel <-  function(df.pe, df.cor, filename = "lcsm.xlsx") {
+  write.xlsx(matrix(df.pe$beta[1:36], ncol = 6, dimnames = list(c("GRD1", "ASC1", "INT1", "HFS1", "FOF1", "NFC1"), paste0("d", c("GRD1", "ASC1", "INT1", "HFS1", "FOF1", "NFC1")))), filename, sheetName = "LCSM.beta")
+  write.xlsx(matrix(df.pe$p[1:36],    ncol = 6, dimnames = list(c("GRD1", "ASC1", "INT1", "HFS1", "FOF1", "NFC1"), paste0("d", c("GRD1", "ASC1", "INT1", "HFS1", "FOF1", "NFC1")))), filename, sheetName = "LCSM.p", append = T)
+  write.xlsx(df.cor$cor.1, filename, sheetName = "cor.1", append = T)
+  write.xlsx(df.cor$p.1,   filename, sheetName = "p.1",   append = T)
+  write.xlsx(df.cor$cor.d, filename, sheetName = "cor.d", append = T)
+  write.xlsx(df.cor$p.d,   filename, sheetName = "p.d",   append = T)
+}
+
+# Ovcerall Grades
+
+pe.overall = format.pe(fit.overall)
+write.csv(pe.overall, file = "pe.overall.csv", row.names = T)
+write.xlsx(pe.overall, file = "pe.overall.xlsx", row.names = T)
+cor.overall = format.cor.new(fit.overall)
+write.excel(df.pe = pe.overall, df.cor = cor.overall, filename = "lcsm.overall.xlsx")
+
+
 
 # German grades
 df.german  = with(fs_tot, data.frame(grd.1 = GRG1, grd.2 = GRG2, 
@@ -1373,7 +1474,9 @@ fit.german <- lavaan(lcsm_ext, data = df.german, estimator = 'mlr', fixed.x = FA
 summary(fit.german, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.german = format.pe(fit.german)
 write.csv(pe.german, file = "pe.german.csv", row.names = F)
-format.cor(fit.german)
+write.xlsx(pe.german, "pe.german.xlsx")
+cor.german = format.cor.new(fit.german)
+write.excel(df.pe = pe.german, df.cor = cor.german, filename = "lcsm.german.xlsx")
 
 # Math grades
 df.math    = with(fs_tot, data.frame(grd.1 = GRM1, grd.2 = GRM2, 
@@ -1387,7 +1490,10 @@ fit.math <- lavaan(lcsm_ext, data = df.math, estimator = 'mlr', fixed.x = FALSE,
 summary(fit.math, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.math = format.pe(fit.math)
 write.csv(pe.math, file = "pe.math.csv", row.names = F)
-format.cor(fit.math)
+write.xlsx(pe.math, "pe.math.xlsx")
+cor.math = format.cor.new(fit.math)
+write.excel(df.pe = pe.math, df.cor = cor.math, filename = "lcsm.math.xlsx")
+
 
 # Physics grades
 df.physics = with(fs_tot, data.frame(grd.1 = GRP1, grd.2 = GRP2, 
@@ -1401,7 +1507,9 @@ fit.physics <- lavaan(lcsm_ext, data = df.physics, estimator = 'mlr', fixed.x = 
 summary(fit.physics, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.physics = format.pe(fit.physics)
 write.csv(pe.physics, file = "pe.physics.csv", row.names = F)
-format.cor(fit.physics)
+write.xlsx(pe.physics, "pe.physics.xlsx")
+cor.physics = format.cor.new(fit.physics)
+write.excel(df.pe = pe.physics, df.cor = cor.physics, filename = "lcsm.physics.xlsx")
 
 # Chemistry grades
 df.chemistry = with(fs_tot, data.frame(grd.1 = GRC1, grd.2 = GRC2, 
@@ -1415,4 +1523,107 @@ fit.chemistry <- lavaan(lcsm_ext, data = df.chemistry, estimator = 'mlr', fixed.
 summary(fit.chemistry, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.chemistry = format.pe(fit.chemistry)
 write.csv(pe.chemistry, file = "pe.chemistry.csv", row.names = F)
-format.cor(fit.chemistry)
+write.xlsx(pe.chemistry, "pe.chemistry.xlsx")
+cor.chemistry = format.cor.new(fit.chemistry)
+write.excel(df.pe = pe.chemistry, df.cor = cor.chemistry, filename = "lcsm.chemistry.xlsx")
+
+# plots trivariate latent change score model (edited function)
+plot.lcsm.new <- function(fit, index = "", title = "") {
+  
+  # plot omits the intercepts as well as the manifest variables at T2 
+  # because this would make the plot too hard to decipher
+  
+  # parameter estimates and their significance (for plotting sig. coefs bold-face)
+  pe = parameterEstimates(fit, standardized = T)[49:114, ]
+  sig = (pe$pvalue < .05) + 1
+  
+  # setup plot
+  plot(c(0, 12), c(0, 12), type = "n", axes = F, xlab = "", ylab = "")
+  
+  # manifest T1
+  rect(2, 1, 4,  3)
+  rect(2, 5, 4,  7)
+  rect(2, 9, 4, 11)
+  # latent change scores
+  c1 = circle(9,  2, scale = 1.1)
+  c2 = circle(9,  6, scale = 1.1)
+  c3 = circle(9, 10, scale = 1.1)
+  
+  # labels
+  text(c(3, 3, 3, 9, 9, 9), c(2, 6, 10, 2, 6, 10),
+       c('NFC.1', 'ASC.1', 'GRD.1', expression(Delta ~ NFC), expression(Delta ~ ASC), expression(Delta ~ GRD)))
+  
+  # arrows from lower left
+  Arrows(4, 2.0,  7.9, 2, code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#993333')
+  Arrows(4, 2.1, c2[247,1], c2[247,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
+  Arrows(4, 2.2, c3[225,1], c3[225,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
+  
+  # arrows from middle left
+  Arrows(4, 6.0, 7.9, 6, code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#993333')
+  Arrows(4, 5.9, c1[292,1], c1[292,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
+  Arrows(4, 6.1, c3[247,1], c3[247,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
+  
+  # arrows from top left
+  Arrows(4, 10, 7.9, 10, code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#993333')
+  Arrows(4, 9.9, c2[292,1], c2[292,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
+  Arrows(4, 9.8, c1[315,1], c1[315,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
+  
+  # correlations left
+  Arrows(3, 3, 3, 5, code = 3, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = grey(.6))
+  Arrows(3, 7, 3, 9, code = 3, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = grey(.6))
+  lines(getellipse(rx = 1, ry = 4, mid = c(2, 6), from = 1/2 * pi, to = -1/2 * pi), col = grey(.6))
+  Arrowhead(2,  2, arr.length = .2, arr.adj = 1, arr.type = "triangle", lcol = grey(.6), angle = -20)
+  Arrowhead(2, 10, arr.length = .2, arr.adj = 1, arr.type = "triangle", lcol = grey(.6), angle =  20)
+  
+  # correlations right
+  Arrows(9, 3.1, 9, 4.9,  code = 3, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#339933')
+  Arrows(9, 7.1, 9, 8.9,  code = 3, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#339933')
+  lines(getellipse(rx = 1, ry = 4, mid = c(10.1, 6), from = -1/2 * pi, to = 1/2 * pi), col = "#339933")
+  Arrowhead(10.1,  2, arr.length = .2, arr.adj = 1, arr.type = "triangle", lcol = "#339933", angle = 200)
+  Arrowhead(10.1, 10, arr.length = .2, arr.adj = 1, arr.type = "triangle", lcol = "#339933", angle = 160)
+  
+  # paths originating from GPA
+  add.coef(4.8, 10.0, pe[which(pe$label == 'beta1'),   'std.nox'], font = sig[which(pe$label == 'beta1')],   col = '#993333')
+  add.coef(4.8,  9.2, pe[which(pe$label == 'gamma12'), 'std.nox'], font = sig[which(pe$label == 'gamma12')], col = '#336699')
+  add.coef(4.8,  8.5, pe[which(pe$label == 'gamma16'), 'std.nox'], font = sig[which(pe$label == 'gamma16')], col = '#336699')
+  
+  # paths originating from ASC
+  add.coef(4.8,  6.0,pe[which(pe$label == 'beta2'),   'std.nox'], font = sig[which(pe$label == 'beta2')],   col = '#993333')
+  add.coef(4.8,  6.8,pe[which(pe$label == 'gamma21'), 'std.nox'], font = sig[which(pe$label == 'gamma21')], col = '#336699')
+  add.coef(4.8,  5.2,pe[which(pe$label == 'gamma26'), 'std.nox'], font = sig[which(pe$label == 'gamma26')], col = '#336699')
+  
+  # paths originating from NFC
+  add.coef(4.8,  2.0,pe[which(pe$label == 'beta6'),   'std.nox'], font = sig[which(pe$label == 'beta3')],   col = '#993333')
+  add.coef(4.8,  3.5,pe[which(pe$label == 'gamma61'), 'std.nox'], font = sig[which(pe$label == 'gamma61')], col = '#336699')
+  add.coef(4.8,  2.8,pe[which(pe$label == 'gamma62'), 'std.nox'], font = sig[which(pe$label == 'gamma62')], col = '#336699')
+  
+  # correlations T1  
+  add.coef(3.0,  8.0,pe[which(pe$label == 'phi12'),   'std.nox'], font = sig[which(pe$label == 'phi12')], col = grey(.6))
+  add.coef(1.0,  6.0,pe[which(pe$label == 'phi16'),   'std.nox'], font = sig[which(pe$label == 'phi16')], col = grey(.6))
+  add.coef(3.0,  4.0,pe[which(pe$label == 'phi26'),   'std.nox'], font = sig[which(pe$label == 'phi26')], col = grey(.6))
+  
+  # correlations change scores  
+  add.coef(9.0,  8.0,pe[which(pe$label == 'rho12'),   'std.nox'], font = sig[which(pe$label == 'rho12')], col = '#339933')
+  add.coef(11.,  6.0,pe[which(pe$label == 'rho16'),   'std.nox'], font = sig[which(pe$label == 'rho16')], col = '#339933')
+  add.coef(9.0,  4.0,pe[which(pe$label == 'rho26'),   'std.nox'], font = sig[which(pe$label == 'rho26')], col = '#339933')
+  
+  # add panel index and title
+  text(1, 12, index, cex = 2)
+  text(6, 12, title, cex = 2)
+  
+  invisible(pe)
+  
+}
+
+# in RStudio, play around a bit with the exact plot window size to get best results 
+par(mfrow = c(3, 2), mar = c(0,0,0,0))
+demo.lcsm("A","Example of Bivariate Model")
+plot.lcsm.new(fit.overall,   index = "B", title = "GPA")
+plot.lcsm.new(fit.german,    index = "D", title = "German")
+plot.lcsm.new(fit.math,      index = "C", title = "Math")
+plot.lcsm.new(fit.physics,   index = "E", title = "Physics")
+plot.lcsm.new(fit.chemistry, index = "F", title = "Chemistry")
+par(mfrow = c(1, 1), mar = c(5,4,4,2))
+
+anova(sem(lcsm_ext, data = df.overall, estimator = "mlr", missing = "fiml"), sem(lcsm_power, data = df.overall, estimator = "mlr", missing = "fiml"))
+colnames(fs_tot)
