@@ -1,11 +1,13 @@
 # NFC AND ABILITY SELF-CONCEPTS AS PREDICTORS OF CHANGES IN SCHOOL GRADES =====
 
-# activate and restore project------------------------------------------------
+# RUN THESE LINES FIRST -------------------------------------------------------
+
+# > activate and restore project-------------------------------------------------
 source('renv/activate.R')
 renv::activate(getwd())
 renv::restore()
 
-# required packages -----------------------------------------------------------
+# > required packages -----------------------------------------------------------
 library(haven)      # for reading SPSS data file
 library(lavaan)     # for latent change score modeling
 library(naniar)     # test data with missings for MCAR
@@ -14,7 +16,7 @@ library(psych)      # for correlation analysis, Mardia test etc.
 library(semTools)   # for various SEM related tools
 library(shape)      # for plotting
 
-# global functions ------------------------------------------------------------
+# > global functions ------------------------------------------------------------
 
 # function for reporting p-values in main text (wrapper for papaja::printp)
 rp <- function(p, bound = "max") {
@@ -108,14 +110,14 @@ rl <- function(fit, label = "") {
 }
 
 
-# set root directory ----------------------------------------------------------
+# > set root directory ----------------------------------------------------------
 here::i_am("flag_root_for_NFC-Grades.txt")
 
-# data ------------------------------------------------------------------------
+# > data ------------------------------------------------------------------------
 d = read.csv(here::here("Data", "NFC-Grades.csv"))
 d.codebook = read.csv(here::here("Data", "NFC-Grades_Codebook.csv"))
 
-# sample description ----------------------------------------------------------
+# > sample description ----------------------------------------------------------
 
 # age and gender
 age = rbind(describe(d$alter_I), describe(d$alter_II))
@@ -130,7 +132,9 @@ T2 = as.POSIXct(d$datum_II)
 Tdiff = round(range(T2 - T1, na.rm = T)/7)
 attr(Tdiff, "units") = "weeks"
 
-# variables -------------------------------------------------------------------
+# ORIGINAL ANALYSES -------------------------------------------------------------
+
+# > variables -------------------------------------------------------------------
 
 # GRades (Noten allgemein und fächerspezifisch)
 # O = overall, G = German, M = Math, P = Physics, C = Chemistry 
@@ -184,7 +188,7 @@ data = data.frame(GRO1, GRO2, GRG1, GRG2, GRM1, GRM2, GRP1, GRP2, GRC1, GRC2, AS
 final = data.frame(DAT1 = d$datum_I, DAT2 = d$datum_II, AGE1 = d$alter_I, AGE2 = d$alter_II, SEX1 = d$sex, SEX2 = d$sex_II)
 
 
-# internal consistencies ------------------------------------------------------
+# > internal consistencies ------------------------------------------------------
 
 # function to extract internal consistencies
 raw.alpha <- function(df) {
@@ -251,7 +255,7 @@ alpha.chemistry = c(alpha.grc[1], alpha.asc[1], alpha.inc[1], alpha.hfs[1], alph
                     alpha.grc[2], alpha.asc[2], alpha.inc[2], alpha.hfs[2], alpha.fof[2], alpha.nfc[2])
 
 
-# data.frames for correlation and regression analysis ----
+# > data.frames for correlation and regression analysis ----
 
 df.overall    = data.frame(grd.1 = GRO1, asc.1 = ASO1, int.1 = INO1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRO2, asc.2 = ASO2, int.2 = INO2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
 df.german     = data.frame(grd.1 = GRG1, asc.1 = ASG1, int.1 = ING1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRG2, asc.2 = ASG2, int.2 = ING2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
@@ -259,7 +263,7 @@ df.math       = data.frame(grd.1 = GRM1, asc.1 = ASM1, int.1 = INM1, hfs.1 = HFS
 df.physics    = data.frame(grd.1 = GRP1, asc.1 = ASP1, int.1 = INP1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRP2, asc.2 = ASP2, int.2 = INP2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
 df.chemistry  = data.frame(grd.1 = GRC1, asc.1 = ASC1, int.1 = INC1, hfs.1 = HFS1, fof.1 = FOF1, nfc.1 = NFC1, grd.2 = GRC2, asc.2 = ASC2, int.2 = INC2, hfs.2 = HFS2, fof.2 = FOF2, nfc.2 = NFC2)
 
-# test whether missings are MCAR ----
+# > test whether missings are MCAR ----
 
 mcar = as.data.frame(rbind(mcar_test(df.overall),
                            mcar_test(df.german),
@@ -268,7 +272,8 @@ mcar = as.data.frame(rbind(mcar_test(df.overall),
                            mcar_test(df.physics)))
 
 rownames(mcar) = c("GPA", "German", "Math", "Physics", "Chemistry")
-# deviation from normality ----------------------------------------------------
+
+# > deviation from normality ----------------------------------------------------
 
 # univariate normality
 
@@ -308,7 +313,7 @@ mardia.tests = data.frame(overall    = c(mardia.overall$p.skew, mardia.overall$p
                           chemistry  = c(mardia.chemistry$p.skew, mardia.chemistry$p.kurt))
 rownames(mardia.tests) = c("p.skew", "p.kurt")
 
-# correlation analysis --------------------------------------------------------
+# > correlation analysis --------------------------------------------------------
 
 # function for setting colnames uppercase
 col.toupper <- function(df) {
@@ -448,7 +453,7 @@ corr.chemistry = corr.report(df.chemistry,
                              measure.names = c("Grade Chemistry", "Ability Self-Concept Chemistry", "Interest in Chemistry", "Hope for Success", "Fear of Failure", "Need for Cognition"))
 
 
-# multiple regression to determine variables for latent change score models ----
+# > multiple regression to determine variables for latent change score models ----
 
 mr <- function(data) {
   
@@ -586,7 +591,7 @@ mr.nobs = paste0(range(c(fit.results(mr.overall$f$f.full.mod)$fit.measures$n.obs
                          fit.results(mr.physics$f$f.full.mod)$fit.measures$n.obs,
                          fit.results(mr.chemistry$f$f.full.mod)$fit.measures$n.obs)), collapse = "-")
 
-# latent change score modeling ------------------------------------------------
+# > latent change score modeling ------------------------------------------------
 
 lcsm <- '
 # --------------------- VARIABLE LABELS
@@ -681,7 +686,7 @@ sf_cdc = list(sf_cdc_overall    = parameterEstimates(fit.overall,   standardized
               sf_cdc_chemnistry = parameterEstimates(fit.chemistry, standardized = T)[25:39, -c(10:11)])
 
 
-# plot LCSM -------------------------------------------------------------------
+# > plot LCSM -------------------------------------------------------------------
 
 # function for plotting ellipses at specified positions
 circle = function(x, y, scale = 1, angle = 1:360, plot = T, col = 1) {
@@ -883,10 +888,10 @@ par(mfrow = c(1, 1), mar = c(5,4,4,2))
 # save plot automatically as EPS (it won't look nice, though)
 # dev.copy2eps(file="Fig1_auto.eps",width=mm2in(190), height = mm2in(250))
 
-# save all variables for use in R Markdown document ---------------------------
+# > save all variables for use in R Markdown document ---------------------------
 save.image(here::here("Data","NFC-Grades.RData"))
 
-# knit document ---------------------------------------------------------------
+# > knit document ---------------------------------------------------------------
 # now open "NFC-Grades.Rmd" in the "Manuscript" folder and hit the Knit button
 # on top of your RStudio window
 
@@ -897,14 +902,23 @@ eval(parse(text = paste0("unlink('Manuscript/", files_to_delete, "')")))
 
 
 
-# new analyses based on comments during peer-review ---------------------------
+# NEW ANALYES BASED ON COMMENTS DURING PEER-REVIEW ----------------------------
 
 # The reviewers requested - among other issues - that we should 
 # 1) use measurement models/factor scores instead of sum/mean scores 
 # 2) drop multiple regression and instead directly test all relations in a LCSM
 # 3) provide descriptives and reliabilities in a different way
 
-# measurement models for variables of interest --------------------------------
+# test whether missings are MCAR ----------------------------------------------
+
+mcar_test(d[, grep("not", colnames(d))])
+mcar_test(d[, grep("kom", colnames(d))])
+mcar_test(d[, grep("nfc", colnames(d))])
+mcar_test(d[, grep("lm", colnames(d))])
+mcar_test(d[, grep("an", colnames(d))])
+mcar_test(d[, grep("in", colnames(d))])
+
+# > measurement models for variables of interest ------------------------------
 
 df_grd = 6 - d[, grep("not", colnames(d))]
 
@@ -1019,7 +1033,7 @@ f_int = cfa(mm_int, data = d, estimator = "MLR", missing = "FIML")
 summary(f_int, fit.measures = T, standardized = T)
 fs_int = data.frame(lavPredict(f_int))
 
-# reliabilities ---------------------------------------------------------------
+# > reliabilities ---------------------------------------------------------------
 
 # Cronbach's alpha & MacDonald's omega (N/A for grades)
 rel_trt = reliability(f_mtrt)[c(1, 4),c(1,3,5,2,4,6)]
@@ -1047,7 +1061,7 @@ attr(rtt_int, "N") = corr.test(fs_int[, c(1,3,5,7,9)], fs_int[, c(2,4,6,8,10)], 
 # combine factor scores
 fs_tot = data.frame(cbind(fs_grd, fs_mtrt, fs_asc, fs_int))
 
-# latent change score modeling including all variables' factor scores ---------
+# > latent change score modeling including all variables' factor scores ---------
 
 lcsm_ext <- '
   # --------------------- VARIABLE LABELS
@@ -1341,7 +1355,7 @@ lcsm_power <- '
 
 # the above model has 22 df
 
-# power analysis testing the full model against the model without any NFC-related paths ---------
+# > power analysis testing the full model against the model without any NFC-related paths ---------
 semPower::semPower.postHoc(effect = .06, effect.measure = "RMSEA", alpha = .05, df = 22, N = 277)
 
 # overall grades
