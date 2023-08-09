@@ -3,9 +3,9 @@
 # RUN THESE LINES FIRST -------------------------------------------------------
 
 # > activate and restore project-------------------------------------------------
-source('renv/activate.R')
-renv::activate(getwd())
-renv::restore()
+# source('renv/activate.R')
+# renv::activate(getwd())
+# renv::restore()
 
 # > required packages -----------------------------------------------------------
 library(haven)      # for reading SPSS data file
@@ -15,6 +15,7 @@ library(papaja)     # for easier reporting
 library(psych)      # for correlation analysis, Mardia test etc.
 library(semTools)   # for various SEM related tools
 library(shape)      # for plotting
+library(xlsx)     # for Excel output
 
 # > global functions ------------------------------------------------------------
 
@@ -826,7 +827,7 @@ demo.lcsm <-  function(index, title) {
   Arrowhead(8, 2.0, arr.length = .2, arr.type = "triangle", arr.adj = 1)
   Arrows(4, 2.2,  c2[247,1], c2[247,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#993333')
   lines(rep(9, 2), c(3, 3.65), lty = 3)
-  Arrowhead(9,3.65, arr.length = .2, arr.type = "triangle", arr.adj = 2, angle = 90)
+  Arrowhead(9, 3, arr.length = .2, arr.type = "triangle", arr.adj = 1, angle = 270)
   Arrows(4, 2.4,  c1[247,1], c1[247,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
   
   # arrows top
@@ -834,7 +835,7 @@ demo.lcsm <-  function(index, title) {
   Arrowhead(8, 10, arr.length = .2, arr.type = "triangle", arr.adj = 1)
   Arrows(4, 9.8, c1[292,1], c1[292,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2)
   lines(c(9, 9), c(9.0, 8.35), lty = 3)
-  Arrowhead(9,8.35, arr.length = .2, arr.type = "triangle", arr.adj = 2, angle = 270)
+  Arrowhead(9, 9, arr.length = .2, arr.type = "triangle", arr.adj = 1, angle = 90)
   Arrows(4, 9.6, c2[292,1], c2[292,2], code = 2, arr.length = .2, arr.type = "triangle", arr.adj = 2, col = '#336699')
   
   # correlations left
@@ -947,6 +948,27 @@ GRC1 ~~ GRC2
 f_grd = cfa(mm_grd, data = df_grd, estimator = "MLR", missing = "FIML")
 summary(f_grd, fit.measures = T, standardized = T)
 fs_grd = data.frame(lavPredict(f_grd))
+# reviewer question: which approach for factor score estimation was used?
+# answer: apparently regression, but it does not make any difference, see below
+fs_grd_reg = data.frame(lavPredict(f_grd), method = "regression")
+fs_grd_ml = data.frame(lavPredict(f_grd), method = "ML")
+fs_grd_ebm = data.frame(lavPredict(f_grd), method = "EBM")
+
+source("~/Documents/R/functions/parcel.gen.R")
+df_nfc_1 = d[grep("nfc", colnames(d))][ 1:16]
+df_nfc_2 = d[grep("nfc", colnames(d))][18:33]
+
+nfc_parcels_1 = parcel.gen(as.numeric(principal(df_nfc_1, nfactors = 1)$loadings), parcels = 4)
+nfc_parcels_2 = parcel.gen(as.numeric(principal(df_nfc_2, nfactors = 1)$loadings), parcels = 4)
+
+df_nfc_p = data.frame(nfc_p1_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 1]]),
+                      nfc_p2_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 2]]),
+                      nfc_p3_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 3]]),
+                      nfc_p4_1 = rowMeans(df_nfc_1[, nfc_parcels_1$items[, 4]]),
+                      nfc_p1_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 1]]),
+                      nfc_p2_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 2]]),
+                      nfc_p3_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 3]]),
+                      nfc_p4_2 = rowMeans(df_nfc_2[, nfc_parcels_1$items[, 4]]))
 
 
 # motivational traits
