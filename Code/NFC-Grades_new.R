@@ -1,4 +1,4 @@
-# NFC AND ABILITY SELF-CONCEPTS AS PREDICTORS OF CHANGES IN SCHOOL GRADES =====
+# ON THE INTERPLAY OF MOTIVATIONAL CHARACTERISTICS & ACADEMIC ACHIEVEMENT =======
 
 # > required packages -----------------------------------------------------------
 
