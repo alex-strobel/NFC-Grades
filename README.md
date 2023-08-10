@@ -1,6 +1,6 @@
 # NFC-Grades
 
-**Data and Code for "On the interplay of motivational characteristics and school grades: The role of Need for Cognition"**
+**Data and Code for "On the interplay of motivational characteristics and academic achievement: The role of Need for Cognition"**
 
 Anja Strobel* (TU Chemnitz), Alexander Strobel** (TU Dresden), Franzis Preckel (University of Trier), and Ricarda Steinmayr (TU Dortmund)
 
