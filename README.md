@@ -1,8 +1,13 @@
 # NFC-Grades
 
-**Data and Code for manuscript "On the interplay of motivational characteristics and school grades: The role of Need for Cognition"**
+**Data and Code for "On the interplay of motivational characteristics and school grades: The role of Need for Cognition"**
 
-2022-03-25
+Anja Strobel* (TU Chemnitz), Alexander Strobel** (TU Dresden), Franzis Preckel (University of Trier), and Ricarda Steinmayr (TU Dortmund)
+
+\* Corresponding author for the above manuscript, to appear in *AERA Open*; 
+\** Corresponding author for this repository
+
+2023-08-10
 
 This repository contains the data and code for reproducing the analyses described in the above manuscript. 
 
