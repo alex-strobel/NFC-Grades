@@ -1,12 +1,19 @@
 # NFC AND ABILITY SELF-CONCEPTS AS PREDICTORS OF CHANGES IN SCHOOL GRADES =====
 
 # > required packages -----------------------------------------------------------
+
+if (!"haven" %in% rownames(installed.packages()))    install.packages("haven")
+if (!"lavaan" %in% rownames(installed.packages()))   install.packages("lavaan")
+if (!"naniar" %in% rownames(installed.packages()))   install.packages("naniar")
+if (!"psych" %in% rownames(installed.packages()))    install.packages("psych")
+if (!"shape" %in% rownames(installed.packages()))    install.packages("shape")
+if (!"xlsx" %in% rownames(installed.packages()))     install.packages("xlsx")
+
 library(haven)      # for reading SPSS data file
 library(lavaan)     # for latent change score modeling
 library(naniar)     # test data with missings for MCAR
 library(papaja)     # for easier reporting
 library(psych)      # for correlation analysis, Mardia test etc.
-library(semTools)   # for various SEM related tools
 library(shape)      # for plotting
 library(xlsx)       # for Excel output
 
