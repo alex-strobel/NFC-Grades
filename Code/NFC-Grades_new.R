@@ -1,12 +1,5 @@
 # NFC AND ABILITY SELF-CONCEPTS AS PREDICTORS OF CHANGES IN SCHOOL GRADES =====
 
-# RUN THESE LINES FIRST -------------------------------------------------------
-
-# > activate and restore project-------------------------------------------------
-# source('renv/activate.R')
-# renv::activate(getwd())
-# renv::restore()
-
 # > required packages -----------------------------------------------------------
 library(haven)      # for reading SPSS data file
 library(lavaan)     # for latent change score modeling
@@ -15,7 +8,8 @@ library(papaja)     # for easier reporting
 library(psych)      # for correlation analysis, Mardia test etc.
 library(semTools)   # for various SEM related tools
 library(shape)      # for plotting
-library(xlsx)     # for Excel output
+library(readxl)     # for Excel output
+library(xlsx)       # for Excel output
 
 # > global functions ------------------------------------------------------------
 
@@ -112,6 +106,7 @@ rl <- function(fit, label = "") {
 
 
 # > set root directory ----------------------------------------------------------
+# setwd("[path to directory where you saved this repository]")
 here::i_am("flag_root_for_NFC-Grades.txt")
 
 # > data ------------------------------------------------------------------------
@@ -909,6 +904,8 @@ eval(parse(text = paste0("unlink('Manuscript/", files_to_delete, "')")))
 # 1) use measurement models/factor scores instead of sum/mean scores 
 # 2) drop multiple regression and instead directly test all relations in a LCSM
 # 3) provide descriptives and reliabilities in a different way
+#
+# Please still run the code above in order to reproduce the analyses below!!!
 
 # test whether missings are MCAR ----------------------------------------------
 
@@ -949,12 +946,72 @@ f_grd = cfa(mm_grd, data = df_grd, estimator = "MLR", missing = "FIML")
 summary(f_grd, fit.measures = T, standardized = T)
 fs_grd = data.frame(lavPredict(f_grd))
 # reviewer question: which approach for factor score estimation was used?
-# answer: apparently regression, but it does not make any difference, see below
+# author answer: regression, but it does not make any difference, see below
 fs_grd_reg = data.frame(lavPredict(f_grd), method = "regression")
 fs_grd_ml = data.frame(lavPredict(f_grd), method = "ML")
 fs_grd_ebm = data.frame(lavPredict(f_grd), method = "EBM")
 
-source("~/Documents/R/functions/parcel.gen.R")
+# function for generating parcels according to the procedure described by
+# Little, T. D., Cunningham, W. A., Shahar, G., & Widaman, K. F. (2002). 
+# To parcel or not to parcel: Exploring the question, weighing the merits. 
+# Structural Equation Modeling: A Multidisciplinary Journal, 9(2), 151-173. 
+# https://doi.org/10.1207/ S15328007SEM0902_1  
+parcel.gen <- function(loadings, parcels = 2, seed = 242, iterations = 10000) {
+  
+  h = loadings                      # abbreviate variable name
+  p = parcels                       # number of parcels
+  l = length(h)                     # number of items
+  set.seed(seed)                    # seed for reproducibility
+  
+  out = parcels = NULL              # set up containers
+  for (k in 1:iterations) {
+    
+    s = sample(1:l, l, replace = F) # random item order
+    m = matrix(s, ncol = 4)         # separate into parcels
+    
+    # temporarily convert item numbers per parcel to concatenated strings
+    parcels.i = NULL
+    for (i in 1:p) {
+      parcels.i = c(parcels.i, paste0(sort(m[, i]), collapse = ","))
+    }
+    # write to container
+    parcels = rbind(parcels, parcels.i)
+    
+    # compute average item loadings per parcel
+    avg.h = colMeans(matrix(h[m], ncol = 4))
+    
+    # compute differences between all average item loadings
+    h.diff = NULL
+    for (i in 1:(p - 1)) {
+      for (j in (i + 1):p) {
+        h.diff = c(h.diff, abs(avg.h[i] - avg.h[j]))
+      }
+    }
+    
+    # sum up differences
+    h.diff.sum = sum(h.diff)
+    # write summed differences to container
+    out = c(out, h.diff.sum)
+  }
+  
+  # find minimum summed difference and generate matrix or respective items
+  final.parcels = matrix(as.numeric(unlist(strsplit(parcels[which.min(out), ], ','))), ncol = 4)
+  # obtain corresponding loadings per parcel
+  final.h = matrix(loadings[final.parcels], ncol = 4)
+  
+  # return result as list
+  return(
+    list(
+      items = final.parcels,
+      loadings = final.h,
+      avg.loadings = colMeans(final.h),
+      summed.difference = min(out)
+    )
+  )
+  
+}
+
+# creation of NFC parcels
 df_nfc_1 = d[grep("nfc", colnames(d))][ 1:16]
 df_nfc_2 = d[grep("nfc", colnames(d))][18:33]
 
