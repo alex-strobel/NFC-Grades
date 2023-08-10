@@ -883,19 +883,8 @@ par(mfrow = c(1, 1), mar = c(5,4,4,2))
 # save plot automatically as EPS (it won't look nice, though)
 # dev.copy2eps(file="Fig1_auto.eps",width=mm2in(190), height = mm2in(250))
 
-# > save all variables for use in R Markdown document ---------------------------
+# > save all variables --------------------------------------------------------
 save.image(here::here("Data","NFC-Grades.RData"))
-
-# > knit document ---------------------------------------------------------------
-# now open "NFC-Grades.Rmd" in the "Manuscript" folder and hit the Knit button
-# on top of your RStudio window
-
-# delete unnecessary output of papaja either by hand or via
-dir_manuscript  = dir(here::here("Manuscript"))
-files_to_delete = dir_manuscript[grep("fff|log|tex|ttt", dir_manuscript)]
-eval(parse(text = paste0("unlink('Manuscript/", files_to_delete, "')")))
-
-
 
 # NEW ANALYES BASED ON COMMENTS DURING PEER-REVIEW ----------------------------
 
@@ -1723,3 +1712,7 @@ par(mfrow = c(1, 1), mar = c(5,4,4,2))
 
 anova(sem(lcsm_ext, data = df.overall, estimator = "mlr", missing = "fiml"), sem(lcsm_power, data = df.overall, estimator = "mlr", missing = "fiml"))
 colnames(fs_tot)
+
+
+# > save all variables --------------------------------------------------------
+save.image(here::here("Data","NFC-Grades-2.RData"))
