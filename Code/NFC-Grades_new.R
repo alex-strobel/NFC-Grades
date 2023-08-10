@@ -905,6 +905,8 @@ mcar_test(d[, grep("nfc", colnames(d))])
 mcar_test(d[, grep("lm", colnames(d))])
 mcar_test(d[, grep("an", colnames(d))])
 mcar_test(d[, grep("in", colnames(d))])
+# The line above may produce an error message and may terminate code execution.
+# Just run all the code lines below to get (and save) the full results!
 
 # > measurement models for variables of interest ------------------------------
 
@@ -1427,16 +1429,7 @@ lcsm_power <- '
 # > power analysis testing the full model against the model without any NFC-related paths ---------
 semPower::semPower.postHoc(effect = .06, effect.measure = "RMSEA", alpha = .05, df = 22, N = 277)
 
-# overall grades
-df.overall = with(fs_tot, data.frame(grd.1 = GRO1, grd.2 = GRO2, 
-                                     asc.1 = ASO1, asc.2 = ASO2, 
-                                     int.1 = INO1, int.2 = INO2, 
-                                     hfs.1 = HFS1, hfs.2 = HFS2,
-                                     fof.1 = FOF1, fof.2 = FOF2,
-                                     nfc.1 = NFC1, nfc.2 = NFC2))
-
-fit.overall <- lavaan(lcsm_ext, data = df.overall, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
-summary(fit.overall, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+# > reporting results of LCSM and correlational analyses ------------------------------------------
 
 # functions for reporting paremeter estimates and intercorrelations 
 format.pe <- function(fit) {
@@ -1537,15 +1530,20 @@ write.excel <-  function(df.pe, df.cor, filename = "lcsm.xlsx") {
   write.xlsx(df.cor$p.d,   filename, sheetName = "p.d",   append = T)
 }
 
-# Overall Grades
 
+# Overall grades
+df.overall = with(fs_tot, data.frame(grd.1 = GRO1, grd.2 = GRO2, 
+                                     asc.1 = ASO1, asc.2 = ASO2, 
+                                     int.1 = INO1, int.2 = INO2, 
+                                     hfs.1 = HFS1, hfs.2 = HFS2,
+                                     fof.1 = FOF1, fof.2 = FOF2,
+                                     nfc.1 = NFC1, nfc.2 = NFC2))
+
+fit.overall <- lavaan(lcsm_ext, data = df.overall, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
+summary(fit.overall, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.overall = format.pe(fit.overall)
-write.csv(pe.overall, file = "pe.overall.csv", row.names = T)
-write.xlsx(pe.overall, file = "pe.overall.xlsx", row.names = T)
 cor.overall = format.cor.new(fit.overall)
-write.excel(df.pe = pe.overall, df.cor = cor.overall, filename = "lcsm.overall.xlsx")
-
-
+write.excel(df.pe = pe.overall, df.cor = cor.overall, filename = "Results/lcsm.overall.xlsx")
 
 # German grades
 df.german  = with(fs_tot, data.frame(grd.1 = GRG1, grd.2 = GRG2, 
@@ -1558,10 +1556,8 @@ df.german  = with(fs_tot, data.frame(grd.1 = GRG1, grd.2 = GRG2,
 fit.german <- lavaan(lcsm_ext, data = df.german, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 summary(fit.german, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.german = format.pe(fit.german)
-write.csv(pe.german, file = "pe.german.csv", row.names = F)
-write.xlsx(pe.german, "pe.german.xlsx")
 cor.german = format.cor.new(fit.german)
-write.excel(df.pe = pe.german, df.cor = cor.german, filename = "lcsm.german.xlsx")
+write.excel(df.pe = pe.german, df.cor = cor.german, filename = "Results/lcsm.german.xlsx")
 
 # Math grades
 df.math    = with(fs_tot, data.frame(grd.1 = GRM1, grd.2 = GRM2, 
@@ -1574,10 +1570,8 @@ df.math    = with(fs_tot, data.frame(grd.1 = GRM1, grd.2 = GRM2,
 fit.math <- lavaan(lcsm_ext, data = df.math, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 summary(fit.math, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.math = format.pe(fit.math)
-write.csv(pe.math, file = "pe.math.csv", row.names = F)
-write.xlsx(pe.math, "pe.math.xlsx")
 cor.math = format.cor.new(fit.math)
-write.excel(df.pe = pe.math, df.cor = cor.math, filename = "lcsm.math.xlsx")
+write.excel(df.pe = pe.math, df.cor = cor.math, filename = "Results/lcsm.math.xlsx")
 
 
 # Physics grades
@@ -1591,10 +1585,8 @@ df.physics = with(fs_tot, data.frame(grd.1 = GRP1, grd.2 = GRP2,
 fit.physics <- lavaan(lcsm_ext, data = df.physics, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 summary(fit.physics, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.physics = format.pe(fit.physics)
-write.csv(pe.physics, file = "pe.physics.csv", row.names = F)
-write.xlsx(pe.physics, "pe.physics.xlsx")
 cor.physics = format.cor.new(fit.physics)
-write.excel(df.pe = pe.physics, df.cor = cor.physics, filename = "lcsm.physics.xlsx")
+write.excel(df.pe = pe.physics, df.cor = cor.physics, filename = "Results/lcsm.physics.xlsx")
 
 # Chemistry grades
 df.chemistry = with(fs_tot, data.frame(grd.1 = GRC1, grd.2 = GRC2, 
@@ -1607,10 +1599,8 @@ df.chemistry = with(fs_tot, data.frame(grd.1 = GRC1, grd.2 = GRC2,
 fit.chemistry <- lavaan(lcsm_ext, data = df.chemistry, estimator = 'mlr', fixed.x = FALSE, missing = 'fiml')
 summary(fit.chemistry, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 pe.chemistry = format.pe(fit.chemistry)
-write.csv(pe.chemistry, file = "pe.chemistry.csv", row.names = F)
-write.xlsx(pe.chemistry, "pe.chemistry.xlsx")
 cor.chemistry = format.cor.new(fit.chemistry)
-write.excel(df.pe = pe.chemistry, df.cor = cor.chemistry, filename = "lcsm.chemistry.xlsx")
+write.excel(df.pe = pe.chemistry, df.cor = cor.chemistry, filename = "Results/lcsm.chemistry.xlsx")
 
 # plots trivariate latent change score model (edited function)
 plot.lcsm.new <- function(fit, index = "", title = "") {
