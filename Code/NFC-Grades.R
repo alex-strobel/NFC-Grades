@@ -1,9 +1,4 @@
-# NFC AND ABILITY SELF-CONCEPTS AS PREDICTORS OF CHANGES IN SCHOOL GRADES =====
-
-# activate and restore project------------------------------------------------
-source('renv/activate.R')
-renv::activate(getwd())
-renv::restore()
+# ON THE INTERPLAY OF MOTIVATIONAL CHARACTERISTICS & ACADEMIC ACHIEVEMENT =====
 
 # required packages -----------------------------------------------------------
 library(haven)      # for reading SPSS data file
