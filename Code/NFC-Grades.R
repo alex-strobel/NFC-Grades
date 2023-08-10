@@ -1,5 +1,9 @@
 # ON THE INTERPLAY OF MOTIVATIONAL CHARACTERISTICS & ACADEMIC ACHIEVEMENT =====
 
+# Please note that this script is outdated and maintened here only for 
+# documentary reasons! Please use the script "NFC-Grades_new.R" for reproducing 
+# our results! 
+
 # required packages -----------------------------------------------------------
 library(haven)      # for reading SPSS data file
 library(lavaan)     # for latent change score modeling
