@@ -19,7 +19,7 @@ The project contains the following folders:
 
 To use this project, either 
 
-- clone this project from [https://github.com/alex-strobel/NFC-Grades] via the green `Code` button top right.
-- download the respec tive files from [https://osf.io/34yav/files/github] via the `Download this folder` link top right.
+- clone this project from https://github.com/alex-strobel/NFC-Grades via the green `Code` button top right.
+- download the respective files from https://osf.io/34yav/files/github via the `Download this folder` link top right.
 
 Once all missing packages have been installed, execute the script in the `Code` folder, and then you should be able to reproduce our manuscript. Note that because of differences in package versions used by us for this manuscript (see Supplementary Material/Supplementary Methods for the versions used here) and the packages used by you to reproduce the results, there might be some minor numerical deviations in the results. If you deem these deviations not so minor, please contact [alexander.strobel@tu-dresden.de](alexander.strobel@tu-dresden.de).
