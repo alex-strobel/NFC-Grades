@@ -2,12 +2,12 @@
 
 # > required packages -----------------------------------------------------------
 
-if (!"haven" %in% rownames(installed.packages()))    install.packages("haven")
-if (!"lavaan" %in% rownames(installed.packages()))   install.packages("lavaan")
-if (!"naniar" %in% rownames(installed.packages()))   install.packages("naniar")
-if (!"psych" %in% rownames(installed.packages()))    install.packages("psych")
-if (!"shape" %in% rownames(installed.packages()))    install.packages("shape")
-if (!"xlsx" %in% rownames(installed.packages()))     install.packages("xlsx")
+if (!"haven"  %in% rownames(installed.packages())) install.packages("haven")
+if (!"lavaan" %in% rownames(installed.packages())) install.packages("lavaan")
+if (!"naniar" %in% rownames(installed.packages())) install.packages("naniar")
+if (!"psych"  %in% rownames(installed.packages())) install.packages("psych")
+if (!"shape"  %in% rownames(installed.packages())) install.packages("shape")
+if (!"xlsx"   %in% rownames(installed.packages())) install.packages("xlsx")
 
 library(haven)      # for reading SPSS data file
 library(lavaan)     # for latent change score modeling
